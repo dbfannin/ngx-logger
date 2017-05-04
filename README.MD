@@ -1,72 +1,69 @@
-# ngx-logger
+# NGX Logger
+
+NGX Logger is a simple logging module for angular 2. It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
+
+## Dependencies
+ * @angular/common
+ * @angular/core
+ * @angular/http
+ * moment
 
 ## Installation
-
-To install this library, run:
-
-```bash
-$ npm install ngx-logger --save
+```shell
+npm install --save ngx-logger
 ```
 
-## Consuming your library
-
-Once you have published your library to npm, you can import your library in any Angular application by running:
-
-```bash
-$ npm install ngx-logger
+Once installed you need to import our main module:
+```js
+import { LoggerModule } from 'ngx-logger';
 ```
 
-and then from your Angular `AppModule`:
+The only remaining part is to list the imported module in your application module, passing in a config to intialize the logger.
 
-```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-
-// Import your library
-import { SampleModule } from 'ngx-logger';
-
+```js
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-
-    // Specify your library as an import
-    LibraryModule
-  ],
-  providers: [],
+  declarations: [AppComponent, ...],
+  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: 'DEBUG'}), ...],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
 ```
 
-Once your library is imported, you can use its components, directives and pipes in your Angular application:
+## Usage
 
-```xml
-<!-- You can now use your library component in app.component.html -->
-<h1>
-  {{title}}
-</h1>
-<sampleComponent></sampleComponent>
+To use the Logger, you will need import it locally, then call one of the logging functions
+
+```js
+import { Component } from '@angular/core';
+import { LoggerModule } from 'ngx-logger';
+
+@Component({
+  selector: 'your-component',
+  templateUrl: './your.component.html',
+  styleUrls: ['your.component.less']
+})
+export class YourComponent {
+    constructor(private logger: NGXLogger) {
+        this.logger.debug('Your log message goes here');
+    };
+}
+
 ```
 
-## Development
 
-To generate all `*.js`, `*.d.ts` and `*.metadata.json` files:
-
-```bash
-$ npm run build
+## Config Options
+ * serverLogLevel - Only sends logs to the server for the level specified or higher
+ * serverLoggingUrl - URL to POST logs
+ * level: The log level. The app will only log message for that level or higher (OFF disables the logger)
+```
+TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
 ```
 
-To lint all `*.ts` files:
 
-```bash
-$ npm run lint
-```
+## Server Side Logging
 
-## License
+If serverLogginUrl exists, NGX Logger will attempt to POST that log to the server.
 
-MIT © [David Fannin](mailto:dbfannin@gmail.com)
+Payload Example
+```{level: 'DEBUG', message: 'Your log message goes here'}```

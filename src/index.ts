@@ -1,35 +1,22 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SampleComponent } from './sample.component';
-import { SampleDirective } from './sample.directive';
-import { SamplePipe } from './sample.pipe';
-import { SampleService } from './sample.service';
 
-export * from './sample.component';
-export * from './sample.directive';
-export * from './sample.pipe';
-export * from './sample.service';
+import {NGXLogger, LoggerConfig} from './logger.service';
+export {NGXLogger, LoggerConfig} from './logger.service';
+
 
 @NgModule({
   imports: [
     CommonModule
-  ],
-  declarations: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
-  ],
-  exports: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
   ]
 })
-export class SampleModule {
-  static forRoot(): ModuleWithProviders {
+export class LoggerModule {
+  static forRoot(config: LoggerConfig | null | undefined): ModuleWithProviders {
     return {
-      ngModule: SampleModule,
-      providers: [SampleService]
+      ngModule: LoggerModule,
+      providers: [
+        {provide: LoggerConfig, useValue: config || {}},
+      ]
     };
   }
 }
