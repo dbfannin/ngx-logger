@@ -14,13 +14,13 @@ npm install --save ngx-logger
 ```
 
 Once installed you need to import our main module:
-```js
+```typescript
 import { LoggerModule } from 'ngx-logger';
 ```
 
 The only remaining part is to list the imported module in your application module, passing in a config to intialize the logger.
 
-```js
+```typescript
 @NgModule({
   declarations: [AppComponent, ...],
   imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: 'DEBUG'}), ...],
@@ -34,14 +34,15 @@ export class AppModule {
 
 To use the Logger, you will need import it locally, then call one of the logging functions
 
-```js
+```typescript
 import { Component } from '@angular/core';
 import { LoggerModule } from 'ngx-logger';
 
 @Component({
   selector: 'your-component',
   templateUrl: './your.component.html',
-  styleUrls: ['your.component.less']
+  styleUrls: ['your.component.less'],
+  providers: [NGXLogger]
 })
 export class YourComponent {
     constructor(private logger: NGXLogger) {
