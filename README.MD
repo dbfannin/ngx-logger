@@ -36,7 +36,7 @@ To use the Logger, you will need import it locally, then call one of the logging
 
 ```typescript
 import { Component } from '@angular/core';
-import { LoggerModule } from 'ngx-logger';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'your-component',
