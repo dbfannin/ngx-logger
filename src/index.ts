@@ -1,5 +1,6 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule, ModuleWithProviders} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HttpModule} from '@angular/http';
 
 import {NGXLogger, LoggerConfig} from './logger.service';
 export {NGXLogger, LoggerConfig} from './logger.service';
@@ -7,7 +8,8 @@ export {NGXLogger, LoggerConfig} from './logger.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    HttpModule
   ]
 })
 export class LoggerModule {
@@ -16,6 +18,7 @@ export class LoggerModule {
       ngModule: LoggerModule,
       providers: [
         {provide: LoggerConfig, useValue: config || {}},
+        NGXLogger
       ]
     };
   }
