@@ -1,6 +1,6 @@
 import {Injectable, Optional} from '@angular/core';
 import * as moment from 'moment'
-import {Http, Headers, RequestOptions} from "@angular/http";
+import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import * as _ from 'lodash';
@@ -56,7 +56,7 @@ export class NGXLogger {
 
   }
 
-  private _log(level: string, message: string, logOnServer: boolean) {
+  private _log(level: string, message: any, logOnServer: boolean) {
 
     //if no message or the log level is less than the environ
     if (!message || _.findIndex(Levels, level) < this._clientLogLevelIdx) return;
@@ -84,6 +84,10 @@ export class NGXLogger {
         return;
     }
 
+    if(typeof message === 'object'){
+      message = JSON.stringify(message, null, 2);
+    }
+
     console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, 'color:black');
 
 
@@ -92,27 +96,27 @@ export class NGXLogger {
     }
   }
 
-  trace(message: string) {
+  trace(message: any) {
     this._log('TRACE', message, true);
   }
 
-  debug(message: string) {
+  debug(message: any) {
     this._log('DEBUG', message, true);
   }
 
-  info(message: string) {
+  info(message: any) {
     this._log('INFO', message, true);
   }
 
-  log(message: string) {
+  log(message: any) {
     this._log('LOG', message, true);
   }
 
-  warn(message: string) {
+  warn(message: any) {
     this._log('WARN', message, true);
   }
 
-  error(message: string) {
+  error(message: any) {
     this._log('ERROR', message, true);
   }
 }

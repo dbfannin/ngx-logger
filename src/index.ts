@@ -3,6 +3,9 @@ import {CommonModule} from '@angular/common';
 import {HttpModule} from '@angular/http';
 
 import {NGXLogger, LoggerConfig} from './logger.service';
+import {NGXLoggerMock} from './logger.service.mock';
+
+export {NGXLoggerMock} from './logger.service.mock';
 export {NGXLogger, LoggerConfig} from './logger.service';
 
 
@@ -18,7 +21,8 @@ export class LoggerModule {
       ngModule: LoggerModule,
       providers: [
         {provide: LoggerConfig, useValue: config || {}},
-        NGXLogger
+        NGXLogger,
+        NGXLoggerMock
       ]
     };
   }
