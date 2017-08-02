@@ -50,7 +50,6 @@
     "karma-coverage-istanbul-reporter": "^0.2.0",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-watch": "^0.5.2",
     "protractor": "~5.1.0",

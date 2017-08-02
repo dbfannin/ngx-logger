@@ -3,7 +3,6 @@ import * as moment from 'moment'
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import * as _ from 'lodash';
 
 export class LoggerConfig {
   level: string;
