@@ -42,7 +42,7 @@ export class NGXLogger {
     if (!this.options.serverLoggingUrl) return;
 
     //if the user provides a serverLogLevel and the current level is than that do not log
-    if (this._serverLogLevelIdx && _.findIndex(Levels, level) < this._serverLogLevelIdx) return;
+    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) return;
 
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
