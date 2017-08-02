@@ -33,8 +33,9 @@ export class NGXLogger {
   }
 
   private _initLogLevel(level) {
-    level = _.findIndex(Levels, level);
-    return -1 ? _.findIndex(Levels, 'INFO') : level;
+    level = level ? level.toUpperCase() : level;
+    level = Levels.indexOf(level);
+    return level === -1 ? Levels.indexOf('INFO') : level;
   }
 
   private _logOnServer(level: string, message: string) {
@@ -59,7 +60,7 @@ export class NGXLogger {
   private _log(level: string, message: any, logOnServer: boolean) {
 
     //if no message or the log level is less than the environ
-    if (!message || _.findIndex(Levels, level) < this._clientLogLevelIdx) return;
+    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) return;
 
     let color1;
 
