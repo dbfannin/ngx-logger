@@ -25,6 +25,7 @@ export class NGXLogger {
 
   private _serverLogLevelIdx;
   private _clientLogLevelIdx;
+  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: Http, @Optional() private options: LoggerConfig) {
     this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
@@ -56,13 +57,43 @@ export class NGXLogger {
 
   }
 
+  private _logIE(level: string, message: any) {
+    message = `${moment.utc().format()} [${level}] ${message}`;
+
+    if(level === 'WARN'){
+      console.warn(message);
+    } else if(level === 'ERROR'){
+      console.error(message);
+    } else if(level === 'INFO'){
+      console.info(message);
+    } else {
+      console.log(message);
+    }
+  }
+
   private _log(level: string, message: any, logOnServer: boolean) {
 
     //if no message or the log level is less than the environ
     if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) return;
 
-    let color1;
+    if (logOnServer) {
+      this._logOnServer(level, message);
+    }
 
+    if(typeof message === 'object'){
+      try{
+        message = JSON.stringify(message, null, 2);
+      } catch(e) {
+        message = `circular object in message: ${message}`;
+      }
+    }
+
+    // Coloring doesn't work in IE
+    if(this._isIE) {
+      return this._logIE(level, message);
+    }
+
+    let color1;
 
     switch (level) {
       case 'TRACE':
@@ -84,20 +115,7 @@ export class NGXLogger {
         return;
     }
 
-    if(typeof message === 'object'){
-      try{
-        message = JSON.stringify(message, null, 2);
-      } catch(e) {
-        message = `circular object in message: ${message}`;
-      }
-    }
-
     console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, 'color:black');
-
-
-    if (logOnServer) {
-      this._logOnServer(level, message);
-    }
   }
 
   trace(message: any) {
