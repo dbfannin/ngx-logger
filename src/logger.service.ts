@@ -86,7 +86,11 @@ export class NGXLogger {
     }
 
     if(typeof message === 'object'){
-      message = JSON.stringify(message, null, 2);
+      try{
+        message = JSON.stringify(message, null, 2);
+      } catch(e) {
+        message = `circular object in message: ${message}`;
+      }
     }
 
     console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, 'color:black');
