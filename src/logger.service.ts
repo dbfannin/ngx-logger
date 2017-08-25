@@ -8,6 +8,7 @@ export class LoggerConfig {
   level: string;
   serverLoggingUrl?: string;
   serverLogLevel?: string;
+  enableDarkTheme?: boolean;
 }
 
 const Levels = [
@@ -115,7 +116,8 @@ export class NGXLogger {
         return;
     }
 
-    console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, 'color:black');
+    const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
+    console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`);
   }
 
   trace(message: any) {
