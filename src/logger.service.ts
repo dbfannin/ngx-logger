@@ -1,5 +1,5 @@
 import {Injectable, Optional} from '@angular/core';
-import * as moment from 'moment'
+import * as moment from 'moment';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -40,10 +40,14 @@ export class NGXLogger {
   }
 
   private _logOnServer(level: string, message: string) {
-    if (!this.options.serverLoggingUrl) return;
+    if (!this.options.serverLoggingUrl) {
+        return;
+    }
 
-    //if the user provides a serverLogLevel and the current level is than that do not log
-    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) return;
+    // if the user provides a serverLogLevel and the current level is than that do not log
+    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) {
+        return;
+    }
 
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
@@ -61,11 +65,11 @@ export class NGXLogger {
   private _logIE(level: string, message: any) {
     message = `${moment.utc().format()} [${level}] ${message}`;
 
-    if(level === 'WARN'){
+    if (level === 'WARN') {
       console.warn(message);
-    } else if(level === 'ERROR'){
+    } else if (level === 'ERROR') {
       console.error(message);
-    } else if(level === 'INFO'){
+    } else if (level === 'INFO') {
       console.info(message);
     } else {
       console.log(message);
@@ -74,23 +78,25 @@ export class NGXLogger {
 
   private _log(level: string, message: any, logOnServer: boolean) {
 
-    //if no message or the log level is less than the environ
-    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) return;
+    // if no message or the log level is less than the environ
+    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) {
+        return;
+    }
 
     if (logOnServer) {
       this._logOnServer(level, message);
     }
 
-    if(typeof message === 'object'){
-      try{
+    if (typeof message === 'object') {
+      try {
         message = JSON.stringify(message, null, 2);
-      } catch(e) {
+      } catch (e) {
         message = `circular object in message: ${message}`;
       }
     }
 
     // Coloring doesn't work in IE
-    if(this._isIE) {
+    if (this._isIE) {
       return this._logIE(level, message);
     }
 
