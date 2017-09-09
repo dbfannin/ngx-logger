@@ -43,7 +43,7 @@ export class NGXLogger {
         return level === -1 ? Levels.indexOf('INFO') : level;
     }
 
-    private _logOnServer(level: string, messages: string[]) {
+    private _logOnServer(level: string, messages: any[]) {
         if (!this.options.serverLoggingUrl) {
             return;
         }
