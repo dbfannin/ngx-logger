@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
@@ -27,13 +27,13 @@
     "url": "https://github.com/dbfannin/ngx-logger/issues"
   },
   "devDependencies": {
-    "@angular/common": "^4.0.0",
-    "@angular/compiler": "^4.0.0",
-    "@angular/compiler-cli": "^4.0.0",
-    "@angular/core": "^4.0.0",
-    "@angular/http": "^4.1.0",
-    "@angular/platform-browser": "^4.0.0",
-    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/common": "^4.3.0",
+    "@angular/compiler": "^4.3.0",
+    "@angular/compiler-cli": "^4.3.0",
+    "@angular/core": "^4.3.0",
+    "@angular/http": "^4.3.0",
+    "@angular/platform-browser": "^4.3.0",
+    "@angular/platform-browser-dynamic": "^4.3.0",
     "@compodoc/compodoc": "^1.0.0-beta.7",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
