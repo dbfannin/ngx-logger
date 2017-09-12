@@ -1,8 +1,8 @@
-import {Injectable, Optional} from '@angular/core';
-import * as moment from 'moment'
-import {Http, Headers, RequestOptions} from '@angular/http';
-import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Optional } from '@angular/core';
+import * as moment from 'moment';
 
 export class LoggerConfig {
   level: string;
@@ -26,9 +26,10 @@ export class NGXLogger {
 
   private _serverLogLevelIdx;
   private _clientLogLevelIdx;
-  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//);
+  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
+  || navigator.userAgent.match(/Edge\//);
 
-  constructor(private http: Http, @Optional() private options: LoggerConfig) {
+  constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
     this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
     this._clientLogLevelIdx = this._initLogLevel(this.options.level);
   }
@@ -40,32 +41,30 @@ export class NGXLogger {
   }
 
   private _logOnServer(level: string, message: string) {
-    if (!this.options.serverLoggingUrl) return;
+    if (!this.options.serverLoggingUrl) { return; };
 
-    //if the user provides a serverLogLevel and the current level is than that do not log
-    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) return;
+    // if the user provides a serverLogLevel and the current level is than that do not log
+    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) { return; };
 
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(this.options.serverLoggingUrl, {level: level, message: message}, options)
-        .map(res => res.json())
-        .catch(error => error)
-        .subscribe(
-            res => null,
-            error => this._log('ERROR', 'FAILED TO LOG ON SERVER', false)
-        );
+    this.http.post(this.options.serverLoggingUrl, { level: level, message: message }, { headers: headers })
+      .catch(error => error)
+      .subscribe(
+      res => null,
+      error => this._log('ERROR', 'FAILED TO LOG ON SERVER', false)
+      );
 
   }
 
   private _logIE(level: string, message: any) {
     message = `${moment.utc().format()} [${level}] ${message}`;
 
-    if(level === 'WARN'){
+    if (level === 'WARN') {
       console.warn(message);
-    } else if(level === 'ERROR'){
+    } else if (level === 'ERROR') {
       console.error(message);
-    } else if(level === 'INFO'){
+    } else if (level === 'INFO') {
       console.info(message);
     } else {
       console.log(message);
@@ -74,23 +73,23 @@ export class NGXLogger {
 
   private _log(level: string, message: any, logOnServer: boolean) {
 
-    //if no message or the log level is less than the environ
-    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) return;
+    // if no message or the log level is less than the environ
+    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) { return; };
 
     if (logOnServer) {
       this._logOnServer(level, message);
     }
 
-    if(typeof message === 'object'){
-      try{
+    if (typeof message === 'object') {
+      try {
         message = JSON.stringify(message, null, 2);
-      } catch(e) {
+      } catch (e) {
         message = `circular object in message: ${message}`;
       }
     }
 
     // Coloring doesn't work in IE
-    if(this._isIE) {
+    if (this._isIE) {
       return this._logIE(level, message);
     }
 
