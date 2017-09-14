@@ -6,71 +6,60 @@ import 'rxjs/add/operator/catch';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class LoggerConfig {
-  level: string;
+  level: NgxLoggerLevel;
+  serverLogLevel?: NgxLoggerLevel;
   serverLoggingUrl?: string;
-  serverLogLevel?: string;
   enableDarkTheme?: boolean;
 }
 
-const Levels = [
-  'TRACE',
-  'DEBUG',
-  'INFO',
-  'LOG',
-  'WARN',
-  'ERROR',
-  'OFF'
-];
+export enum NgxLoggerLevel {
+  TRACE = 0, DEBUG, INFO, LOG, WARN, ERROR, OFF
+}
 
 @Injectable()
 export class NGXLogger {
 
-  private _serverLogLevelIdx;
-  private _clientLogLevelIdx;
+  private _serverLogLevel: NgxLoggerLevel;
+  private _clientLogLevel: NgxLoggerLevel;
   private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
     || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
-    this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
-    this._clientLogLevelIdx = this._initLogLevel(this.options.level);
+    this._serverLogLevel = this.options.serverLogLevel || NgxLoggerLevel.INFO;
+    this._clientLogLevel = this.options.level;
   }
 
   debug(message, ...additional: any[]) {
-    this._log('DEBUG', true, message, additional);
+    this._log(NgxLoggerLevel.DEBUG, true, message, additional);
   }
 
   info(message, ...additional: any[]) {
-    this._log('INFO', true, message, additional);
+    this._log(NgxLoggerLevel.INFO, true, message, additional);
   }
 
   log(message, ...additional: any[]) {
-    this._log('LOG', true, message, additional);
+    this._log(NgxLoggerLevel.LOG, true, message, additional);
   }
 
   warn(message, ...additional: any[]) {
-    this._log('WARN', true, message, additional);
+    this._log(NgxLoggerLevel.WARN, true, message, additional);
   }
 
   error(message, ...additional: any[]) {
-    this._log('ERROR', true, message, additional);
+    this._log(NgxLoggerLevel.ERROR, true, message, additional);
   }
 
   private _timestamp() {
     return moment.utc().format();
   }
 
-  private _initLogLevel(level) {
-    level = typeof level === 'string' ? Levels.indexOf(level.toUpperCase()) : -1;
-    return level === -1 ? Levels.indexOf('INFO') : level;
-  }
-
-  private _logOnServer(level: string, message, additional: any[]) {
+  private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
     if (!this.options.serverLoggingUrl) {
       return;
     }
 
     // if the user provides a serverLogLevel and the current level is than that do not log
-    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) {
+    if (this._serverLogLevel && level < this._serverLogLevel) {
       return;
     }
 
@@ -84,31 +73,44 @@ export class NGXLogger {
     }, {headers})
       .subscribe(
         res => null,
-        error => this._log('ERROR', false, 'FAILED TO LOG ON SERVER')
+        error => this._log(NgxLoggerLevel.ERROR, false, 'FAILED TO LOG ON SERVER')
       );
   }
 
-  private _logIE(level: string, message: string, additional: any[]) {
-    if (level === 'WARN') {
-      console.warn(`${this._timestamp()} [${level}] `, message, ...additional);
-    } else if (level === 'ERROR') {
-      console.error(`${this._timestamp()} [${level}] `, message, ...additional);
-    } else if (level === 'INFO') {
-      console.info(`${this._timestamp()} [${level}] `, message, ...additional);
-    } else {
-      console.log(`${this._timestamp()} [${level}] `, message, ...additional);
+  private _logIE(level: NgxLoggerLevel, message: string, additional: any[]) {
+    switch (level) {
+      case NgxLoggerLevel.WARN:
+        console.warn(`${this._timestamp()} [${level}] `, message, ...additional);
+        break;
+      case NgxLoggerLevel.ERROR:
+        console.error(`${this._timestamp()} [${level}] `, message, ...additional);
+        break;
+      case NgxLoggerLevel.INFO:
+        console.info(`${this._timestamp()} [${level}] `, message, ...additional);
+        break;
+      default:
+        console.log(`${this._timestamp()} [${level}] `, message, ...additional);
     }
   }
 
-  private _log(level: string, logOnServer: boolean, message, additional: any[] = []) {
+  private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []) {
 
     // if no message or the log level is less than the environ
-    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) {
+    if (!message || level < this._clientLogLevel) {
       return;
     }
 
     if (logOnServer) {
       this._logOnServer(level, message, additional);
+    }
+
+    if (typeof message === 'object') {
+      try {
+        message = JSON.stringify(message, null, 2);
+      } catch (e) {
+        message = 'circular object in message. ';
+        additional = [message, ...additional];
+      }
     }
 
     // Coloring doesn't work in IE
@@ -119,21 +121,21 @@ export class NGXLogger {
     let color1;
 
     switch (level) {
-      case 'TRACE':
+      case NgxLoggerLevel.TRACE:
         color1 = 'blue';
         break;
-      case 'DEBUG':
+      case NgxLoggerLevel.DEBUG:
         color1 = 'teal';
         break;
-      case 'INFO':
-      case 'LOG':
+      case NgxLoggerLevel.INFO:
+      case NgxLoggerLevel.LOG:
         color1 = 'gray';
         break;
-      case 'WARN':
-      case 'ERROR':
+      case NgxLoggerLevel.WARN:
+      case NgxLoggerLevel.ERROR:
         color1 = 'red';
         break;
-      case 'OFF':
+      case NgxLoggerLevel.OFF:
       default:
         return;
     }
