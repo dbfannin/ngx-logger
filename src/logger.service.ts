@@ -4,6 +4,10 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, Optional } from '@angular/core';
+import * as moment from 'moment';
+
 export class LoggerConfig {
     level: string;
     serverLoggingUrl?: string;
@@ -23,94 +27,97 @@ const Levels = [
 @Injectable()
 export class NGXLogger {
 
-    private _serverLogLevelIdx;
-    private _clientLogLevelIdx;
-    private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//);
+  private _serverLogLevelIdx;
+  private _clientLogLevelIdx;
+  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//);
 
-    constructor(private http: Http, @Optional() private options: LoggerConfig) {
-        this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
-        this._clientLogLevelIdx = this._initLogLevel(this.options.level);
+  constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
+    this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
+    this._clientLogLevelIdx = this._initLogLevel(this.options.level);
+  }
+
+    private _timestamp() {
+        return moment.utc().format();
     }
 
-    trace(...messages: any[]) {
-        this._log('TRACE', true, ...messages);
+    private _initLogLevel(level) {
+        level = level ? Levels.indexOf(level.toUpperCase()) : -1;
+        return level === -1 ? Levels.indexOf('INFO') : level;
+    }
+  private _logOnServer(level: string, message: string) {
+    if (!this.options.serverLoggingUrl) {
+        return;
     }
 
-    private _logOnServer(level: string, messages: any[]) {
-        if (!this.options.serverLoggingUrl) {
-            return;
-        }
-
-        // if the user provides a serverLogLevel and the current level is than that do not log
-        if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) {
-            return;
-        }
-
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-
-        this.http.post(this.options.serverLoggingUrl, {level: level, messages: messages}, options)
-            .map(res => res.json())
-            .catch(error => error)
-            .subscribe(
-                res => null,
-                error => this._log('ERROR', false, 'FAILED TO LOG ON SERVER')
-            );
-
+    // if the user provides a serverLogLevel and the current level is than that do not log
+    if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) {
+        return;
     }
+
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+      this.http.post(this.options.serverLoggingUrl, { level: level, message: message, timestamp: this._timestamp() }, { headers: headers })
+          .catch(error => error)
+          .subscribe(
+              res => null,
+              error => this._log('ERROR', false, 'FAILED TO LOG ON SERVER')
+          );
+
+  }
 
     private _logIE(level: string, ...messages: any[]) {
         if (level === 'WARN') {
-            console.warn(`${moment.utc().format()} [${level}] `, ...messages);
+            console.warn(`${this._timestamp()} [${level}] `, ...messages);
         } else if (level === 'ERROR') {
-            console.error(`${moment.utc().format()} [${level}] `, ...messages);
+            console.error(`${this._timestamp()} [${level}] `, ...messages);
         } else if (level === 'INFO') {
-            console.info(`${moment.utc().format()} [${level}] `, ...messages);
+            console.info(`${this._timestamp()} [${level}] `, ...messages);
         } else {
-            console.log(`${moment.utc().format()} [${level}] `, ...messages);
+            console.log(`${this._timestamp()} [${level}] `, ...messages);
         }
     }
+
 
     private _log(level: string, logOnServer: boolean, ...messages: any[]) {
 
-        // if no message or the log level is less than the environ
-        if (messages.length === 0 || Levels.indexOf(level) < this._clientLogLevelIdx) {
-            return;
-        }
+      // if no message or the log level is less than the environ
+      if (messages.length === 0 || Levels.indexOf(level) < this._clientLogLevelIdx) {
+          return;
+      }
+    if (logOnServer) {
+      this._logOnServer(level, messages);
+    }
 
-        if (logOnServer) {
-            this._logOnServer(level, messages);
-        }
+    // Coloring doesn't work in IE
+    if(this._isIE) {
+      return this._logIE(level, messages);
+    }
 
-        // Coloring doesn't work in IE
-        if (this._isIE) {
-            return this._logIE(level, messages);
-        }
+    let color1;
 
-        let color1;
+    switch (level) {
+      case 'TRACE':
+        color1 = 'blue';
+        break;
+      case 'DEBUG':
+        color1 = 'teal';
+        break;
+      case 'INFO':
+      case 'LOG':
+        color1 = 'gray';
+        break;
+      case 'WARN':
+      case 'ERROR':
+        color1 = 'red';
+        break;
+      case 'OFF':
+      default:
+        return;
+    }
 
-        switch (level) {
-            case 'TRACE':
-                color1 = 'blue';
-                break;
-            case 'DEBUG':
-                color1 = 'teal';
-                break;
-            case 'INFO':
-            case 'LOG':
-                color1 = 'gray';
-                break;
-            case 'WARN':
-            case 'ERROR':
-                color1 = 'red';
-                break;
-            case 'OFF':
-            default:
-                return;
-        }
 
         console.log(`%c${moment.utc().format()} [${level}]`, `color:${color1}`, ...messages);
-    }
+  }
 
     debug(...messages: any[]) {
         this._log('DEBUG', true, ...messages);
@@ -132,8 +139,4 @@ export class NGXLogger {
         this._log('ERROR', true, ...messages);
     }
 
-    private _initLogLevel(level) {
-        level = level ? Levels.indexOf(level.toUpperCase()) : -1;
-        return level === -1 ? Levels.indexOf('INFO') : level;
-    }
 }
