@@ -59,7 +59,7 @@ export class NGXLogger {
     }
 
     // if the user provides a serverLogLevel and the current level is than that do not log
-    if (this._serverLogLevel && level < this._serverLogLevel) {
+    if (level < this._serverLogLevel) {
       return;
     }
 
