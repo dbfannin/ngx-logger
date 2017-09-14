@@ -11,6 +11,7 @@ src/*.d.ts
 # JetBrains
 
 **/.idea/
+.editorconfig
 !**/.idea/runConfigurations/.project
 .project
 .settings

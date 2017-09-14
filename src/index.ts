@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 
-import { LoggerConfig, NGXLogger } from './logger.service';
-import { NGXLoggerMock } from './logger.service.mock';
+import {LoggerConfig, NGXLogger} from './logger.service';
+import {NGXLoggerMock} from './logger.service.mock';
 
-export { NGXLoggerMock } from './logger.service.mock';
-export { NGXLogger, LoggerConfig } from './logger.service';
+export {NGXLoggerMock} from './logger.service.mock';
+export {NGXLogger, LoggerConfig} from './logger.service';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ export class LoggerModule {
     return {
       ngModule: LoggerModule,
       providers: [
-        { provide: LoggerConfig, useValue: config || {} },
+        {provide: LoggerConfig, useValue: config || {}},
         NGXLogger,
         NGXLoggerMock
       ]

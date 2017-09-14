@@ -1,27 +1,25 @@
 import {Injectable, Optional} from '@angular/core';
 import * as moment from 'moment';
-import {Headers, Http, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, Optional } from '@angular/core';
-import * as moment from 'moment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class LoggerConfig {
-    level: string;
-    serverLoggingUrl?: string;
-    serverLogLevel?: string;
+  level: string;
+  serverLoggingUrl?: string;
+  serverLogLevel?: string;
+  enableDarkTheme?: boolean;
 }
 
 const Levels = [
-    'TRACE',
-    'DEBUG',
-    'INFO',
-    'LOG',
-    'WARN',
-    'ERROR',
-    'OFF'
+  'TRACE',
+  'DEBUG',
+  'INFO',
+  'LOG',
+  'WARN',
+  'ERROR',
+  'OFF'
 ];
 
 @Injectable()
@@ -29,68 +27,93 @@ export class NGXLogger {
 
   private _serverLogLevelIdx;
   private _clientLogLevelIdx;
-  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//);
+  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
+    || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
     this._serverLogLevelIdx = this._initLogLevel(this.options.serverLogLevel);
     this._clientLogLevelIdx = this._initLogLevel(this.options.level);
   }
 
-    private _timestamp() {
-        return moment.utc().format();
-    }
+  debug(message, ...additional: any[]) {
+    this._log('DEBUG', true, message, additional);
+  }
 
-    private _initLogLevel(level) {
-        level = level ? Levels.indexOf(level.toUpperCase()) : -1;
-        return level === -1 ? Levels.indexOf('INFO') : level;
-    }
-  private _logOnServer(level: string, message: string) {
+  info(message, ...additional: any[]) {
+    this._log('INFO', true, message, additional);
+  }
+
+  log(message, ...additional: any[]) {
+    this._log('LOG', true, message, additional);
+  }
+
+  warn(message, ...additional: any[]) {
+    this._log('WARN', true, message, additional);
+  }
+
+  error(message, ...additional: any[]) {
+    this._log('ERROR', true, message, additional);
+  }
+
+  private _timestamp() {
+    return moment.utc().format();
+  }
+
+  private _initLogLevel(level) {
+    level = typeof level === 'string' ? Levels.indexOf(level.toUpperCase()) : -1;
+    return level === -1 ? Levels.indexOf('INFO') : level;
+  }
+
+  private _logOnServer(level: string, message, additional: any[]) {
     if (!this.options.serverLoggingUrl) {
-        return;
+      return;
     }
 
     // if the user provides a serverLogLevel and the current level is than that do not log
     if (this._serverLogLevelIdx && Levels.indexOf(level) < this._serverLogLevelIdx) {
-        return;
+      return;
     }
 
-      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-      this.http.post(this.options.serverLoggingUrl, { level: level, message: message, timestamp: this._timestamp() }, { headers: headers })
-          .catch(error => error)
-          .subscribe(
-              res => null,
-              error => this._log('ERROR', false, 'FAILED TO LOG ON SERVER')
-          );
-
+    this.http.post(this.options.serverLoggingUrl, {
+      level: level,
+      message: message,
+      additional: additional,
+      timestamp: this._timestamp()
+    }, {headers})
+      .subscribe(
+        res => null,
+        error => this._log('ERROR', false, 'FAILED TO LOG ON SERVER')
+      );
   }
 
-    private _logIE(level: string, ...messages: any[]) {
-        if (level === 'WARN') {
-            console.warn(`${this._timestamp()} [${level}] `, ...messages);
-        } else if (level === 'ERROR') {
-            console.error(`${this._timestamp()} [${level}] `, ...messages);
-        } else if (level === 'INFO') {
-            console.info(`${this._timestamp()} [${level}] `, ...messages);
-        } else {
-            console.log(`${this._timestamp()} [${level}] `, ...messages);
-        }
+  private _logIE(level: string, message: string, additional: any[]) {
+    if (level === 'WARN') {
+      console.warn(`${this._timestamp()} [${level}] `, message, ...additional);
+    } else if (level === 'ERROR') {
+      console.error(`${this._timestamp()} [${level}] `, message, ...additional);
+    } else if (level === 'INFO') {
+      console.info(`${this._timestamp()} [${level}] `, message, ...additional);
+    } else {
+      console.log(`${this._timestamp()} [${level}] `, message, ...additional);
+    }
+  }
+
+  private _log(level: string, logOnServer: boolean, message, additional: any[] = []) {
+
+    // if no message or the log level is less than the environ
+    if (!message || Levels.indexOf(level) < this._clientLogLevelIdx) {
+      return;
     }
 
-
-    private _log(level: string, logOnServer: boolean, ...messages: any[]) {
-
-      // if no message or the log level is less than the environ
-      if (messages.length === 0 || Levels.indexOf(level) < this._clientLogLevelIdx) {
-          return;
-      }
     if (logOnServer) {
-      this._logOnServer(level, messages);
+      this._logOnServer(level, message, additional);
     }
 
     // Coloring doesn't work in IE
-    if(this._isIE) {
-      return this._logIE(level, messages);
+    if (this._isIE) {
+      return this._logIE(level, message, additional);
     }
 
     let color1;
@@ -115,28 +138,8 @@ export class NGXLogger {
         return;
     }
 
-
-        console.log(`%c${moment.utc().format()} [${level}]`, `color:${color1}`, ...messages);
+    const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
+    console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
   }
-
-    debug(...messages: any[]) {
-        this._log('DEBUG', true, ...messages);
-    }
-
-    info(...messages: any[]) {
-        this._log('INFO', true, ...messages);
-    }
-
-    log(...messages: any[]) {
-        this._log('LOG', true, ...messages);
-    }
-
-    warn(...messages: any[]) {
-        this._log('WARN', true, ...messages);
-    }
-
-    error(...messages: any[]) {
-        this._log('ERROR', true, ...messages);
-    }
 
 }
