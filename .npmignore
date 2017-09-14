@@ -9,6 +9,7 @@ docs/*
 # *.d.ts
 
 # JetBrains
+.editorconfig
 .idea
 .project
 .settings
