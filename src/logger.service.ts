@@ -160,7 +160,7 @@ export class NGXLogger {
     }
 
     const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
-    console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
+    console.log(`%c${this._timestamp()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
   }
 
 }
