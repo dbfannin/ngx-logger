@@ -8,11 +8,6 @@ export class LoggerConfig {
     level: string;
     serverLoggingUrl?: string;
     serverLogLevel?: string;
-
-    /**
-     * @deprecated
-     */
-    enableDarkTheme?: boolean;
 }
 
 const Levels = [
@@ -37,10 +32,8 @@ export class NGXLogger {
         this._clientLogLevelIdx = this._initLogLevel(this.options.level);
     }
 
-    private _initLogLevel(level) {
-        level = level ? level.toUpperCase() : level;
-        level = Levels.indexOf(level);
-        return level === -1 ? Levels.indexOf('INFO') : level;
+    trace(...messages: any[]) {
+        this._log('TRACE', true, ...messages);
     }
 
     private _logOnServer(level: string, messages: any[]) {
@@ -119,27 +112,28 @@ export class NGXLogger {
         console.log(`%c${moment.utc().format()} [${level}]`, `color:${color1}`, ...messages);
     }
 
-    trace(...messages: any[]) {
-        this._log('TRACE', true, messages);
-    }
-
     debug(...messages: any[]) {
-        this._log('DEBUG', true, messages);
+        this._log('DEBUG', true, ...messages);
     }
 
     info(...messages: any[]) {
-        this._log('INFO', true, messages);
+        this._log('INFO', true, ...messages);
     }
 
     log(...messages: any[]) {
-        this._log('LOG', true, messages);
+        this._log('LOG', true, ...messages);
     }
 
     warn(...messages: any[]) {
-        this._log('WARN', true, messages);
+        this._log('WARN', true, ...messages);
     }
 
     error(...messages: any[]) {
-        this._log('ERROR', true, messages);
+        this._log('ERROR', true, ...messages);
+    }
+
+    private _initLogLevel(level) {
+        level = level ? Levels.indexOf(level.toUpperCase()) : -1;
+        return level === -1 ? Levels.indexOf('INFO') : level;
     }
 }
