@@ -127,8 +127,8 @@ export class NGXLogger {
       try {
         message = JSON.stringify(message, null, 2);
       } catch (e) {
-        message = 'circular object in message. ';
         additional = [message, ...additional];
+        message = 'circular object in message. ';
       }
     }
 
