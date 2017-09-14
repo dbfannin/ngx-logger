@@ -34,6 +34,10 @@ export class NGXLogger {
     this._clientLogLevelIdx = this._initLogLevel(this.options.level);
   }
 
+  private _timestamp() {
+    return moment.utc().format();
+  }
+
   private _initLogLevel(level) {
     level = level ? level.toUpperCase() : level;
     level = Levels.indexOf(level);
@@ -48,7 +52,7 @@ export class NGXLogger {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(this.options.serverLoggingUrl, { level: level, message: message }, { headers: headers })
+    this.http.post(this.options.serverLoggingUrl, { level: level, message: message, timestamp: this._timestamp() }, { headers: headers })
       .catch(error => error)
       .subscribe(
       res => null,
@@ -58,7 +62,7 @@ export class NGXLogger {
   }
 
   private _logIE(level: string, message: any) {
-    message = `${moment.utc().format()} [${level}] ${message}`;
+    message = `${this._timestamp()} [${level}] ${message}`;
 
     if (level === 'WARN') {
       console.warn(message);
@@ -116,7 +120,7 @@ export class NGXLogger {
     }
 
     const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
-    console.log(`%c${moment.utc().format()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`);
+    console.log(`%c${this._timestamp()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`);
   }
 
   trace(message: any) {
