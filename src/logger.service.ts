@@ -6,8 +6,8 @@ import 'rxjs/add/operator/catch';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class LoggerConfig {
-  level: NgxLoggerLevel | string;
-  serverLogLevel?: NgxLoggerLevel | string;
+  level: NgxLoggerLevel;
+  serverLogLevel?: NgxLoggerLevel;
   serverLoggingUrl?: string;
   enableDarkTheme?: boolean;
 }
@@ -35,8 +35,8 @@ export class NGXLogger {
     || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
-    this._serverLogLevel = this._initLogLevel(this.options.serverLogLevel);
-    this._clientLogLevel = this._initLogLevel(this.options.level);
+    this._serverLogLevel = this.options.serverLogLevel;
+    this._clientLogLevel = this.options.level;
   }
 
   debug(message, ...additional: any[]) {
@@ -61,15 +61,6 @@ export class NGXLogger {
 
   private _timestamp() {
     return moment.utc().format();
-  }
-
-  private _initLogLevel(level: NgxLoggerLevel | string): NgxLoggerLevel {
-    if (typeof level === 'string') {
-      level = Levels.indexOf(level.toUpperCase());
-      return (level === -1) ? NgxLoggerLevel.INFO : level;
-    } else {
-      return level;
-    }
   }
 
   private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
