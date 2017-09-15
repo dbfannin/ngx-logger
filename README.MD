@@ -5,7 +5,6 @@ NGX Logger is a simple logging module for angular (currently supports angular 4.
 ## Dependencies
  * @angular/common
  * @angular/core
- * @angular/http
  * moment
 
 ## Installation
@@ -15,7 +14,7 @@ npm install --save ngx-logger
 
 Once installed you need to import our main module:
 ```typescript
-import { LoggerModule } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 ```
 
 The only remaining part is to list the imported module in your application module, passing in a config to intialize the logger.
@@ -23,7 +22,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: 'DEBUG'}), ...],
+  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -47,6 +46,7 @@ import { NGXLogger } from 'ngx-logger';
 export class YourComponent {
     constructor(private logger: NGXLogger) {
         this.logger.debug('Your log message goes here');
+        this.logger.debug('Multiple', 'Argument', 'support');
     };
 }
 
