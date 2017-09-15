@@ -22,7 +22,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLoggingUrl: NgxLoggerLevel.ERROR}), ...],
+  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
