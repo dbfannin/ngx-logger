@@ -5,9 +5,8 @@ import {ModuleWithProviders, NgModule} from '@angular/core';
 import {LoggerConfig, NGXLogger} from './logger.service';
 import {NGXLoggerMock} from './logger.service.mock';
 
-export {NGXLoggerMock} from './logger.service.mock';
-export {NGXLogger, LoggerConfig} from './logger.service';
-
+export * from './logger.service.mock';
+export * from './logger.service';
 
 @NgModule({
   imports: [
