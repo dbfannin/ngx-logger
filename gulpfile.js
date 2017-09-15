@@ -64,25 +64,27 @@ gulp.task('ngc', function () {
 gulp.task('rollup', function () {
   return gulp.src(`${buildFolder}/**/*.js`)
   // transform the files here.
-    .pipe(rollup({
-      // any option supported by Rollup can be set here.
-      entry: `${buildFolder}/index.js`,
-      external: [
-        '@angular/core',
-        '@angular/common'
-      ],
-      format: 'es'
-    }))
-    .pipe(gulp.dest(distFolder));
+      .pipe(rollup({
+        // any option supported by Rollup can be set here.
+        entry: `${buildFolder}/index.js`,
+        external: [
+          '@angular/core',
+          '@angular/common',
+          '@angular/common/http',
+          'rxjs/add/operator/map',
+          'rxjs/add/operator/catch',
+          'moment'
+        ],
+        format: 'es'
+      }))
+      .pipe(gulp.dest(distFolder));
 });
 
 /**
- * 6. Copy all the files from /build to /dist, except .js files. We ignore all .js from /build
- *    because with don't need individual modules anymore, just the Flat ES module generated
- *    on step 5.
+ * 6. Copy all the files from /build to /dist.
  */
 gulp.task('copy:build', function () {
-  return gulp.src([`${buildFolder}/**/*`, `!${buildFolder}/**/*.js`])
+  return gulp.src([`${buildFolder}/**/*`])
     .pipe(gulp.dest(distFolder));
 });
 
