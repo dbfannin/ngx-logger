@@ -22,7 +22,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG}), ...],
+  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLoggingUrl: NgxLoggerLevel.ERROR}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -54,9 +54,9 @@ export class YourComponent {
 
 
 ## Config Options
- * serverLogLevel - Only sends logs to the server for the level specified or higher
+ * serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
  * serverLoggingUrl - URL to POST logs
- * level: The log level. The app will only log message for that level or higher (OFF disables the logger)
+ * level: The app will only log message for that level or higher (OFF disables the logger for the client)
  * enableDarkTheme: Sets the default color to white instead of black
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
