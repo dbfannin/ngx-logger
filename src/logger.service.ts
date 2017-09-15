@@ -35,7 +35,7 @@ export class NGXLogger {
     || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
-    this._serverLogLevel = this.options.serverLogLevel;
+    this._serverLogLevel = this.options.serverLogLevel || NgxLoggerLevel.INFO;
     this._clientLogLevel = this.options.level;
   }
 
