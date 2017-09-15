@@ -7,7 +7,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class LoggerConfig {
   level: NgxLoggerLevel;
-  serverLogLevel?: NgxLoggerLevel;
+  serverLogLevel: NgxLoggerLevel;
   serverLoggingUrl?: string;
   enableDarkTheme?: boolean;
 }
@@ -35,7 +35,7 @@ export class NGXLogger {
     || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
-    this._serverLogLevel = this.options.serverLogLevel || NgxLoggerLevel.INFO;
+    this._serverLogLevel = this.options.serverLogLevel;
     this._clientLogLevel = this.options.level;
   }
 
@@ -108,14 +108,18 @@ export class NGXLogger {
   }
 
   private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []) {
-
-    // if no message or the log level is less than the environ
-    if (!message || level < this._clientLogLevel) {
+    if(!message) {
       return;
     }
 
+    // Allow logging on server even if client log level is off
     if (logOnServer) {
       this._logOnServer(level, message, additional);
+    }
+
+    // if no message or the log level is less than the environ
+    if (level < this._clientLogLevel) {
+      return;
     }
 
     if (typeof message === 'object') {
