@@ -85,7 +85,7 @@ export class NGXLogger {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.post(this.options.serverLoggingUrl, {
-      level: level,
+      level: Levels[level],
       message: message,
       additional: additional,
       timestamp: this._timestamp()
