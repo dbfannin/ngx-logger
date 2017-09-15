@@ -6,8 +6,8 @@ import 'rxjs/add/operator/catch';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 export class LoggerConfig {
-  level: NgxLoggerLevel | string;
-  serverLogLevel?: NgxLoggerLevel | string;
+  level: NgxLoggerLevel;
+  serverLogLevel?: NgxLoggerLevel;
   serverLoggingUrl?: string;
   enableDarkTheme?: boolean;
 }
@@ -35,8 +35,8 @@ export class NGXLogger {
     || navigator.userAgent.match(/Edge\//);
 
   constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
-    this._serverLogLevel = this._initLogLevel(this.options.serverLogLevel);
-    this._clientLogLevel = this._initLogLevel(this.options.level);
+    this._serverLogLevel = this.options.serverLogLevel || NgxLoggerLevel.INFO;
+    this._clientLogLevel = this.options.level;
   }
 
   debug(message, ...additional: any[]) {
@@ -63,15 +63,6 @@ export class NGXLogger {
     return moment.utc().format();
   }
 
-  private _initLogLevel(level: NgxLoggerLevel | string): NgxLoggerLevel {
-    if (typeof level === 'string') {
-      level = Levels.indexOf(level.toUpperCase());
-      return (level === -1) ? NgxLoggerLevel.INFO : level;
-    } else {
-      return level;
-    }
-  }
-
   private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
     if (!this.options.serverLoggingUrl) {
       return;
@@ -85,7 +76,7 @@ export class NGXLogger {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
     this.http.post(this.options.serverLoggingUrl, {
-      level: level,
+      level: Levels[level],
       message: message,
       additional: additional,
       timestamp: this._timestamp()
@@ -99,16 +90,16 @@ export class NGXLogger {
   private _logIE(level: NgxLoggerLevel, message: string, additional: any[]) {
     switch (level) {
       case NgxLoggerLevel.WARN:
-        console.warn(`${this._timestamp()} [${level}] `, message, ...additional);
+        console.warn(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
         break;
       case NgxLoggerLevel.ERROR:
-        console.error(`${this._timestamp()} [${level}] `, message, ...additional);
+        console.error(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
-        console.info(`${this._timestamp()} [${level}] `, message, ...additional);
+        console.info(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
         break;
       default:
-        console.log(`${this._timestamp()} [${level}] `, message, ...additional);
+        console.log(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
     }
   }
 
@@ -160,7 +151,7 @@ export class NGXLogger {
     }
 
     const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
-    console.log(`%c${this._timestamp()} [${level}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
+    console.log(`%c${this._timestamp()} [${Levels[level]}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
   }
 
 }
