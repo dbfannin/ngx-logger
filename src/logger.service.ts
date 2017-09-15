@@ -39,6 +39,10 @@ export class NGXLogger {
     this._clientLogLevel = this.options.level;
   }
 
+  trace(message, ...additional: any[]) {
+    this._log(NgxLoggerLevel.TRACE, true, message, additional);
+  }
+
   debug(message, ...additional: any[]) {
     this._log(NgxLoggerLevel.DEBUG, true, message, additional);
   }
