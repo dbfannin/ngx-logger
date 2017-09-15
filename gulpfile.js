@@ -66,10 +66,13 @@ gulp.task('rollup', function () {
   // transform the files here.
     .pipe(rollup({
       // any option supported by Rollup can be set here.
-      entry: `${buildFolder}/index.js`,
+      input: `${buildFolder}/index.js`,
       external: [
         '@angular/core',
-        '@angular/common'
+        '@angular/common',
+        '@angular/common/http',
+        'rxjs/add/operator/map',
+        'rxjs/add/operator/catch',
       ],
       format: 'es'
     }))
