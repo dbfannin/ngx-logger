@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/ngx-logger.svg)](https://www.npmjs.com/package/ngx-logger)
+
 # NGX Logger
 
 NGX Logger is a simple logging module for angular (currently supports angular 4.3+). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
