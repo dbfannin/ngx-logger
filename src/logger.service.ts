@@ -38,7 +38,7 @@ export class NGXLogger {
     this._serverLogLevel = this.options.serverLogLevel;
     this._clientLogLevel = this.options.level;
     this._isIE = isPlatformBrowser(platformId) && !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
-    || navigator.userAgent.match(/Edge\//));
+      || navigator.userAgent.match(/Edge\//));
   }
 
   trace(message, ...additional: any[]) {
@@ -110,7 +110,7 @@ export class NGXLogger {
   }
 
   private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []) {
-    if(!message) {
+    if (!message) {
       return;
     }
 
