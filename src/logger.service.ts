@@ -35,8 +35,14 @@ export class NGXLogger {
   private _isIE: boolean;
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId, @Optional() private options: LoggerConfig) {
-    this._serverLogLevel = this.options ? this.options.serverLogLevel : NgxLoggerLevel.OFF;
-    this._clientLogLevel = this.options ? this.options.level : NgxLoggerLevel.OFF;
+    if (!this.options) {
+      this.options = {
+        level: NgxLoggerLevel.OFF,
+        serverLogLevel: NgxLoggerLevel.OFF
+      };
+    }
+    this._serverLogLevel = this.options.serverLogLevel;
+    this._clientLogLevel = this.options.level;
     this._isIE = isPlatformBrowser(platformId) &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
   }
