@@ -1,9 +1,10 @@
-import {Injectable, Optional} from '@angular/core';
+import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
 import * as moment from 'moment';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {isPlatformBrowser} from '@angular/common';
 
 export class LoggerConfig {
   level: NgxLoggerLevel;
@@ -31,12 +32,13 @@ export class NGXLogger {
 
   private _serverLogLevel: NgxLoggerLevel;
   private _clientLogLevel: NgxLoggerLevel;
-  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
-    || navigator.userAgent.match(/Edge\//);
+  private _isIE: boolean;
 
-  constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId, @Optional() private options: LoggerConfig) {
     this._serverLogLevel = this.options.serverLogLevel;
     this._clientLogLevel = this.options.level;
+    this._isIE = isPlatformBrowser(platformId) && !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
+    || navigator.userAgent.match(/Edge\//));
   }
 
   trace(message, ...additional: any[]) {
