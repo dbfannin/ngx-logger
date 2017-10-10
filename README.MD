@@ -7,7 +7,6 @@ NGX Logger is a simple logging module for angular (currently supports angular 4.
 ## Dependencies
  * @angular/common
  * @angular/core
- * moment
 
 ## Installation
 ```shell
