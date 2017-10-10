@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/dbfannin/ngx-logger"
@@ -19,7 +19,7 @@
   "module": "ngx-logger.js",
   "typings": "ngx-logger.d.ts",
   "dependencies": {
-    "moment": "^2.18.1"
+    "moment": "~2.18.1"
   },
   "peerDependencies": {
     "@angular/core": "^4.3.0",
