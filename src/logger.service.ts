@@ -1,5 +1,4 @@
 import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
-import * as moment from 'moment';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -72,7 +71,7 @@ export class NGXLogger {
   }
 
   private _timestamp() {
-    return moment.utc().format();
+    return new Date().toISOString();
   }
 
   private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
