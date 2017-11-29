@@ -57,7 +57,6 @@ export class YourComponent {
 ## Config Options
  * serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
  * serverLoggingUrl - URL to POST logs
- * enableDarkTheme: Sets the default color to white instead of black
  * level: The app will only log message for that level or higher (OFF disables the logger for the client)
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
