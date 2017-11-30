@@ -7,7 +7,6 @@ NGX Logger is a simple logging module for angular (currently supports angular 4.
 ## Dependencies
  * @angular/common
  * @angular/core
- * moment
 
 ## Installation
 ```shell
@@ -59,7 +58,6 @@ export class YourComponent {
  * serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
  * serverLoggingUrl - URL to POST logs
  * level: The app will only log message for that level or higher (OFF disables the logger for the client)
- * enableDarkTheme: Sets the default color to white instead of black
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
 ```

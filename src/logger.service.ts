@@ -1,15 +1,14 @@
-import {Injectable, Optional} from '@angular/core';
-import * as moment from 'moment';
+import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {isPlatformBrowser} from '@angular/common';
 
 export class LoggerConfig {
   level: NgxLoggerLevel;
   serverLogLevel: NgxLoggerLevel;
   serverLoggingUrl?: string;
-  enableDarkTheme?: boolean;
 }
 
 export enum NgxLoggerLevel {
@@ -31,12 +30,19 @@ export class NGXLogger {
 
   private _serverLogLevel: NgxLoggerLevel;
   private _clientLogLevel: NgxLoggerLevel;
-  private _isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//)
-    || navigator.userAgent.match(/Edge\//);
+  private _isIE: boolean;
 
-  constructor(private http: HttpClient, @Optional() private options: LoggerConfig) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId, @Optional() private options: LoggerConfig) {
+    if (!this.options) {
+      this.options = {
+        level: NgxLoggerLevel.OFF,
+        serverLogLevel: NgxLoggerLevel.OFF
+      };
+    }
     this._serverLogLevel = this.options.serverLogLevel;
     this._clientLogLevel = this.options.level;
+    this._isIE = isPlatformBrowser(platformId) &&
+      !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
   }
 
   trace(message, ...additional: any[]) {
@@ -64,7 +70,7 @@ export class NGXLogger {
   }
 
   private _timestamp() {
-    return moment.utc().format();
+    return new Date().toISOString();
   }
 
   private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
@@ -108,7 +114,7 @@ export class NGXLogger {
   }
 
   private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []) {
-    if(!message) {
+    if (!message) {
       return;
     }
 
@@ -136,30 +142,27 @@ export class NGXLogger {
       return this._logIE(level, message, additional);
     }
 
-    let color1;
+    const color = this._getColor(level);
 
+    console.log(`%c${this._timestamp()} [${Levels[level]}]`, `color:${color}`, message, ...additional);
+  }
+
+  private _getColor(level: NgxLoggerLevel) {
     switch (level) {
       case NgxLoggerLevel.TRACE:
-        color1 = 'blue';
-        break;
+        return 'blue';
       case NgxLoggerLevel.DEBUG:
-        color1 = 'teal';
-        break;
+        return 'teal';
       case NgxLoggerLevel.INFO:
       case NgxLoggerLevel.LOG:
-        color1 = 'gray';
-        break;
+        return 'gray';
       case NgxLoggerLevel.WARN:
       case NgxLoggerLevel.ERROR:
-        color1 = 'red';
-        break;
+        return 'red';
       case NgxLoggerLevel.OFF:
       default:
         return;
     }
-
-    const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
-    console.log(`%c${this._timestamp()} [${Levels[level]}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
   }
 
 }
