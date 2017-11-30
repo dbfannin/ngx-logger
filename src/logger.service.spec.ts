@@ -2,6 +2,7 @@
 
 import { TestBed, async, inject } from '@angular/core/testing';
 import { NGXLogger } from './logger.service';
+import {} from 'jasmine';
 
 describe('NGXLogger', () => {
   beforeEach(() => {
