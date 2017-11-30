@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "0.2.9",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dbfannin/ngx-logger"

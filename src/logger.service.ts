@@ -9,7 +9,6 @@ export class LoggerConfig {
   level: NgxLoggerLevel;
   serverLogLevel: NgxLoggerLevel;
   serverLoggingUrl?: string;
-  enableDarkTheme?: boolean;
 }
 
 export enum NgxLoggerLevel {
@@ -143,30 +142,27 @@ export class NGXLogger {
       return this._logIE(level, message, additional);
     }
 
-    let color1;
+    const color = this._getColor(level);
 
+    console.log(`%c${this._timestamp()} [${Levels[level]}]`, `color:${color}`, message, ...additional);
+  }
+
+  private _getColor(level: NgxLoggerLevel) {
     switch (level) {
       case NgxLoggerLevel.TRACE:
-        color1 = 'blue';
-        break;
+        return 'blue';
       case NgxLoggerLevel.DEBUG:
-        color1 = 'teal';
-        break;
+        return 'teal';
       case NgxLoggerLevel.INFO:
       case NgxLoggerLevel.LOG:
-        color1 = 'gray';
-        break;
+        return 'gray';
       case NgxLoggerLevel.WARN:
       case NgxLoggerLevel.ERROR:
-        color1 = 'red';
-        break;
+        return 'red';
       case NgxLoggerLevel.OFF:
       default:
         return;
     }
-
-    const defaultColor = this.options.enableDarkTheme ? 'white' : 'black';
-    console.log(`%c${this._timestamp()} [${Levels[level]}] %c${message}`, `color:${color1}`, `color:${defaultColor}`, ...additional);
   }
 
 }
