@@ -21,9 +21,9 @@
   "dependencies": {
   },
   "peerDependencies": {
-    "@angular/core": "^4.3.0",
-    "@angular/common": "^4.3.0",
-    "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+    "@angular/core": "^5.0.3",
+    "@angular/common": "^5.0.3",
+    "rxjs": "^5.5.2",
+    "zone.js": "^0.8.18"
   }
 }

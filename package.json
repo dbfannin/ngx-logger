@@ -27,18 +27,17 @@
     "url": "https://github.com/dbfannin/ngx-logger/issues"
   },
   "devDependencies": {
-    "@angular/common": "^4.3.0",
-    "@angular/compiler": "^4.3.0",
-    "@angular/compiler-cli": "^4.3.0",
-    "@angular/core": "^4.3.0",
-    "@angular/http": "^4.3.0",
-    "@angular/platform-browser": "^4.3.0",
-    "@angular/platform-browser-dynamic": "^4.3.0",
-    "@compodoc/compodoc": "^1.0.0-beta.7",
+    "@angular/common": "^5.0.3",
+    "@angular/compiler": "^5.0.3",
+    "@angular/compiler-cli": "^5.0.3",
+    "@angular/core": "^5.0.3",
+    "@angular/platform-browser": "^5.0.3",
+    "@angular/platform-browser-dynamic": "^5.0.3",
+    "@compodoc/compodoc": "^1.0.4",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
-    "codelyzer": "~2.0.0",
-    "core-js": "^2.4.1",
+    "codelyzer": "^4.0.1",
+    "core-js": "^2.5.1",
     "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-rollup": "^2.11.0",
@@ -54,11 +53,11 @@
     "protractor": "~5.1.0",
     "rollup": "^0.41.6",
     "run-sequence": "^1.2.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.2",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0",
-    "zone.js": "^0.8.4"
+    "typescript": "^2.6.2",
+    "zone.js": "^0.8.18"
   },
   "engines": {
     "node": ">=6.0.0"
