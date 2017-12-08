@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule, Provider} from '@angular/core';
 
 import {LoggerConfig, NGXLogger} from './logger.service';
 import {NGXLoggerMock} from './logger.service.mock';
@@ -15,14 +15,20 @@ export * from './logger.service';
   ]
 })
 export class LoggerModule {
-  static forRoot(config: LoggerConfig | null | undefined): ModuleWithProviders {
+  static forRoot(config?: LoggerConfig): ModuleWithProviders {
+
+    const providers: Provider[] = [
+      NGXLogger,
+      NGXLoggerMock
+    ];
+
+    if (config) {
+      providers.push({provide: LoggerConfig, useValue: config});
+    }
+
     return {
       ngModule: LoggerModule,
-      providers: [
-        {provide: LoggerConfig, useValue: config || {}},
-        NGXLogger,
-        NGXLoggerMock
-      ]
+      providers: providers
     };
   }
 }
