@@ -19,6 +19,9 @@
     "name": "David Fannin",
     "email": "dbfannin@gmail.com"
   },
+  "contributors": [
+    "th3n3wguy <tarleton.shane@gmail.com>"
+  ],
   "keywords": [
     "angular"
   ],
@@ -54,8 +57,8 @@
     "rollup": "^0.41.6",
     "run-sequence": "^1.2.2",
     "rxjs": "^5.5.2",
-    "ts-node": "~2.0.0",
-    "tslint": "~4.5.0",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.9.1",
     "typescript": "^2.6.2",
     "zone.js": "^0.8.18"
   },

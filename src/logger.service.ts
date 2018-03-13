@@ -1,8 +1,6 @@
 import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
 export class LoggerConfig {
@@ -27,77 +25,101 @@ const Levels = [
 
 @Injectable()
 export class NGXLogger {
-
   private _serverLogLevel: NgxLoggerLevel;
   private _clientLogLevel: NgxLoggerLevel;
   private _isIE: boolean;
 
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId, @Optional() private options: LoggerConfig) {
-    if (!this.options) {
-      this.options = {
-        level: NgxLoggerLevel.OFF,
-        serverLogLevel: NgxLoggerLevel.OFF
-      };
-    }
+  public constructor(
+    private readonly http: HttpClient,
+    @Inject(PLATFORM_ID) private readonly platformId,
+    @Optional() private readonly options?: LoggerConfig
+  ) {
+    this.options = this.options ? this.options : {
+      level: NgxLoggerLevel.OFF,
+      serverLogLevel: NgxLoggerLevel.OFF
+    };
     this._serverLogLevel = this.options.serverLogLevel;
     this._clientLogLevel = this.options.level;
-    this._isIE = isPlatformBrowser(platformId) &&
-      !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
+    this._isIE = isPlatformBrowser(this.platformId) && !!(navigator.userAgent.indexOf('MSIE') !== -1
+      || navigator.userAgent.match(/Trident\//)
+      || navigator.userAgent.match(/Edge\//));
   }
 
-  trace(message, ...additional: any[]) {
+  public trace(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.TRACE, true, message, additional);
   }
 
-  debug(message, ...additional: any[]) {
+  public debug(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.DEBUG, true, message, additional);
   }
 
-  info(message, ...additional: any[]) {
+  public info(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.INFO, true, message, additional);
   }
 
-  log(message, ...additional: any[]) {
+  public log(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.LOG, true, message, additional);
   }
 
-  warn(message, ...additional: any[]) {
+  public warn(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.WARN, true, message, additional);
   }
 
-  error(message, ...additional: any[]) {
+  public error(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.ERROR, true, message, additional);
   }
 
-  private _timestamp() {
-    return new Date().toISOString();
+  private _timestamp(): string {
+    return new Date()
+      .toISOString();
   }
 
-  private _logOnServer(level: NgxLoggerLevel, message, additional: any[]) {
-    if (!this.options.serverLoggingUrl) {
+  private _logOnServer(level: NgxLoggerLevel, message, additional: any[] = []): void {
+    // If the loggingUrl is not set or if the user provides a serverLogLevel and the current level is than that, do not log.
+    if (!this.options.serverLoggingUrl || level < this._serverLogLevel) {
       return;
     }
 
-    // if the user provides a serverLogLevel and the current level is than that do not log
-    if (level < this._serverLogLevel) {
-      return;
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json');
+
+    let messageToLog = '';
+
+    try {
+      messageToLog = JSON.stringify(message);
+    } catch (e) {
+      messageToLog = 'The provided "message" value could not be parsed with JSON.stringify().';
     }
 
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    this.http.post(this.options.serverLoggingUrl, {
-      level: Levels[level],
-      message: message,
-      additional: additional,
-      timestamp: this._timestamp()
-    }, {headers})
+    const additionalToLog: Array<string | null | undefined> = additional === null || additional === undefined ? []
+      : additional.map((val: any, idx: number) => {
+        try {
+          return val === null || val === undefined ? val
+            : typeof val === 'string' ? val
+              : JSON.stringify(val, null, 2);
+        } catch (e) {
+          return `The additional[${idx}] value could not be parsed using JSON.stringify().`;
+        }
+      });
+
+    this.http.post(this.options.serverLoggingUrl,
+      {
+        level: Levels[level],
+        message: messageToLog,
+        additional: additionalToLog,
+        timestamp: this._timestamp()
+      },
+      {
+        headers
+      })
       .subscribe(
-        res => null,
-        error => this._log(NgxLoggerLevel.ERROR, false, 'FAILED TO LOG ON SERVER')
+        (res: any) => this._log(NgxLoggerLevel.INFO, false, 'Server logging successful', [res]),
+        (error: HttpErrorResponse) => this._log(NgxLoggerLevel.ERROR, false, 'FAILED TO LOG ON SERVER', [error])
       );
   }
 
-  private _logIE(level: NgxLoggerLevel, message: string, additional: any[]) {
+  private _logIE(level: NgxLoggerLevel, message: string, additional: any[] = []): void {
     switch (level) {
       case NgxLoggerLevel.WARN:
         console.warn(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
@@ -113,7 +135,7 @@ export class NGXLogger {
     }
   }
 
-  private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []) {
+  private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []): void {
     if (!message) {
       return;
     }
@@ -128,13 +150,12 @@ export class NGXLogger {
       return;
     }
 
-    if (typeof message === 'object') {
-      try {
-        message = JSON.stringify(message, null, 2);
-      } catch (e) {
-        additional = [message, ...additional];
-        message = 'circular object in message. ';
-      }
+    try {
+      message = typeof message === 'string' ? message
+        : JSON.stringify(message, null, 2);
+    } catch (e) {
+      additional = [message, ...additional];
+      message = 'The provided "message" value could not be parsed with JSON.stringify().';
     }
 
     // Coloring doesn't work in IE
@@ -147,7 +168,7 @@ export class NGXLogger {
     console.log(`%c${this._timestamp()} [${Levels[level]}]`, `color:${color}`, message, ...additional);
   }
 
-  private _getColor(level: NgxLoggerLevel) {
+  private _getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
     switch (level) {
       case NgxLoggerLevel.TRACE:
         return 'blue';
