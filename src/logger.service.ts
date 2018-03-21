@@ -136,6 +136,17 @@ export class NGXLogger {
       return;
     }
 
+    try {
+      if (message instanceof Error) {
+        message = message.stack;
+      } else if (typeof message !== 'string') {
+        message = JSON.stringify(message, null, 2);
+      }
+    } catch (e) {
+      additional = [message, ...additional];
+      message = 'The provided "message" value could not be parsed with JSON.stringify().';
+    }
+
     // Allow logging on server even if client log level is off
     if (logOnServer) {
       this._logOnServer(level, message, additional);
@@ -144,14 +155,6 @@ export class NGXLogger {
     // if no message or the log level is less than the environ
     if (level < this._clientLogLevel) {
       return;
-    }
-
-    try {
-      message = typeof message === 'string' ? message
-        : JSON.stringify(message, null, 2);
-    } catch (e) {
-      additional = [message, ...additional];
-      message = 'The provided "message" value could not be parsed with JSON.stringify().';
     }
 
     // Coloring doesn't work in IE
