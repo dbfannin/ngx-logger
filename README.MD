@@ -4,6 +4,27 @@
 
 NGX Logger is a simple logging module for angular (currently supports angular 5.*). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
+
+## Latest Updates to NGX Logger
+
+ * Updating your config after importing the module has never been easier...
+ ```typescript
+    this.logger.updateConfig({level: NgxLoggerLevel.DEBUG});
+```
+ * You can now create a standalone logger with it's own config! 
+ ```typescript
+  export class MyService {
+    private logger: NGXLogger;
+    constructor(customLogger: CustomNGXLoggerService) {
+      this.logger = customLogger.create({level: NgxLoggerLevel.ERROR});
+    
+      this.logger.error('BLAHBLAHBLAH');
+    }
+  }
+    
+```
+ 
+ 
 ## Dependencies
  * @angular/common
  * @angular/core

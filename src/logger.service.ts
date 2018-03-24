@@ -3,10 +3,20 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
 import {NGXLoggerHttpService} from './http.service';
-import {Levels} from './types/logger-level.map';
 import {NgxLoggerLevel} from './types/logger-lever.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
+
+export const Levels = [
+  'TRACE',
+  'DEBUG',
+  'INFO',
+  'LOG',
+  'WARN',
+  'ERROR',
+  'OFF'
+];
+
 
 @Injectable()
 export class NGXLogger {

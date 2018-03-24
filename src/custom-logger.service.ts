@@ -14,7 +14,7 @@ export class CustomNGXLoggerService {
   constructor(private readonly httpService: NGXLoggerHttpService, @Inject(PLATFORM_ID) private readonly platformId) {
   }
 
-  getLogger(config: LoggerConfig, httpService?: NGXLoggerHttpService): NGXLogger {
+  create(config: LoggerConfig, httpService?: NGXLoggerHttpService): NGXLogger {
     // you can inject your own httpService or use the default,
     return new NGXLogger(httpService || this.httpService, config, this.platformId);
   }

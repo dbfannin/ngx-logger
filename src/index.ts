@@ -17,7 +17,6 @@ import {NGXLoggerHttpService} from './http.service';
 export * from './http.service';
 
 export * from './types/logger-lever.enum';
-export * from './types/logger-level.map';
 
 @NgModule({
   imports: [
