@@ -1,141 +1,72 @@
-import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
-
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
-export class LoggerConfig {
-  level: NgxLoggerLevel;
-  serverLogLevel: NgxLoggerLevel;
-  serverLoggingUrl?: string;
-}
-
-export enum NgxLoggerLevel {
-  TRACE = 0, DEBUG, INFO, LOG, WARN, ERROR, OFF
-}
-
-const Levels = [
-  'TRACE',
-  'DEBUG',
-  'INFO',
-  'LOG',
-  'WARN',
-  'ERROR',
-  'OFF'
-];
+import {NGXLoggerHttpService} from './http.service';
+import {Levels} from './types/logger-level.map';
+import {NgxLoggerLevel} from './types/logger-lever.enum';
+import {LoggerConfig} from './logger.config';
+import {NGXLoggerConfigEngine} from './config.engine';
 
 @Injectable()
 export class NGXLogger {
-  private _serverLogLevel: NgxLoggerLevel;
-  private _clientLogLevel: NgxLoggerLevel;
   private _isIE: boolean;
+  private configService: NGXLoggerConfigEngine;
 
-  constructor(private readonly http: HttpClient, @Inject(PLATFORM_ID) private readonly platformId, @Optional() private readonly options?: LoggerConfig) {
-    this.options = this.options ? this.options : {
-      level: NgxLoggerLevel.OFF,
-      serverLogLevel: NgxLoggerLevel.OFF
-    };
-    this._serverLogLevel = this.options.serverLogLevel;
-    this._clientLogLevel = this.options.level;
+
+  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
     this._isIE = isPlatformBrowser(platformId) &&
-      !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
+        !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
+
+    // each instance of the logger should have their own config engine
+    this.configService = new NGXLoggerConfigEngine(loggerConfig);
   }
 
   public trace(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.TRACE, true, message, additional);
+    this._log(NgxLoggerLevel.TRACE, message, additional);
   }
 
   public debug(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.DEBUG, true, message, additional);
+    this._log(NgxLoggerLevel.DEBUG, message, additional);
   }
 
   public info(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.INFO, true, message, additional);
+    this._log(NgxLoggerLevel.INFO, message, additional);
   }
 
   public log(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.LOG, true, message, additional);
+    this._log(NgxLoggerLevel.LOG, message, additional);
   }
 
   public warn(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.WARN, true, message, additional);
+    this._log(NgxLoggerLevel.WARN, message, additional);
   }
 
   public error(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.ERROR, true, message, additional);
+    this._log(NgxLoggerLevel.ERROR, message, additional);
   }
 
-  private _timestamp(): string {
-    return new Date().toISOString();
+  public updateConfig(config: LoggerConfig) {
+    this.configService.updateConfig(config);
   }
 
-  private _logOnServer(level: NgxLoggerLevel, message, additional: any[] = []): void {
-    // If the loggingUrl is not set or if the user provides a serverLogLevel and the current level is than that, do not log.
-    if (!this.options.serverLoggingUrl || level < this._serverLogLevel) {
-      return;
-    }
-
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    let messageToLog = '';
-
-    try {
-      messageToLog = JSON.stringify(message);
-    } catch (e) {
-      messageToLog = 'The provided "message" value could not be parsed with JSON.stringify().';
-    }
-
-    let additionalToLog: Array<string | null | undefined> = [];
-
-    if (additional === null || additional === undefined) {
-      additionalToLog = [];
-    } else {
-      additionalToLog = additional.map((val: any, idx: number) => {
-        try {
-          return val === null || val === undefined || typeof val === 'string' ? val
-            : JSON.stringify(val, null, 2);
-        } catch (e) {
-          return `The additional[${idx}] value could not be parsed using JSON.stringify().`;
-        }
-      });
-    }
-
-    this.http.post(this.options.serverLoggingUrl,
-      {
-        level: Levels[level],
-        message: messageToLog,
-        additional: additionalToLog,
-        timestamp: this._timestamp()
-      },
-      {
-        headers
-      })
-      .subscribe(
-        (res: any) => this._log(NgxLoggerLevel.TRACE, false, 'Server logging successful', [res]),
-        (error: HttpErrorResponse) => this._log(NgxLoggerLevel.ERROR, false, 'FAILED TO LOG ON SERVER', [error])
-      );
-  }
-
-  private _logIE(level: NgxLoggerLevel, message: string, additional: any[] = []): void {
+  private _logIE(level: NgxLoggerLevel, message: string, additional: any[] = [], timestamp: string): void {
     switch (level) {
       case NgxLoggerLevel.WARN:
-        console.warn(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
+        console.warn(`${timestamp} [${Levels[level]}] `, message, ...additional);
         break;
       case NgxLoggerLevel.ERROR:
-        console.error(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
+        console.error(`${timestamp} [${Levels[level]}] `, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
-        console.info(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
+        console.info(`${timestamp} [${Levels[level]}] `, message, ...additional);
         break;
       default:
-        console.log(`${this._timestamp()} [${Levels[level]}] `, message, ...additional);
+        console.log(`${timestamp} [${Levels[level]}] `, message, ...additional);
     }
   }
 
-  private _log(level: NgxLoggerLevel, logOnServer: boolean, message, additional: any[] = []): void {
-    if (!message) {
-      return;
-    }
-
+  private _prepareMessage(message) {
     try {
       if (message instanceof Error) {
         message = message.stack;
@@ -143,28 +74,74 @@ export class NGXLogger {
         message = JSON.stringify(message, null, 2);
       }
     } catch (e) {
-      additional = [message, ...additional];
+      // additional = [message, ...additional];
       message = 'The provided "message" value could not be parsed with JSON.stringify().';
     }
 
-    // Allow logging on server even if client log level is off
-    if (logOnServer) {
-      this._logOnServer(level, message, additional);
+    return message;
+  }
+
+  private _prepareAdditionalParameters(additional: any[]) {
+    if (additional === null || additional === undefined) {
+      return [];
     }
 
+    const additionalParams: any[] = [];
+
+    for (let i = 0; i < additional.length; i++) {
+      try {
+        if (typeof additional[i] === 'object') {
+          additional[i] = JSON.stringify(additional[i], null, 2);
+        }
+
+        additionalParams.push(additional[i]);
+      } catch (e) {
+        additionalParams.push(`The additional[${i}] value could not be parsed using JSON.stringify().`);
+      }
+    }
+
+    return additionalParams;
+  }
+
+  private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
+    if (!message) {
+      return;
+    }
+
+    const logLevelString = Levels[level];
+
+    message = this._prepareMessage(message);
+
+    additional = this._prepareAdditionalParameters(additional);
+
+    const timestamp = new Date().toISOString();
+    const config = this.configService.getConfig();
+
+    if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
+      // Allow logging on server even if client log level is off
+      this.httpService.logOnServer(config.serverLoggingUrl, message, additional, timestamp, logLevelString).subscribe((res: any) => {
+            // I don't think we should do anything on success
+          },
+          (error: HttpErrorResponse) => {
+            this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
+          }
+      );
+    }
+
+
     // if no message or the log level is less than the environ
-    if (level < this._clientLogLevel) {
+    if (level < config.level) {
       return;
     }
 
     // Coloring doesn't work in IE
     if (this._isIE) {
-      return this._logIE(level, message, additional);
+      return this._logIE(level, message, additional, timestamp);
     }
 
     const color = this._getColor(level);
 
-    console.log(`%c${this._timestamp()} [${Levels[level]}]`, `color:${color}`, message, ...additional);
+    console.log(`%c${timestamp} [${logLevelString}]`, `color:${color}`, message, ...additional);
   }
 
   private _getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
