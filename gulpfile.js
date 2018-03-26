@@ -167,14 +167,22 @@ gulp.task('copy:readme', function () {
 });
 
 /**
- * 10. Delete /.tmp folder
+ * 10. Copy LICENSE file from / to /dist
+ */
+gulp.task('copy:readme', function () {
+  return gulp.src([path.join(rootFolder, 'LICENSE')])
+      .pipe(gulp.dest(distFolder));
+});
+
+/**
+ * 11. Delete /.tmp folder
  */
 gulp.task('clean:tmp', function () {
   return deleteFolder(tmpFolder);
 });
 
 /**
- * 11. Delete /build folder
+ * 12. Delete /build folder
  */
 gulp.task('clean:build', function () {
   return deleteFolder(buildFolder);
