@@ -60,7 +60,11 @@ export class NGXLogger {
     this.configService.updateConfig(config);
   }
 
-  private _logIE(level: NgxLoggerLevel, message: string, additional: any[] = [], timestamp: string): void {
+  private _logIE(level: NgxLoggerLevel, message: string, additional: any[], timestamp: string): void {
+
+    // make sure additional isn't null or undefined so that ...additional doesn't error
+    additional = additional || [];
+
     switch (level) {
       case NgxLoggerLevel.WARN:
         console.warn(`${timestamp} [${Levels[level]}] `, message, ...additional);
@@ -93,7 +97,7 @@ export class NGXLogger {
 
   private _prepareAdditionalParameters(additional: any[]) {
     if (additional === null || additional === undefined) {
-      return [];
+      return null;
     }
 
     return additional.map((next, idx) => {
@@ -144,7 +148,7 @@ export class NGXLogger {
 
     const color = this._getColor(level);
 
-    console.log(`%c${timestamp} [${logLevelString}]`, `color:${color}`, message, ...additional);
+    console.log(`%c${timestamp} [${logLevelString}]`, `color:${color}`, message, ...(additional || []));
   }
 
   private _getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {

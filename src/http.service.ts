@@ -9,7 +9,7 @@ export class NGXLoggerHttpService {
 
   }
 
-  logOnServer(url: string, message: string, additional: any[] = [], timestamp: string, logLevel: string): Observable<any> {
+  logOnServer(url: string, message: string, additional: any[], timestamp: string, logLevel: string): Observable<any> {
     const body = {
       level: logLevel,
       message: message,
