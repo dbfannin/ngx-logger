@@ -96,21 +96,14 @@ export class NGXLogger {
       return [];
     }
 
-    const additionalParams: any[] = [];
-
-    for (let i = 0; i < additional.length; i++) {
+    return additional.map((next, idx) => {
       try {
-        if (typeof additional[i] === 'object') {
-          additional[i] = JSON.stringify(additional[i], null, 2);
-        }
-
-        additionalParams.push(additional[i]);
-      } catch (e) {
-        additionalParams.push(`The additional[${i}] value could not be parsed using JSON.stringify().`);
+        return typeof next === 'object' ? JSON.stringify(next, null, 2) : next;
       }
-    }
-
-    return additionalParams;
+      catch (e) {
+        return `The additional[${idx}] value could not be parsed using JSON.stringify().`
+      }
+    });
   }
 
   private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
