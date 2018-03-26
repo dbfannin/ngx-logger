@@ -90,3 +90,24 @@ If serverLogginUrl exists, NGX Logger will attempt to POST that log to the serve
 
 Payload Example
 ```{level: 'DEBUG', message: 'Your log message goes here'}```
+
+
+## Testing your App when using NGXLogger
+If you inject the of the NGX Logger services into your application. you will need to provide it in your Testing Module.
+All services have mocked classes that can be used for testing
+
+* NGXLoggerHttpService: NGXLoggerHttpServiceMock
+* CustomNGXLoggerService: CustomNGXLoggerServiceMock
+* NGXLogger: NGXLoggerMock
+
+
+To provide them in your Testing Module
+```typescript
+     TestBed.configureTestingModule({
+       providers: [
+         {provide: NGXLogger, useCLass: NGXLoggerMock},
+         ...
+       ],
+       ...
+     });
+```
