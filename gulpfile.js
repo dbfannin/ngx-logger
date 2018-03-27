@@ -154,7 +154,7 @@ gulp.task('copy:build', function () {
  * 8. Copy package.json from /src to /dist
  */
 gulp.task('copy:manifest', function () {
-  return gulp.src([`${srcFolder}/package.json`])
+  return gulp.src([path.join(srcFolder,'package.json')])
     .pipe(gulp.dest(distFolder));
 });
 
@@ -169,7 +169,7 @@ gulp.task('copy:readme', function () {
 /**
  * 10. Copy LICENSE file from / to /dist
  */
-gulp.task('copy:readme', function () {
+gulp.task('copy:license', function () {
   return gulp.src([path.join(rootFolder, 'LICENSE')])
       .pipe(gulp.dest(distFolder));
 });
@@ -198,8 +198,9 @@ gulp.task('compile', function () {
     'rollup:umd',
     'copy:build',
     'copy:manifest',
-      'copy:readme',
-      'clean:build',
+    'copy:readme',
+    'copy:license',
+    'clean:build',
     'clean:tmp',
     function (err) {
       if (err) {
