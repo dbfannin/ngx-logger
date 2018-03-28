@@ -7,8 +7,17 @@
   },
   "author": {
     "name": "David Fannin",
-    "email": "dbfannin@gmail.com"
+    "email": "dbfannin.npm@gmail.com"
   },
+  "contributors": [
+    "danielsogl",
+    "IsNull",
+    "jensengar",
+    "leo6104",
+    "sam-lex",
+    "slindenberg",
+    "th3n3wguy <tarleton.shane@gmail.com>"
+  ],
   "keywords": [
     "angular"
   ],

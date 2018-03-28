@@ -3,8 +3,6 @@ node_modules/*
 src/node_modules/*
 npm-debug.log
 
-package-lock.json
-
 # TypeScript
 src/**/*.js
 src/**/*.map
@@ -39,3 +37,7 @@ Desktop.ini
 # Build files
 dist/
 tmp/
+
+
+package-lock.json
+init-test-bed.spec.js
