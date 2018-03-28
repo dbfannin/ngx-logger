@@ -2,11 +2,23 @@ import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 
-import {LoggerConfig, NGXLogger} from './logger.service';
-import {NGXLoggerMock} from './logger.service.mock';
-
+import {NGXLogger} from './logger.service';
 export * from './logger.service.mock';
 export * from './logger.service';
+
+import {LoggerConfig} from './logger.config';
+export * from './logger.config';
+
+import {CustomNGXLoggerService} from './custom-logger.service';
+export * from './custom-logger.service';
+export * from './custom-logger.service.mock';
+
+
+import {NGXLoggerHttpService} from './http.service';
+export * from './http.service';
+export * from './http.service.mock';
+
+export * from './types/logger-lever.enum';
 
 @NgModule({
   imports: [
@@ -21,7 +33,8 @@ export class LoggerModule {
       providers: [
         {provide: LoggerConfig, useValue: config || {}},
         NGXLogger,
-        NGXLoggerMock
+        NGXLoggerHttpService,
+        CustomNGXLoggerService
       ]
     };
   }
@@ -30,7 +43,8 @@ export class LoggerModule {
       ngModule: LoggerModule,
       providers: [
         NGXLogger,
-        NGXLoggerMock
+        NGXLoggerHttpService,
+        CustomNGXLoggerService
       ]
     };
   }
