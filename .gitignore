@@ -3,12 +3,14 @@ node_modules/*
 src/node_modules/*
 npm-debug.log
 
+package-lock.json
+
 # TypeScript
-src/*.js
-src/*.map
-src/*.d.ts
-src/*metadata.json
-src/*summary.json
+src/**/*.js
+src/**/*.map
+src/**/*.d.ts
+src/**/*metadata.json
+src/**/*summary.json
 
 # JetBrains
 

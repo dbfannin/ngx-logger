@@ -54,6 +54,8 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-typescript": "^3.0.12",
+    "karma-typescript-es6-transform": "^1.0.4",
     "node-sass": "^4.5.2",
     "node-sass-tilde-importer": "^1.0.0",
     "node-watch": "^0.5.2",
