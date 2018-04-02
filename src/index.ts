@@ -13,7 +13,6 @@ import {CustomNGXLoggerService} from './custom-logger.service';
 export * from './custom-logger.service';
 export * from './custom-logger.service.mock';
 
-
 import {NGXLoggerHttpService} from './http.service';
 export * from './http.service';
 export * from './http.service.mock';
