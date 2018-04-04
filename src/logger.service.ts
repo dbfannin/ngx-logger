@@ -102,7 +102,12 @@ export class NGXLogger {
 
     return additional.map((next, idx) => {
       try {
-        return typeof next === 'object' ? JSON.stringify(next, null, 2) : next;
+        // We just want to make sure the JSON can be parsed, we do not want to actually change the type
+        if (typeof next === 'object') {
+          JSON.stringify(next)
+        }
+
+        return next;
       }
       catch (e) {
         return `The additional[${idx}] value could not be parsed using JSON.stringify().`
@@ -119,14 +124,15 @@ export class NGXLogger {
 
     message = this._prepareMessage(message);
 
-    additional = this._prepareAdditionalParameters(additional);
+    // only use validated parameters for HTTP requests
+    const validatedAdditionalParameters = this._prepareAdditionalParameters(additional);
 
     const timestamp = new Date().toISOString();
     const config = this.configService.getConfig();
 
     if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
       // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, message, additional, timestamp, logLevelString).subscribe((res: any) => {
+      this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, timestamp, logLevelString).subscribe((res: any) => {
             // I don't think we should do anything on success
           },
           (error: HttpErrorResponse) => {
