@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import {HttpMetaDataInterface} from './http-meta-data.interface';
 
 
 @Injectable()
@@ -9,12 +10,14 @@ export class NGXLoggerHttpService {
 
   }
 
-  logOnServer(url: string, message: string, additional: any[], timestamp: string, logLevel: string): Observable<any> {
+  logOnServer(url: string, message: string, additional: any[], metaData: HttpMetaDataInterface): Observable<any> {
     const body = {
-      level: logLevel,
       message: message,
       additional: additional,
-      timestamp: timestamp
+      level: metaData.level,
+      timestamp: metaData.timestamp,
+      fileName: metaData.fileName,
+      lineNumber: metaData.lineNumber
     };
 
     const options = {
