@@ -6,6 +6,8 @@ import {NGXLoggerHttpService} from './http.service';
 import {NgxLoggerLevel} from './types/logger-lever.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
+import {HttpMetaDataInterface} from './http-meta-data.interface';
+import {NGXLoggerUtils} from './utils/logger.utils';
 
 export const Levels = [
   'TRACE',
@@ -60,59 +62,24 @@ export class NGXLogger {
     this.configService.updateConfig(config);
   }
 
-  private _logIE(level: NgxLoggerLevel, message: string, additional: any[], timestamp: string): void {
+  private _logIE(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
 
     // make sure additional isn't null or undefined so that ...additional doesn't error
     additional = additional || [];
 
     switch (level) {
       case NgxLoggerLevel.WARN:
-        console.warn(`${timestamp} [${Levels[level]}] `, message, ...additional);
+        console.warn(`${metaString} `, message, ...additional);
         break;
       case NgxLoggerLevel.ERROR:
-        console.error(`${timestamp} [${Levels[level]}] `, message, ...additional);
+        console.error(`${metaString} `, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
-        console.info(`${timestamp} [${Levels[level]}] `, message, ...additional);
+        console.info(`${metaString} `, message, ...additional);
         break;
       default:
-        console.log(`${timestamp} [${Levels[level]}] `, message, ...additional);
+        console.log(`${metaString} `, message, ...additional);
     }
-  }
-
-  private _prepareMessage(message) {
-    try {
-      if (message instanceof Error) {
-        message = message.stack;
-      } else if (typeof message !== 'string') {
-        message = JSON.stringify(message, null, 2);
-      }
-    } catch (e) {
-      // additional = [message, ...additional];
-      message = 'The provided "message" value could not be parsed with JSON.stringify().';
-    }
-
-    return message;
-  }
-
-  private _prepareAdditionalParameters(additional: any[]) {
-    if (additional === null || additional === undefined) {
-      return null;
-    }
-
-    return additional.map((next, idx) => {
-      try {
-        // We just want to make sure the JSON can be parsed, we do not want to actually change the type
-        if (typeof next === 'object') {
-          JSON.stringify(next)
-        }
-
-        return next;
-      }
-      catch (e) {
-        return `The additional[${idx}] value could not be parsed using JSON.stringify().`
-      }
-    });
   }
 
   private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
@@ -122,17 +89,27 @@ export class NGXLogger {
 
     const logLevelString = Levels[level];
 
-    message = this._prepareMessage(message);
+    message = NGXLoggerUtils.prepareMessage(message);
 
     // only use validated parameters for HTTP requests
-    const validatedAdditionalParameters = this._prepareAdditionalParameters(additional);
+    const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
 
     const timestamp = new Date().toISOString();
     const config = this.configService.getConfig();
 
+    const callerDetails = NGXLoggerUtils.getCallerDetails();
+
     if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
+
+      const metaData: HttpMetaDataInterface = {
+        level: level,
+        timestamp: timestamp,
+        fileName: callerDetails.fileName,
+        lineNumber: callerDetails.lineNumber,
+      };
+
       // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, timestamp, logLevelString).subscribe((res: any) => {
+      this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, metaData).subscribe((res: any) => {
             // I don't think we should do anything on success
           },
           (error: HttpErrorResponse) => {
@@ -147,32 +124,15 @@ export class NGXLogger {
       return;
     }
 
+    const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString, callerDetails.fileName, callerDetails.lineNumber);
+
     // Coloring doesn't work in IE
     if (this._isIE) {
-      return this._logIE(level, message, additional, timestamp);
+      return this._logIE(level, metaString, message, additional);
     }
 
-    const color = this._getColor(level);
+    const color = NGXLoggerUtils.getColor(level);
 
-    console.log(`%c${timestamp} [${logLevelString}]`, `color:${color}`, message, ...(additional || []));
+    console.log(`%c${metaString}`, `color:${color}`, message, ...(additional || []));
   }
-
-  private _getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
-    switch (level) {
-      case NgxLoggerLevel.TRACE:
-        return 'blue';
-      case NgxLoggerLevel.DEBUG:
-        return 'teal';
-      case NgxLoggerLevel.INFO:
-      case NgxLoggerLevel.LOG:
-        return 'gray';
-      case NgxLoggerLevel.WARN:
-      case NgxLoggerLevel.ERROR:
-        return 'red';
-      case NgxLoggerLevel.OFF:
-      default:
-        return;
-    }
-  }
-
 }

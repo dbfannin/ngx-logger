@@ -17,7 +17,9 @@ import {NGXLoggerHttpService} from './http.service';
 export * from './http.service';
 export * from './http.service.mock';
 
+export * from './utils/logger.utils';
 export * from './types/logger-lever.enum';
+export * from './http-meta-data.interface';
 
 @NgModule({
   imports: [
