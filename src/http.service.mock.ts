@@ -1,5 +1,4 @@
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import {Observable, of} from 'rxjs';
 
 export class NGXLoggerHttpServiceMock {
   constructor() {
@@ -7,6 +6,6 @@ export class NGXLoggerHttpServiceMock {
   }
 
   logOnServer(url: string, message: string, additional: any[], timestamp: string, logLevel: string): Observable<any> {
-    return Observable.of({})
+    return of({})
   }
 }

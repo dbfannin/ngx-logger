@@ -3,7 +3,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
 import {NGXLoggerHttpService} from './http.service';
-import {NgxLoggerLevel} from './types/logger-lever.enum';
+import {NgxLoggerLevel} from './types/logger-level.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
 import {HttpMetaDataInterface} from './http-meta-data.interface';
@@ -26,9 +26,10 @@ export class NGXLogger {
   private configService: NGXLoggerConfigEngine;
 
 
-  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
+  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
+              @Inject(PLATFORM_ID) private readonly platformId) {
     this._isIE = isPlatformBrowser(platformId) &&
-        !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
+      !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
     // each instance of the logger should have their own config engine
     this.configService = new NGXLoggerConfigEngine(loggerConfig);
@@ -110,11 +111,11 @@ export class NGXLogger {
 
       // Allow logging on server even if client log level is off
       this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, metaData).subscribe((res: any) => {
-            // I don't think we should do anything on success
-          },
-          (error: HttpErrorResponse) => {
-            this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
-          }
+          // I don't think we should do anything on success
+        },
+        (error: HttpErrorResponse) => {
+          this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
+        }
       );
     }
 
