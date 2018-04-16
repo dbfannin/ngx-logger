@@ -1,4 +1,4 @@
-import {NgxLoggerLevel} from '../types/logger-lever.enum';
+import {NgxLoggerLevel} from '../types/logger-level.enum';
 
 export class NGXLoggerUtils {
 
@@ -29,9 +29,9 @@ export class NGXLoggerUtils {
 
 
   /**
-   * This allows us to see who called the logger
-   * @return {string}
-   * @private
+   *  This allows us to see who called the logger
+   *  @return {string}
+   *  @private
    */
   static getCallerDetails(): {lineNumber: string, fileName: string} {
     const err = (new Error(''));
@@ -82,12 +82,10 @@ export class NGXLoggerUtils {
         }
 
         return next;
-      }
-      catch (e) {
+      } catch (e) {
         return `The additional[${idx}] value could not be parsed using JSON.stringify().`
       }
     });
   }
-
 
 }

@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/@angular-devkit/core/src/workspace/workspace-schema.json",
+  "version": 1,
+  "newProjectRoot": "src",
+  "projects": {
+    "ngx-logger": {
+      "root": "src",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "project": "src/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "src/ng-package.prod.json"
+            }
+          }
+        }
+      }
+    }
+  }
+}
