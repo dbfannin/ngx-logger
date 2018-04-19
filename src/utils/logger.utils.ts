@@ -3,7 +3,9 @@ import {NgxLoggerLevel} from '../types/logger-lever.enum';
 export class NGXLoggerUtils {
 
   static prepareMetaString(timestamp: string, logLevel: string, fileName: string, lineNumber: string) {
-    return `${timestamp} ${logLevel} [${fileName}:${lineNumber}]`;
+    const fileDetails = fileName ? ` [${fileName}:${lineNumber}]` : '';
+
+    return `${timestamp} ${logLevel}${fileDetails}`;
   }
 
   static getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
@@ -34,16 +36,24 @@ export class NGXLoggerUtils {
   static getCallerDetails(): {lineNumber: string, fileName: string} {
     const err = (new Error(''));
 
-    // this should produce the line which NGX Logger was called
-    const callerLine = err.stack.split('\n')[4].split('/');
+    try {
+      // this should produce the line which NGX Logger was called
+      const callerLine = err.stack.split('\n')[4].split('/');
 
-    // returns the file:lineNumber
-    const fileLineNumber = callerLine[callerLine.length - 1].replace(/[)]/g, '').split(':');
+      // returns the file:lineNumber
+      const fileLineNumber = callerLine[callerLine.length - 1].replace(/[)]/g, '').split(':');
 
-    return {
-      fileName: fileLineNumber[0],
-      lineNumber: fileLineNumber[1]
+      return {
+        fileName: fileLineNumber[0],
+        lineNumber: fileLineNumber[1]
+      }
+    } catch(e) {
+      return {
+        fileName: null,
+        lineNumber: null
+      }
     }
+
   }
 
   static prepareMessage(message) {
