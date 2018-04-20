@@ -108,6 +108,9 @@ export class NGXLogger {
         lineNumber: callerDetails.lineNumber,
       };
 
+      // make sure the stack gets sent to the server
+      message = message instanceof Error ? message.stack : message;
+
       // Allow logging on server even if client log level is off
       this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, metaData).subscribe((res: any) => {
             // I don't think we should do anything on success

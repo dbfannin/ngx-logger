@@ -58,9 +58,7 @@ export class NGXLoggerUtils {
 
   static prepareMessage(message) {
     try {
-      if (message instanceof Error) {
-        message = message.stack;
-      } else if (typeof message !== 'string') {
+       if (typeof message !== 'string' && !(message instanceof Error)) {
         message = JSON.stringify(message, null, 2);
       }
     } catch (e) {
