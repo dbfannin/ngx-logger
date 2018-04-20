@@ -31,8 +31,8 @@ export class NGXLoggerUtils {
    * @return {string}
    * @private
    */
-  static getCallerDetails(): {lineNumber: string, fileName: string} {
-    const err = (new Error(''));
+  static getCallerDetails(error): {lineNumber: string, fileName: string} {
+      const err = error instanceof Error ? error : (new Error(''));
 
     // this should produce the line which NGX Logger was called
     const callerLine = err.stack.split('\n')[4].split('/');

@@ -88,6 +88,7 @@ export class NGXLogger {
     }
 
     const logLevelString = Levels[level];
+      const customError = message instanceof Error ? message : undefined;
 
     message = NGXLoggerUtils.prepareMessage(message);
 
@@ -97,7 +98,7 @@ export class NGXLogger {
     const timestamp = new Date().toISOString();
     const config = this.configService.getConfig();
 
-    const callerDetails = NGXLoggerUtils.getCallerDetails();
+    const callerDetails = NGXLoggerUtils.getCallerDetails(customError);
 
     if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
 
@@ -133,6 +134,10 @@ export class NGXLogger {
 
     const color = NGXLoggerUtils.getColor(level);
 
-    console.log(`%c${metaString}`, `color:${color}`, message, ...(additional || []));
+    if (customError) {
+      console.log(`%c${metaString} ${message}`, `color:${color}`, ...(additional || []));
+    } else {
+      console.log(`%c${metaString}`, `color:${color}`, `%c${message}`, ...(additional || []));
+    }
   }
 }
