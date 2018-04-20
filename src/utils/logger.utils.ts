@@ -74,8 +74,7 @@ export class NGXLoggerUtils {
         }
 
         return next;
-      }
-      catch (e) {
+      } catch (e) {
         return `The additional[${idx}] value could not be parsed using JSON.stringify().`
       }
     });

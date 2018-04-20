@@ -26,7 +26,8 @@ export class NGXLogger {
   private configService: NGXLoggerConfigEngine;
 
 
-  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
+  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
+              @Inject(PLATFORM_ID) readonly platformId) {
     this._isIE = isPlatformBrowser(platformId) &&
         !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
@@ -82,13 +83,13 @@ export class NGXLogger {
     }
   }
 
-  private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
+  private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer = true): void {
     if (!message) {
       return;
     }
 
     const logLevelString = Levels[level];
-      const customError = message instanceof Error ? message : undefined;
+    const customError = message instanceof Error ? message : undefined;
 
     message = NGXLoggerUtils.prepareMessage(message);
 
@@ -137,7 +138,7 @@ export class NGXLogger {
     if (customError) {
       console.log(`%c${metaString} ${message}`, `color:${color}`, ...(additional || []));
     } else {
-      console.log(`%c${metaString}`, `color:${color}`, `%c${message}`, ...(additional || []));
+      console.log(`%c${metaString}`, `color:${color}`, message, ...(additional || []));
     }
   }
 }
