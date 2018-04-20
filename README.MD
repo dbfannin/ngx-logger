@@ -105,7 +105,7 @@ To provide them in your Testing Module
 ```typescript
      TestBed.configureTestingModule({
        providers: [
-         {provide: NGXLogger, useCLass: NGXLoggerMock},
+         {provide: NGXLogger, useClass: NGXLoggerMock},
          ...
        ],
        ...

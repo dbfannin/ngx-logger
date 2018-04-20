@@ -1,26 +1,28 @@
-import {Injectable} from '@angular/core';
 
-@Injectable()
 export class NGXLoggerMock {
 
   constructor() {
   }
 
-  trace(message: string) {
+  trace(message: any, ...additional: any[]) {
   }
 
-  debug(message: string) {
+  debug(message: any, ...additional: any[]) {
   }
 
-  info(message: string) {
+  info(message: any, ...additional: any[]) {
   }
 
-  log(message: string) {
+  log(message: any, ...additional: any[]) {
   }
 
-  warn(message: string) {
+  warn(message: any, ...additional: any[]) {
   }
 
-  error(message: string) {
+  error(message: any, ...additional: any[]) {
+  }
+
+  updateConfig(config: any) {
+
   }
 }
