@@ -33,8 +33,8 @@ export class NGXLoggerUtils {
    * @return {string}
    * @private
    */
-  static getCallerDetails(): {lineNumber: string, fileName: string} {
-    const err = (new Error(''));
+  static getCallerDetails(error): {lineNumber: string, fileName: string} {
+      const err = error instanceof Error ? error : (new Error(''));
 
     try {
       // this should produce the line which NGX Logger was called
@@ -84,8 +84,7 @@ export class NGXLoggerUtils {
         }
 
         return next;
-      }
-      catch (e) {
+      } catch (e) {
         return `The additional[${idx}] value could not be parsed using JSON.stringify().`
       }
     });
