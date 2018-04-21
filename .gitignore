@@ -37,7 +37,7 @@ Desktop.ini
 # Build files
 dist/
 tmp/
-
+dist.tgz
 
 package-lock.json
 init-test-bed.spec.js

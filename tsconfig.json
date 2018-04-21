@@ -10,5 +10,9 @@
     ],
     "skipLibCheck": true,
     "types": []
-  }
+  },
+  "exclude": [
+    "**/*.mock.ts",
+    "**/*.spec.ts"
+  ]
 }
