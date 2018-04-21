@@ -15,8 +15,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'init-test-bed.spec.ts',
-      'src/**/*.ts',
-      {pattern: 'src/**/*.html', included: false, watched: true}
+      'src/**/*.ts'
     ],
 
     // list of files to exclude
