@@ -12,14 +12,12 @@ module.exports = function (config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine', 'karma-typescript'],
 
-
     // list of files / patterns to load in the browser
     files: [
       'init-test-bed.spec.ts',
       'src/**/*.ts',
       {pattern: 'src/**/*.html', included: false, watched: true}
     ],
-
 
     // list of files to exclude
     exclude: [],
