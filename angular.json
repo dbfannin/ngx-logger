@@ -10,13 +10,10 @@
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "project": "src/ng-package.json"
+            "project": "src/ng-package.json",
+            "tsConfig": "tsconfig.json"
           },
-          "configurations": {
-            "production": {
-              "project": "src/ng-package.prod.json"
-            }
-          }
+          "configurations": {}
         }
       }
     }

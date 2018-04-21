@@ -8,7 +8,7 @@
     "docs:serve": "npm run docs:build -- -s",
     "docs:watch": "npm run docs:build -- -s -w",
     "lint": "tslint --type-check --project tsconfig.json src/**/*.ts",
-    "test": "tsc && karma start"
+    "test": "tsc && karma start --single-run"
   },
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "url": "https://github.com/dbfannin/ngx-logger/issues"
   },
   "devDependencies": {
-    "@angular-devkit/build-ng-packagr": "^0.5.7",
+    "@angular-devkit/build-ng-packagr": "git+https://github.com/angular/angular-devkit-build-ng-packagr-builds.git",
     "@angular/cli": "^6.0.0-rc.5",
     "@angular/common": "^6.0.0-rc.5",
     "@angular/compiler": "^6.0.0-rc.5",
