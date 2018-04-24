@@ -25,6 +25,11 @@ export * from './http-meta-data.interface';
   imports: [
     CommonModule,
     HttpClientModule
+  ],
+  providers: [
+    NGXLogger,
+    NGXLoggerHttpService,
+    CustomNGXLoggerService
   ]
 })
 export class LoggerModule {
