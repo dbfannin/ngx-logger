@@ -7,10 +7,12 @@ NGX Logger is a simple logging module for angular (currently supports angular 5.
 
 ## Latest Updates to NGX Logger
 
+ * The save implementation is now overridable. See [Custom Save Service](#custom-save-service)
+
  * Updating your config after importing the module has never been easier...
  ```typescript
     this.logger.updateConfig({level: NgxLoggerLevel.DEBUG});
-```
+ ```
  * You can now create a standalone logger with it's own config! 
  ```typescript
   export class MyService {
@@ -44,7 +46,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
+  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, saveLogLevel: NgxLoggerLevel.ERROR}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -76,9 +78,10 @@ export class YourComponent {
 
 
 ## Config Options
- * serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
+ * saveLogLevel - Only saves logs for the level specified or higher (OFF disables the logger for the server)
  * serverLoggingUrl - URL to POST logs
- * level: The app will only log message for that level or higher (OFF disables the logger for the client)
+ * level - The app will only log message for that level or higher (OFF disables the logger for the client)
+ * saveService - specify your own save service instead of the default server logging service
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
 ```
@@ -86,10 +89,34 @@ TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
 
 ## Server Side Logging
 
-If serverLogginUrl exists, NGX Logger will attempt to POST that log to the server.
+If serverLoggingUrl exists, NGX Logger will attempt to POST that log to the server.
 
 Payload Example
 ```{level: 'DEBUG', message: 'Your log message goes here'}```
+
+## Custom Save Service
+
+If saveService exists, NGX Logger will use that service to save the log instead 
+of the default http adapter.
+
+Here is an example custom save implementation.
+
+```typescript
+export class MyCustomLoggerSaveService implements NGXLoggerSaveService {
+  save(log: Log): Observable<any> {
+    // handle storing the log yourself
+  }
+}
+
+```
+
+And add it to your AppModule.
+```typescript
+imports: [LoggerModule.forRoot({saveService: MyCustomLoggerSaveService ...}), ...],
+providers: [
+  MyCustomLoggerSaveService
+]
+```
 
 
 ## Testing your App when using NGXLogger

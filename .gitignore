@@ -41,3 +41,5 @@ tmp/
 
 package-lock.json
 init-test-bed.spec.js
+# coverage results
+/coverage
