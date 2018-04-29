@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "declaration": true,
     "module": "es2015",
     "target": "es5",
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": "./",
     "lib": [
       "es2015",
       "dom"
     ],
     "skipLibCheck": true,
+    "importHelpers": false,
     "types": []
   },
   "angularCompilerOptions": {
@@ -22,7 +23,7 @@
     "flatModuleId": "ngx-logger"
   },
   "files": [
-    "src/index.ts"
+    "./index.ts"
   ],
   "exclude": [
     "**/*.spec.ts"

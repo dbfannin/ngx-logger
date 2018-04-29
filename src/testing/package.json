@@ -1,0 +1,8 @@
+{
+  "name": "ngx-logger/testing",
+  "ngPackage": {
+    "lib": {
+      "entryFile": "./index.ts"
+    }
+  }
+}

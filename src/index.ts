@@ -7,16 +7,13 @@ import {LoggerConfig} from './logger.config';
 import {CustomNGXLoggerService} from './custom-logger.service';
 import {NGXLoggerHttpService} from './http.service';
 
-export * from './logger.service.mock';
 export * from './logger.service';
 
 export * from './logger.config';
 
 export * from './custom-logger.service';
-export * from './custom-logger.service.mock';
 
 export * from './http.service';
-export * from './http.service.mock';
 
 export * from './utils/logger.utils';
 export * from './types/logger-level.enum';
