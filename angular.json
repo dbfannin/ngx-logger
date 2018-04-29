@@ -12,8 +12,7 @@
           "options": {
             "project": "src/ng-package.json",
             "tsConfig": "tsconfig.json"
-          },
-          "configurations": {}
+          }
         }
       }
     }

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
+    "declaration": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "rootDir": "./src",
@@ -11,8 +12,10 @@
     "skipLibCheck": true,
     "types": []
   },
+  "files": [
+    "src/index.ts"
+  ],
   "exclude": [
-    "**/*.mock.ts",
     "**/*.spec.ts"
   ]
 }
