@@ -2,6 +2,8 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "declaration": true,
+    "module": "es2015",
+    "target": "es5",
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "rootDir": "./src",
@@ -11,6 +13,13 @@
     ],
     "skipLibCheck": true,
     "types": []
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true,
+    "flatModuleOutFile": "ngx-logger.js",
+    "flatModuleId": "ngx-logger"
   },
   "files": [
     "src/index.ts"
