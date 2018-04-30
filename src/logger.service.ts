@@ -1,13 +1,12 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
-import {NGXLoggerHttpService} from './http.service';
-import {NgxLoggerLevel} from './types/logger-lever.enum';
+import {NgxLoggerLevel} from './types/logger-level.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
-import {HttpMetaDataInterface} from './http-meta-data.interface';
+import {LogMetaData} from './types/log-meta-data.interface';
 import {NGXLoggerUtils} from './utils/logger.utils';
+import {NGXLoggerSaveService} from './types/save.service.abstract';
 
 export const Levels = [
   'TRACE',
@@ -26,7 +25,7 @@ export class NGXLogger {
   private configService: NGXLoggerConfigEngine;
 
 
-  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
+  constructor(private readonly saveService: NGXLoggerSaveService, loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
     this._isIE = isPlatformBrowser(platformId) &&
         !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
@@ -82,7 +81,7 @@ export class NGXLogger {
     }
   }
 
-  private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
+  private _log(level: NgxLoggerLevel, message, additional: any[] = [], saveLog = true): void {
     if (!message) {
       return;
     }
@@ -97,11 +96,12 @@ export class NGXLogger {
     const timestamp = new Date().toISOString();
     const config = this.configService.getConfig();
 
+
     const callerDetails = NGXLoggerUtils.getCallerDetails();
 
-    if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
+    if (saveLog && level >= config.saveLogLevel) {
 
-      const metaData: HttpMetaDataInterface = {
+      const metaData: LogMetaData = {
         level: level,
         timestamp: timestamp,
         fileName: callerDetails.fileName,
@@ -111,12 +111,11 @@ export class NGXLogger {
       // make sure the stack gets sent to the server
       message = message instanceof Error ? message.stack : message;
 
-      // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, metaData).subscribe((res: any) => {
-            // I don't think we should do anything on success
-          },
-          (error: HttpErrorResponse) => {
-            this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
+      // Allow saving of logs even if client log level is off
+      this.saveService.save({message: message, additional: validatedAdditionalParameters, metaData: metaData})
+        .subscribe(() => { },
+          (error: any) => {
+            this._log(NgxLoggerLevel.ERROR, `FAILED TO SAVE LOG: ${message}`, [error], false);
           }
       );
     }

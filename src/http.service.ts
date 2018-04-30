@@ -1,29 +1,34 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {HttpMetaDataInterface} from './http-meta-data.interface';
+import {NGXLoggerSaveService} from './types/save.service.abstract';
+import {NGXLog} from './types/ngx-log.interface';
+import {LoggerConfig} from './logger.config';
+import {of} from 'rxjs/observable/of';
 
 
 @Injectable()
-export class NGXLoggerHttpService {
-  constructor(private readonly http: HttpClient) {
+export class NGXLoggerHttpService implements NGXLoggerSaveService {
+  constructor(private readonly http: HttpClient, private loggerConfig: LoggerConfig) { }
+  save(log: NGXLog): Observable<any> {
 
-  }
+    if (!this.loggerConfig.serverLoggingUrl) {
+      return of({});
+    }
 
-  logOnServer(url: string, message: string, additional: any[], metaData: HttpMetaDataInterface): Observable<any> {
     const body = {
-      message: message,
-      additional: additional,
-      level: metaData.level,
-      timestamp: metaData.timestamp,
-      fileName: metaData.fileName,
-      lineNumber: metaData.lineNumber
+      message: log.message,
+      additional: log.additional,
+      level: log.metaData.level,
+      timestamp: log.metaData.timestamp,
+      fileName: log.metaData.fileName,
+      lineNumber: log.metaData.lineNumber
     };
 
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     };
 
-    return this.http.post(url, body, options)
+    return this.http.post(this.loggerConfig.serverLoggingUrl, body, options)
   }
 }

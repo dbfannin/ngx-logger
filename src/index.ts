@@ -14,12 +14,17 @@ export * from './custom-logger.service';
 export * from './custom-logger.service.mock';
 
 import {NGXLoggerHttpService} from './http.service';
+import {NGXLoggerSaveService} from './types/save.service.abstract';
+
+
+export * from './types/save.service.abstract';
 export * from './http.service';
 export * from './http.service.mock';
 
 export * from './utils/logger.utils';
-export * from './types/logger-lever.enum';
-export * from './http-meta-data.interface';
+export * from './types/logger-level.enum';
+export * from './types/log-meta-data.interface';
+export * from './types/ngx-log.interface'
 
 @NgModule({
   imports: [
@@ -40,6 +45,7 @@ export class LoggerModule {
         {provide: LoggerConfig, useValue: config || {}},
         NGXLogger,
         NGXLoggerHttpService,
+        {provide: NGXLoggerSaveService, useClass: config.saveService || NGXLoggerHttpService},
         CustomNGXLoggerService
       ]
     };
