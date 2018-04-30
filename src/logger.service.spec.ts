@@ -1,10 +1,9 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { NGXLogger } from './logger.service';
-import {} from 'jasmine';
+import {inject, TestBed} from '@angular/core/testing';
+import {NGXLogger} from './logger.service';
 import {NGXLoggerHttpService} from './http.service';
-import {NGXLoggerHttpServiceMock} from './http.service.mock';
+import {NGXLoggerHttpServiceMock} from './testing/http.service.mock';
 import {LoggerConfig} from './logger.config';
 
 describe('NGXLogger', () => {

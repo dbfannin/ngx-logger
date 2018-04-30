@@ -7,23 +7,18 @@ module.exports = function (config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '.',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine', 'karma-typescript'],
 
-
     // list of files / patterns to load in the browser
     files: [
       'init-test-bed.spec.ts',
-      'src/**/*.ts',
-      {pattern: 'src/**/*.html', included: false, watched: true}
+      'src/**/*.ts'
     ],
-
 
     // list of files to exclude
     exclude: [],
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -82,7 +77,7 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
