@@ -1,14 +1,15 @@
 {
   "name": "ngx-logger",
-  "version": "2.2.4",
+  "version": "3.0.0-rc1",
+  "license": "MIT",
   "scripts": {
-    "build": "ng build --project ngx-logger",
-    "docs": "npm run docs:build",
-    "docs:build": "compodoc -p tsconfig.json -n ngx-logger -d docs --hideGenerator",
-    "docs:serve": "npm run docs:build -- -s",
-    "docs:watch": "npm run docs:build -- -s -w",
-    "lint": "tslint --project tsconfig.spec.json src/**/*.ts",
-    "test": "karma start --single-run"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "test-watch": "ng test --watch=true",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "repository": {
     "type": "git",
@@ -28,14 +29,15 @@
     "th3n3wguy <tarleton.shane@gmail.com>"
   ],
   "keywords": [
-    "angular"
+    "angular",
+    "logging"
   ],
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/dbfannin/ngx-logger/issues"
   },
   "devDependencies": {
-    "@angular-devkit/build-ng-packagr": "^0.5.10",
+    "@angular-devkit/build-angular": "~0.5.0",
+    "@angular-devkit/build-ng-packagr": "~0.5.8",
     "@angular/cli": "^6.0.0-rc.7",
     "@angular/common": "^6.0.0-rc.6",
     "@angular/compiler": "^6.0.0-rc.6",
@@ -43,31 +45,31 @@
     "@angular/core": "^6.0.0-rc.6",
     "@angular/platform-browser": "^6.0.0-rc.6",
     "@angular/platform-browser-dynamic": "^6.0.0-rc.6",
-    "@compodoc/compodoc": "^1.1.2",
-    "@types/jasmine": "2.5.53",
-    "@types/node": "^6.0.106",
-    "codelyzer": "~3.2.0",
-    "concurrently": "^3.4.0",
-    "core-js": "^2.5.5",
-    "jasmine-core": "~2.6.2",
-    "jasmine-spec-reporter": "~4.1.0",
-    "karma": "~2.0.2",
-    "karma-chrome-launcher": "~2.1.1",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "^1.2.1",
-    "karma-jasmine": "^1.1.1",
+    "@types/jasmine": "~2.8.6",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "codelyzer": "~4.2.1",
+    "core-js": "^2.5.4",
+    "jasmine-core": "~2.99.1",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~1.7.1",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~1.4.2",
+    "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "karma-typescript": "^3.0.12",
-    "karma-typescript-es6-transform": "^1.0.4",
     "ng-packagr": "^3.0.0-rc.2",
-    "protractor": "~5.1.2",
+    "protractor": "~5.3.0",
     "rxjs": "^6.0.0",
-    "ts-node": "~6.0.2",
+    "ts-node": "~5.0.1",
+    "tsickle": ">=0.25.5",
+    "tslib": "^1.7.1",
     "tslint": "~5.9.1",
     "typescript": "~2.7.2",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.24"
   },
-  "engines": {
-    "node": ">=6.0.0"
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.6",
+    "@angular/core": "^6.0.0-rc.6",
+    "rxjs": "^6.0.0"
   }
 }

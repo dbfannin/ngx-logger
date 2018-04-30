@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {HttpMetaDataInterface} from './http-meta-data.interface';
+import {HttpMetaDataInterface} from './types/http-meta-data.interface';
 
 
 @Injectable()

@@ -17,7 +17,7 @@ export * from './http.service';
 
 export * from './utils/logger.utils';
 export * from './types/logger-level.enum';
-export * from './http-meta-data.interface';
+export * from './types/http-meta-data.interface';
 
 @NgModule({
   imports: [

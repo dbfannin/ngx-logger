@@ -6,8 +6,8 @@ import {NGXLoggerHttpService} from './http.service';
 import {NgxLoggerLevel} from './types/logger-level.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
-import {HttpMetaDataInterface} from './http-meta-data.interface';
 import {NGXLoggerUtils} from './utils/logger.utils';
+import {HttpMetaDataInterface} from './types/http-meta-data.interface';
 
 export const Levels = [
   'TRACE',

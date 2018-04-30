@@ -1,4 +1,4 @@
-import {NgxLoggerLevel} from './types/logger-level.enum';
+import {NgxLoggerLevel} from './logger-level.enum';
 
 export class HttpMetaDataInterface {
   level: NgxLoggerLevel;
