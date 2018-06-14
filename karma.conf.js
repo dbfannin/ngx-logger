@@ -20,6 +20,10 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
+    browserNoActivityTimeout: 300000, // default 10000
+    angularCli: {
+      environment: 'dev'
+    },
     reporters: ['progress', 'kjhtml'],
     port: 9876,
     colors: true,

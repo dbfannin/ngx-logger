@@ -63,6 +63,10 @@ export class NGXLogger {
     this.configService.updateConfig(config);
   }
 
+  public getConfigSnapshot() {
+    return this.configService.getConfig();
+  }
+
   private _logIE(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
 
     // make sure additional isn't null or undefined so that ...additional doesn't error

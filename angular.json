@@ -1,11 +1,10 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "./node_modules/@angular-devkit/core/src/workspace/workspace-schema.json",
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "ngx-logger": {
       "root": "",
-      "sourceRoot": "src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
