@@ -63,7 +63,7 @@ export class NGXLogger {
     this.configService.updateConfig(config);
   }
 
-  public getConfigSnapshot() {
+  public getConfigSnapshot(): LoggerConfig {
     return this.configService.getConfig();
   }
 
