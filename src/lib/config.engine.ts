@@ -12,6 +12,12 @@ export class NGXLoggerConfigEngine {
   }
 
   getConfig() {
-    return this._config;
+    const cloneConfig: LoggerConfig = new LoggerConfig();
+
+    Object.keys(cloneConfig).forEach((key) => {
+      cloneConfig[key] = this._config[key];
+    });
+
+    return cloneConfig;
   }
 }
