@@ -24,7 +24,7 @@ export const Levels = [
 export class NGXLogger {
   private _isIE: boolean;
   private configService: NGXLoggerConfigEngine;
-
+  private _logFunc: Function;
 
   constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
               @Inject(PLATFORM_ID) private readonly platformId) {
@@ -33,6 +33,9 @@ export class NGXLogger {
 
     // each instance of the logger should have their own config engine
     this.configService = new NGXLoggerConfigEngine(loggerConfig);
+
+    this._logFunc = this._isIE ? this._logIE.bind(this) : this._logModern.bind(this);
+
   }
 
   public trace(message, ...additional: any[]): void {
@@ -69,6 +72,7 @@ export class NGXLogger {
 
   private _logIE(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
 
+    // Coloring doesn't work in IE
     // make sure additional isn't null or undefined so that ...additional doesn't error
     additional = additional || [];
 
@@ -87,8 +91,39 @@ export class NGXLogger {
     }
   }
 
+  private _logModern(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
+
+    const color = NGXLoggerUtils.getColor(level);
+
+    // make sure additional isn't null or undefined so that ...additional doesn't error
+    additional = additional || [];
+
+    switch (level) {
+      case NgxLoggerLevel.WARN:
+        console.warn(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
+      case NgxLoggerLevel.ERROR:
+        console.error(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
+      case NgxLoggerLevel.INFO:
+        console.info(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
+      case NgxLoggerLevel.TRACE:
+        console.trace(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
+      case NgxLoggerLevel.DEBUG:
+        console.debug(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
+      default:
+        console.log(`%c${metaString}`, `color:${color}`, message, ...additional);
+    }
+  }
+
   private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
-    if (!message) {
+    const config = this.configService.getConfig();
+    const isLog2Server = logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel;
+    const isLog2Console = !(level < config.level);
+    if (!(message && (isLog2Server || isLog2Console))) {
       return;
     }
 
@@ -100,11 +135,10 @@ export class NGXLogger {
     const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
 
     const timestamp = new Date().toISOString();
-    const config = this.configService.getConfig();
 
     const callerDetails = NGXLoggerUtils.getCallerDetails();
 
-    if (logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel) {
+    if (isLog2Server) {
 
       const metaData: HttpMetaDataInterface = {
         level: level,
@@ -128,19 +162,12 @@ export class NGXLogger {
 
 
     // if no message or the log level is less than the environ
-    if (level < config.level) {
-      return;
+    if (isLog2Console) {
+
+      const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString, callerDetails.fileName, callerDetails.lineNumber);
+
+      return this._logFunc(level, metaString, message, additional);
     }
 
-    const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString, callerDetails.fileName, callerDetails.lineNumber);
-
-    // Coloring doesn't work in IE
-    if (this._isIE) {
-      return this._logIE(level, metaString, message, additional);
-    }
-
-    const color = NGXLoggerUtils.getColor(level);
-
-    console.log(`%c${metaString}`, `color:${color}`, message, ...(additional || []));
   }
 }
