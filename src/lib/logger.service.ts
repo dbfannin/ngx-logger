@@ -22,9 +22,9 @@ export const Levels = [
 
 @Injectable()
 export class NGXLogger {
-  private _isIE: boolean;
+  private readonly _isIE: boolean;
+  private readonly _logFunc: Function;
   private configService: NGXLoggerConfigEngine;
-  private _logFunc: Function;
 
   constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
               @Inject(PLATFORM_ID) private readonly platformId) {

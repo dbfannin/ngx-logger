@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -26,6 +26,7 @@
     "leo6104",
     "sam-lex",
     "slindenberg",
+    "yildiraymeric",
     "th3n3wguy <tarleton.shane@gmail.com>"
   ],
   "keywords": [
