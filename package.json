@@ -9,7 +9,8 @@
     "test": "ng test",
     "test-watch": "ng test --watch=true",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "demo": "ng build && ng serve demo -o"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,8 @@
     "sam-lex",
     "slindenberg",
     "yildiraymeric",
-    "th3n3wguy <tarleton.shane@gmail.com>"
+    "th3n3wguy <tarleton.shane@gmail.com>",
+    "bniedermeyer"
   ],
   "keywords": [
     "angular",
@@ -39,13 +41,17 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.5.0",
     "@angular-devkit/build-ng-packagr": "~0.5.0",
+    "@angular/animations": "^6.0.9",
+    "@angular/cdk": "^6.4.1",
     "@angular/cli": "^6.0.8",
-    "@angular/common": "^6.0.0",
-    "@angular/compiler": "^6.0.0",
-    "@angular/compiler-cli": "^6.0.0",
-    "@angular/core": "^6.0.0",
-    "@angular/platform-browser": "^6.0.0",
-    "@angular/platform-browser-dynamic": "^6.0.0",
+    "@angular/common": "^6.0.9",
+    "@angular/compiler": "^6.0.9",
+    "@angular/compiler-cli": "^6.0.9",
+    "@angular/core": "^6.0.9",
+    "@angular/forms": "^6.0.9",
+    "@angular/material": "^6.4.1",
+    "@angular/platform-browser": "^6.0.9",
+    "@angular/platform-browser-dynamic": "^6.0.9",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
@@ -60,7 +66,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^2.4.1",
     "protractor": "~5.3.0",
-    "rxjs": "^6.1.0",
+    "rxjs": "^6.2.2",
     "ts-node": "~5.0.1",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",

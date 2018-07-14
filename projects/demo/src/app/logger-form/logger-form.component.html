@@ -1,0 +1,21 @@
+<form [formGroup]="loggerForm" (ngSubmit)="handleFormSubmission()">
+  <mat-card class="logger-input">
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput formControlName="logMessage" placeholder="Log Message" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Log Type" name="logType" formControlName="logType" required>
+          <mat-option *ngFor="let logType of logTypes" [value]="logType.value">
+            {{logType.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button type="submit" color="primary" [disabled]="!loggerForm.valid">Log Message</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

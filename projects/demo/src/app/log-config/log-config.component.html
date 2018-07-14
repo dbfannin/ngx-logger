@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h3>Logger Configuration</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="log-level-display">
+      <mat-chip-list [selectable]="false">
+        <strong>Logger Level</strong>
+        <mat-chip [color]="loggerColor" [selected]="currentLogLevelString !== 'Off'">{{currentLogLevelString}}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div class="button-row">
+      <button mat-flat-button color="primary" (click)="handleButtonClick('Debug')">Debug</button>
+      <button mat-flat-button color="primary" (click)="handleButtonClick('Trace')">Trace</button>
+    </div>
+    <div class="button-row">
+      <button mat-flat-button color="accent" (click)="handleButtonClick('Info')">Info</button>
+      <button mat-flat-button color="accent" (click)="handleButtonClick('Log')">Log</button>
+    </div>
+    <div class="button-row">
+      <button mat-flat-button color="warn" (click)="handleButtonClick('Warn')">Warn</button>
+      <button mat-flat-button color="warn" (click)="handleButtonClick('Error')">Error</button>
+    </div>
+    <div class="button-row">
+      <button mat-stroked-button (click)="handleButtonClick('Off')">Off (Nothing will be logged)</button>
+    </div>
+  </mat-card-content>
+</mat-card>
