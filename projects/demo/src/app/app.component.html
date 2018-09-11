@@ -1,0 +1,6 @@
+<mat-toolbar color="primary" role="toolbar" aria-label="toolbar">NGX Logger</mat-toolbar>
+<div class="controls">
+  <h3>Please open your console to see the output of the demo</h3>
+  <app-logger (logToConsole)="handleLog($event)"></app-logger>
+  <app-log-config (loggerLevelChange)="handleLogLevelChange($event)"></app-log-config>
+</div>

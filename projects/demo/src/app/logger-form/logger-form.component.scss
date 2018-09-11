@@ -1,0 +1,14 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.logger-input {
+  margin: 5px;
+}
+
+mat-form-field {
+  $input-margin: 5px;
+  margin-left: $input-margin;
+  margin-right: $input-margin;
+}
