@@ -7,7 +7,8 @@ import {NgxLoggerLevel} from './types/logger-level.enum';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerConfigEngine} from './config.engine';
 import {NGXLoggerUtils} from './utils/logger.utils';
-import {HttpMetaDataInterface} from './types/http-meta-data.interface';
+import {NGXLoggerMonitor} from './logger-monitor';
+import {NGXLogInterface} from './types/ngx-log.interface';
 
 export const Levels = [
   'TRACE',
@@ -25,6 +26,8 @@ export class NGXLogger {
   private readonly _isIE: boolean;
   private readonly _logFunc: Function;
   private configService: NGXLoggerConfigEngine;
+
+  private loggerMonitor: NGXLoggerMonitor;
 
   constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
               @Inject(PLATFORM_ID) private readonly platformId) {
@@ -60,6 +63,10 @@ export class NGXLogger {
 
   public error(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.ERROR, message, additional);
+  }
+
+  public registerMonitor(monitor: NGXLoggerMonitor) {
+    this.loggerMonitor = monitor;
   }
 
   public updateConfig(config: LoggerConfig) {
@@ -138,20 +145,27 @@ export class NGXLogger {
 
     const callerDetails = NGXLoggerUtils.getCallerDetails();
 
+    const logObject: NGXLogInterface = {
+      message: message,
+      additional: validatedAdditionalParameters,
+      level: level,
+      timestamp: timestamp,
+      fileName: callerDetails.fileName,
+      lineNumber: callerDetails.lineNumber
+    };
+
+    if (this.loggerMonitor) {
+      this.loggerMonitor.onLog(logObject);
+    }
+
     if (isLog2Server) {
-
-      const metaData: HttpMetaDataInterface = {
-        level: level,
-        timestamp: timestamp,
-        fileName: callerDetails.fileName,
-        lineNumber: callerDetails.lineNumber,
-      };
-
       // make sure the stack gets sent to the server
       message = message instanceof Error ? message.stack : message;
 
+      logObject.message = message;
+
       // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, message, validatedAdditionalParameters, metaData).subscribe((res: any) => {
+      this.httpService.logOnServer(config.serverLoggingUrl, logObject).subscribe((res: any) => {
           // I don't think we should do anything on success
         },
         (error: HttpErrorResponse) => {

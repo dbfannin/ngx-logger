@@ -13,11 +13,13 @@ export * from './logger.config';
 
 export * from './custom-logger.service';
 
+export * from './logger-monitor';
+
 export * from './http.service';
 
 export * from './utils/logger.utils';
 export * from './types/logger-level.enum';
-export * from './types/http-meta-data.interface';
+export * from './types/ngx-log.interface';
 
 @NgModule({
   imports: [
