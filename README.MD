@@ -143,9 +143,8 @@ To provide them in your Testing Module
 
 ```typescript
      TestBed.configureTestingModule({
-       providers: [
-         {provide: NGXLogger, useClass: NGXLoggerMock},
-         ...
+       imports: [
+         LoggerTestingModule
        ],
        ...
      });
