@@ -6,6 +6,13 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 
 ## Latest Updates to NGX Logger
 
+- Custom HTTP Headers
+    - If you use an auth token, or need to pass in a custom header, now you can!
+```typescript
+    this.logger.setCustomHttpHeaders(new HttpHeaders({'X-Custom-Header': '123456'}));
+```  
+    
+
 - Custom Log Monitoring is now available
     - Only 1 monitor can be registered at a time, registering a new monitor overwrites the previous monitor
     - This should be registered as soon as possible so that it does not miss any logs.

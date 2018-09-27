@@ -5,7 +5,6 @@ export class NGXLogInterface {
   timestamp: string;
   fileName: string;
   lineNumber: string;
-
   message: string;
   additional: any[];
 }
