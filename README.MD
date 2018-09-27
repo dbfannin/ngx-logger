@@ -2,9 +2,37 @@
 
 # NGX Logger
 
-NGX Logger is a simple logging module for angular (currently supports angular 5.\*). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
+NGX Logger is a simple logging module for angular (currently supports angular 6.\*). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
 ## Latest Updates to NGX Logger
+
+- Custom Log Monitoring is now available
+    - Only 1 monitor can be registered at a time, registering a new monitor overwrites the previous monitor
+    - This should be registered as soon as possible so that it does not miss any logs.
+```typescript
+import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
+
+export class MyLoggerMonitor implements NGXLoggerMonitor {
+  onLog(log: NGXLogInterface) {
+    console.log('myCustomLoggerMonitor', log);
+  }
+}
+```
+
+```typescript
+import {NGXLogger} from 'ngx-logger';
+import {MyLoggerMonitor} from './my-logger-monitor';
+
+export class MyService {
+  constructor(private logger: NGXLogger) {
+    this.logger.registerMonitor(new MyLoggerMonitor())
+
+    this.logger.error('BLAHBLAHBLAH');
+  }
+}
+```
+
+
 
 - Updating your config after importing the module has never been easier...
 
@@ -132,7 +160,7 @@ to have the demo built and served.
 
 All are welcome to contribute to NGX Logger. A couple quick notes to get started..
 
-- NGX Logger is built with https://github.com/jvandemo/generator-angular2-library
+- NGX Logger is built with angular-cli
 - To use npm link, you must link the /src (or /dist after it is built) directory not root.
 - When possible, try to follow patterns that have already been established in the library
 - Try to make your code as simple as possible

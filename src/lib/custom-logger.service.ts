@@ -3,6 +3,7 @@ import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {LoggerConfig} from './logger.config';
 import {NGXLoggerHttpService} from './http.service';
 import {NGXLogger} from './logger.service';
+import {NGXLoggerMonitor} from './logger-monitor';
 
 
 /**
@@ -15,9 +16,15 @@ export class CustomNGXLoggerService {
               @Inject(PLATFORM_ID) private readonly platformId) {
   }
 
-  create(config: LoggerConfig, httpService?: NGXLoggerHttpService): NGXLogger {
+  create(config: LoggerConfig, httpService?: NGXLoggerHttpService, logMonitor?: NGXLoggerMonitor): NGXLogger {
     // you can inject your own httpService or use the default,
-    return new NGXLogger(httpService || this.httpService, config, this.platformId);
+    const logger = new NGXLogger(httpService || this.httpService, config, this.platformId);
+
+    if (logMonitor) {
+      logger.registerMonitor(logMonitor);
+    }
+
+    return logger;
   }
 }
 
