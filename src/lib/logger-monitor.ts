@@ -1,8 +1,5 @@
 import {NGXLogInterface} from './types/ngx-log.interface';
 
-export class NGXLoggerMonitor {
-
-  onLog(logObject: NGXLogInterface) {
-
-  }
+export abstract class NGXLoggerMonitor {
+  abstract onLog(logObject: NGXLogInterface): void;
 }
