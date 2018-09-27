@@ -7,6 +7,8 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 ## Latest Updates to NGX Logger
 
 - Custom Log Monitoring is now available
+    - Only 1 monitor can be registered at a time, registering a new monitor overwrites the previous monitor
+    - This should be registered as soon as possible so that it does not miss any logs.
 ```typescript
 import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
 
