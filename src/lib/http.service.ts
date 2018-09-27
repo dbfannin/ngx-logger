@@ -10,10 +10,12 @@ export class NGXLoggerHttpService {
 
   }
 
-  logOnServer(url: string, log: NGXLogInterface): Observable<any> {
+  logOnServer(url: string, log: NGXLogInterface, customHeaders: HttpHeaders): Observable<any> {
+    const headers = customHeaders || new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
 
     const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
+      headers: headers
     };
 
     return this.http.post(url, log, options);

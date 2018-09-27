@@ -1,5 +1,5 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {isPlatformBrowser} from '@angular/common';
 
 import {NGXLoggerHttpService} from './http.service';
@@ -26,8 +26,9 @@ export class NGXLogger {
   private readonly _isIE: boolean;
   private readonly _logFunc: Function;
   private configService: NGXLoggerConfigEngine;
+  private _customHttpHeaders: HttpHeaders;
 
-  private loggerMonitor: NGXLoggerMonitor;
+  private _loggerMonitor: NGXLoggerMonitor;
 
   constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
               @Inject(PLATFORM_ID) private readonly platformId) {
@@ -65,8 +66,12 @@ export class NGXLogger {
     this._log(NgxLoggerLevel.ERROR, message, additional);
   }
 
+  public setCustomHttpHeaders(headers: HttpHeaders) {
+    this._customHttpHeaders = headers;
+  }
+
   public registerMonitor(monitor: NGXLoggerMonitor) {
-    this.loggerMonitor = monitor;
+    this._loggerMonitor = monitor;
   }
 
   public updateConfig(config: LoggerConfig) {
@@ -154,8 +159,8 @@ export class NGXLogger {
       lineNumber: callerDetails.lineNumber
     };
 
-    if (this.loggerMonitor) {
-      this.loggerMonitor.onLog(logObject);
+    if (this._loggerMonitor) {
+      this._loggerMonitor.onLog(logObject);
     }
 
     if (isLog2Server) {
@@ -165,7 +170,7 @@ export class NGXLogger {
       logObject.message = message;
 
       // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, logObject).subscribe((res: any) => {
+      this.httpService.logOnServer(config.serverLoggingUrl, logObject, this._customHttpHeaders).subscribe((res: any) => {
           // I don't think we should do anything on success
         },
         (error: HttpErrorResponse) => {
