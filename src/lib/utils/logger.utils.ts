@@ -27,13 +27,10 @@ export class NGXLoggerUtils {
   }
 
 
-
   /**
    *  This allows us to see who called the logger
-   *  @return {string}
-   *  @private
    */
-  static getCallerDetails(): {lineNumber: string, fileName: string} {
+  static getCallerDetails(): { lineNumber: string, fileName: string } {
     const err = (new Error(''));
 
     try {
@@ -46,19 +43,19 @@ export class NGXLoggerUtils {
       return {
         fileName: fileLineNumber[0],
         lineNumber: fileLineNumber[1]
-      }
-    } catch(e) {
+      };
+    } catch (e) {
       return {
         fileName: null,
         lineNumber: null
-      }
+      };
     }
 
   }
 
   static prepareMessage(message) {
     try {
-       if (typeof message !== 'string' && !(message instanceof Error)) {
+      if (typeof message !== 'string' && !(message instanceof Error)) {
         message = JSON.stringify(message, null, 2);
       }
     } catch (e) {
@@ -78,12 +75,12 @@ export class NGXLoggerUtils {
       try {
         // We just want to make sure the JSON can be parsed, we do not want to actually change the type
         if (typeof next === 'object') {
-          JSON.stringify(next)
+          JSON.stringify(next);
         }
 
         return next;
       } catch (e) {
-        return `The additional[${idx}] value could not be parsed using JSON.stringify().`
+        return `The additional[${idx}] value could not be parsed using JSON.stringify().`;
       }
     });
   }
