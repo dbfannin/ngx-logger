@@ -143,8 +143,9 @@ export class NGXLogger {
   private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
     const config = this.configService.getConfig();
     const isLog2Server = logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel;
-    const isLog2Console = !(level < config.level);
-    if (!(message && (isLog2Server || isLog2Console))) {
+    const isLogLevelEnabled = level >= config.level;
+
+    if (!(message && (isLog2Server || isLogLevelEnabled))) {
       return;
     }
 
@@ -168,7 +169,7 @@ export class NGXLogger {
       lineNumber: callerDetails.lineNumber
     };
 
-    if (this._loggerMonitor) {
+    if (this._loggerMonitor && isLogLevelEnabled) {
       this._loggerMonitor.onLog(logObject);
     }
 
@@ -190,8 +191,7 @@ export class NGXLogger {
 
 
     // if no message or the log level is less than the environ
-    if (isLog2Console) {
-
+    if (isLogLevelEnabled && !config.disableConsoleLogging) {
       const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString, callerDetails.fileName, callerDetails.lineNumber);
 
       return this._logFunc(level, metaString, message, additional);

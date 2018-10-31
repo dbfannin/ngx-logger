@@ -6,6 +6,9 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 
 ## Latest Updates to NGX Logger
 
+- Using the NGXLoggerMonitor and want to disable console logs? now you can!
+    - new config option disableConsoleLogging will disable console logs, but still alert to the log monitor
+
 - Custom HTTP Headers
     - If you use an auth token, or need to pass in a custom header, now you can!
 ```typescript
@@ -118,6 +121,7 @@ export class YourComponent {
 - serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
 - serverLoggingUrl - URL to POST logs
 - level: The app will only log message for that level or higher (OFF disables the logger for the client)
+- disableConsoleLogging: disables the console logging, while still alerting the log monitor
 
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF

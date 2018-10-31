@@ -4,4 +4,5 @@ export class LoggerConfig {
   level: NgxLoggerLevel;
   serverLogLevel?: NgxLoggerLevel;
   serverLoggingUrl?: string;
+  disableConsoleLogging?: boolean;
 }
