@@ -8,23 +8,26 @@
     <div class="log-level-display">
       <mat-chip-list [selectable]="false">
         <strong>Logger Level</strong>
-        <mat-chip [color]="loggerColor" [selected]="currentLogLevelString !== 'Off'">{{currentLogLevelString}}</mat-chip>
+        <mat-chip [color]="loggerColor" [selected]="currentLogLevel !== NgxLoggerLevel.OFF">{{NgxLoggerLevel[currentLogLevel]}}</mat-chip>
       </mat-chip-list>
     </div>
     <div class="button-row">
-      <button mat-flat-button color="primary" (click)="handleButtonClick('Debug')">Debug</button>
-      <button mat-flat-button color="primary" (click)="handleButtonClick('Trace')">Trace</button>
+      <button mat-flat-button color="primary" (click)="handleButtonClick(NgxLoggerLevel.TRACE)">Trace</button>
+      <button mat-flat-button color="primary" (click)="handleButtonClick(NgxLoggerLevel.DEBUG)">Debug</button>
     </div>
     <div class="button-row">
-      <button mat-flat-button color="accent" (click)="handleButtonClick('Info')">Info</button>
-      <button mat-flat-button color="accent" (click)="handleButtonClick('Log')">Log</button>
+      <button mat-flat-button color="accent" (click)="handleButtonClick(NgxLoggerLevel.INFO)">Info</button>
+      <button mat-flat-button color="accent" (click)="handleButtonClick(NgxLoggerLevel.LOG)">Log</button>
     </div>
     <div class="button-row">
-      <button mat-flat-button color="warn" (click)="handleButtonClick('Warn')">Warn</button>
-      <button mat-flat-button color="warn" (click)="handleButtonClick('Error')">Error</button>
+      <button mat-flat-button color="warn" (click)="handleButtonClick(NgxLoggerLevel.WARN)">Warn</button>
+      <button mat-flat-button color="warn" (click)="handleButtonClick(NgxLoggerLevel.ERROR)">Error</button>
     </div>
     <div class="button-row">
-      <button mat-stroked-button (click)="handleButtonClick('Off')">Off (Nothing will be logged)</button>
+      <button mat-flat-button color="warn" (click)="handleButtonClick(NgxLoggerLevel.FATAL)">Fatal</button>
+    </div>
+    <div class="button-row">
+      <button mat-stroked-button (click)="handleButtonClick(NgxLoggerLevel.OFF)">Off (Nothing will be logged)</button>
     </div>
   </mat-card-content>
 </mat-card>

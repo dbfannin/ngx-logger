@@ -1,13 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormBuilder
-} from '@angular/forms';
-import { NgxLoggerLevel } from 'ngx-logger';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Validators, FormBuilder} from '@angular/forms';
+import {NgxLoggerLevel} from 'ngx-logger';
 
-import { LogEvent } from '../models/log-event.model';
+import {LogEvent} from '../models/log-event.model';
 
 export interface LoggerSelectionOption {
   value: NgxLoggerLevel;
@@ -33,16 +28,19 @@ export class LoggerFormComponent implements OnInit {
 
   /* Used in the mat-select on the form */
   logTypes: LoggerSelectionOption[] = [
-    { value: NgxLoggerLevel.TRACE, viewValue: 'Trace' },
-    { value: NgxLoggerLevel.DEBUG, viewValue: 'Debug' },
-    { value: NgxLoggerLevel.INFO, viewValue: 'Info' },
-    { value: NgxLoggerLevel.LOG, viewValue: 'Log' },
-    { value: NgxLoggerLevel.WARN, viewValue: 'Warn' },
-    { value: NgxLoggerLevel.ERROR, viewValue: 'Error' }
+    {value: NgxLoggerLevel.TRACE, viewValue: 'Trace'},
+    {value: NgxLoggerLevel.DEBUG, viewValue: 'Debug'},
+    {value: NgxLoggerLevel.INFO, viewValue: 'Info'},
+    {value: NgxLoggerLevel.LOG, viewValue: 'Log'},
+    {value: NgxLoggerLevel.WARN, viewValue: 'Warn'},
+    {value: NgxLoggerLevel.ERROR, viewValue: 'Error'}
   ];
-  constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {}
+  constructor(private fb: FormBuilder) {
+  }
+
+  ngOnInit() {
+  }
 
   /**
    * Take the message and type of logging to be performed and emits it to the parent component.

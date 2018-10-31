@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxLoggerLevel, NGXLogger } from 'ngx-logger';
+import {Component} from '@angular/core';
+import {NgxLoggerLevel, NGXLogger} from 'ngx-logger';
 
-import { LogEvent } from './models/log-event.model';
+import {LogEvent} from './models/log-event.model';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  constructor(private logger: NGXLogger) {}
-
-  ngOnInit() {}
+export class AppComponent {
+  constructor(private logger: NGXLogger) {
+  }
 
   /**
    * Updates the logger config to the new log level
    * @param newLevel
    */
   handleLogLevelChange(newLevel: NgxLoggerLevel) {
-    this.logger.updateConfig({ level: newLevel });
+    this.logger.updateConfig({level: newLevel});
   }
 
   /**
@@ -45,8 +44,8 @@ export class AppComponent implements OnInit {
       case NgxLoggerLevel.ERROR:
         this.logger.error(log.logMessage);
         break;
-
-      default:
+      case NgxLoggerLevel.FATAL:
+        this.logger.fatal(log.logMessage);
         break;
     }
   }
