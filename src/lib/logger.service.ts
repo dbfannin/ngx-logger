@@ -17,6 +17,7 @@ export const Levels = [
   'LOG',
   'WARN',
   'ERROR',
+  'FATAL',
   'OFF'
 ];
 
@@ -66,6 +67,10 @@ export class NGXLogger {
     this._log(NgxLoggerLevel.ERROR, message, additional);
   }
 
+  public fatal(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.FATAL, message, additional);
+  }
+
   public setCustomHttpHeaders(headers: HttpHeaders) {
     this._customHttpHeaders = headers;
   }
@@ -93,6 +98,7 @@ export class NGXLogger {
         console.warn(`${metaString} `, message, ...additional);
         break;
       case NgxLoggerLevel.ERROR:
+      case NgxLoggerLevel.FATAL:
         console.error(`${metaString} `, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
@@ -115,6 +121,7 @@ export class NGXLogger {
         console.warn(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       case NgxLoggerLevel.ERROR:
+      case NgxLoggerLevel.FATAL:
         console.error(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:

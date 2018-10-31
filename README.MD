@@ -120,7 +120,7 @@ export class YourComponent {
 - level: The app will only log message for that level or higher (OFF disables the logger for the client)
 
 ```
-TRACE|DEBUG|INFO|LOG|WARN|ERROR|OFF
+TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF
 ```
 
 ## Server Side Logging

@@ -25,6 +25,9 @@ export class NGXLoggerMock {
   error(message: any, ...additional: any[]) {
   }
 
+  fatal(message: any, ...additional: any[]) {
+  }
+
   updateConfig(config: any) {
 
   }

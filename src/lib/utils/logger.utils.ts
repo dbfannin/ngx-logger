@@ -19,6 +19,7 @@ export class NGXLoggerUtils {
         return 'gray';
       case NgxLoggerLevel.WARN:
       case NgxLoggerLevel.ERROR:
+      case NgxLoggerLevel.FATAL:
         return 'red';
       case NgxLoggerLevel.OFF:
       default:
