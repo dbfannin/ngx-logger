@@ -105,8 +105,7 @@ import { NGXLogger } from 'ngx-logger';
 @Component({
   selector: 'your-component',
   templateUrl: './your.component.html',
-  styleUrls: ['your.component.less'],
-  providers: [NGXLogger]
+  styleUrls: ['your.component.scss']
 })
 export class YourComponent {
   constructor(private logger: NGXLogger) {
