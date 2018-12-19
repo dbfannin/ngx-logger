@@ -127,9 +127,11 @@ export class NGXLogger {
       case NgxLoggerLevel.INFO:
         console.info(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
-      case NgxLoggerLevel.TRACE:
-        console.trace(`%c${metaString}`, `color:${color}`, message, ...additional);
-        break;
+      //  Disabling console.trace since the stack trace is not helpful. it is showing the stack trace of
+      // the console.trace statement
+      // case NgxLoggerLevel.TRACE:
+      //   console.trace(`%c${metaString}`, `color:${color}`, message, ...additional);
+      //   break;
 
       //  Disabling console.debug, because Has this hidden by default.
       // case NgxLoggerLevel.DEBUG:
