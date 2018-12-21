@@ -10,16 +10,17 @@ export class NGXLoggerUtils {
 
   static getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
     switch (level) {
-      case NgxLoggerLevel.TRACE:
-        return 'blue';
       case NgxLoggerLevel.DEBUG:
-        return 'teal';
+        return 'blue';
       case NgxLoggerLevel.INFO:
-      case NgxLoggerLevel.LOG:
+      case NgxLoggerLevel.NOTICE:
+        return 'teal';
+      case NgxLoggerLevel.WARNING:
         return 'gray';
-      case NgxLoggerLevel.WARN:
-      case NgxLoggerLevel.ERROR:
-      case NgxLoggerLevel.FATAL:
+      case NgxLoggerLevel.ERR:
+      case NgxLoggerLevel.CRIT:
+      case NgxLoggerLevel.ALERT:
+      case NgxLoggerLevel.EMERG:
         return 'red';
       case NgxLoggerLevel.OFF:
       default:

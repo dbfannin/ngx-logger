@@ -11,13 +11,14 @@ import {NGXLoggerMonitor} from './logger-monitor';
 import {NGXLogInterface} from './types/ngx-log.interface';
 
 export const Levels = [
-  'TRACE',
   'DEBUG',
   'INFO',
-  'LOG',
-  'WARN',
-  'ERROR',
-  'FATAL',
+  'NOTICE',
+  'WARNING',
+  'ERR',
+  'CRIT',
+  'ALERT',
+  'EMERG',
   'OFF'
 ];
 
@@ -43,10 +44,6 @@ export class NGXLogger {
 
   }
 
-  public trace(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.TRACE, message, additional);
-  }
-
   public debug(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.DEBUG, message, additional);
   }
@@ -55,20 +52,28 @@ export class NGXLogger {
     this._log(NgxLoggerLevel.INFO, message, additional);
   }
 
-  public log(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.LOG, message, additional);
+  public notice(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.NOTICE, message, additional);
   }
 
-  public warn(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.WARN, message, additional);
+  public warning(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.WARNING, message, additional);
   }
 
-  public error(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.ERROR, message, additional);
+  public err(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.ERR, message, additional);
   }
 
-  public fatal(message, ...additional: any[]): void {
-    this._log(NgxLoggerLevel.FATAL, message, additional);
+  public crit(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.CRIT, message, additional);
+  }
+
+  public alert(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.ALERT, message, additional);
+  }
+
+  public emerg(message, ...additional: any[]): void {
+    this._log(NgxLoggerLevel.EMERG, message, additional);
   }
 
   public setCustomHttpHeaders(headers: HttpHeaders) {
@@ -94,14 +99,17 @@ export class NGXLogger {
     additional = additional || [];
 
     switch (level) {
-      case NgxLoggerLevel.WARN:
+      case NgxLoggerLevel.WARNING:
         console.warn(`${metaString} `, message, ...additional);
         break;
-      case NgxLoggerLevel.ERROR:
-      case NgxLoggerLevel.FATAL:
+      case NgxLoggerLevel.ERR:
+      case NgxLoggerLevel.CRIT:
+      case NgxLoggerLevel.ALERT:
+      case NgxLoggerLevel.EMERG:
         console.error(`${metaString} `, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
+      case NgxLoggerLevel.NOTICE:
         console.info(`${metaString} `, message, ...additional);
         break;
       default:
@@ -117,14 +125,17 @@ export class NGXLogger {
     additional = additional || [];
 
     switch (level) {
-      case NgxLoggerLevel.WARN:
+      case NgxLoggerLevel.WARNING:
         console.warn(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
-      case NgxLoggerLevel.ERROR:
-      case NgxLoggerLevel.FATAL:
+      case NgxLoggerLevel.ERR:
+      case NgxLoggerLevel.CRIT:
+      case NgxLoggerLevel.ALERT:
+      case NgxLoggerLevel.EMERG:
         console.error(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       case NgxLoggerLevel.INFO:
+      case NgxLoggerLevel.NOTICE:
         console.info(`%c${metaString}`, `color:${color}`, message, ...additional);
         break;
       //  Disabling console.trace since the stack trace is not helpful. it is showing the stack trace of
@@ -186,7 +197,7 @@ export class NGXLogger {
           // I don't think we should do anything on success
         },
         (error: HttpErrorResponse) => {
-          this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
+          this._log(NgxLoggerLevel.ERR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
         }
       );
     }

@@ -7,25 +7,28 @@ export class NGXLoggerMock {
   constructor() {
   }
 
-  trace(message: any, ...additional: any[]) {
-  }
-
   debug(message: any, ...additional: any[]) {
   }
 
   info(message: any, ...additional: any[]) {
   }
 
-  log(message: any, ...additional: any[]) {
+  notice(message: any, ...additional: any[]) {
   }
 
-  warn(message: any, ...additional: any[]) {
+  warning(message: any, ...additional: any[]) {
   }
 
-  error(message: any, ...additional: any[]) {
+  err(message: any, ...additional: any[]) {
   }
 
-  fatal(message: any, ...additional: any[]) {
+  crit(message: any, ...additional: any[]) {
+  }
+
+  alert(message: any, ...additional: any[]) {
+  }
+
+  emerg(message: any, ...additional: any[]) {
   }
 
   updateConfig(config: any) {
