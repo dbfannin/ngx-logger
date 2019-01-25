@@ -1,4 +1,4 @@
-import {HttpHeaders} from '@angular/common/http';
+import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {NGXLoggerMonitor} from '../logger-monitor';
 import {LoggerConfig} from '../logger.config';
 
@@ -33,6 +33,9 @@ export class NGXLoggerMock {
   }
 
   setCustomHttpHeaders(headers: HttpHeaders) {
+  }
+
+  setCustomParams(params: HttpParams) {
   }
 
   registerMonitor(monitor: NGXLoggerMonitor) {

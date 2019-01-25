@@ -6,6 +6,13 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 
 ## Latest Updates to NGX Logger
 
+- Custom HTTP Params
+    - If you need to pass in custom HTTP Params to your backend server, you can now use setCustomParams()
+```typescript
+    this.logger.setCustomParams(new HttpParams());
+```  
+    
+
 - Using the NGXLoggerMonitor and want to disable console logs? now you can!
     - new config option disableConsoleLogging will disable console logs, but still alert to the log monitor
 
