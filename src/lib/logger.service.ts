@@ -183,12 +183,14 @@ export class NGXLogger {
     if (isLog2Server) {
       // make sure the stack gets sent to the server
       message = message instanceof Error ? message.stack : message;
-
       logObject.message = message;
 
+      const headers = this._customHttpHeaders || new HttpHeaders();
+      headers.set('Content-Type', 'application/json');
+
       const options = {
-        headers: this.httpService.setHeaders(this._customHttpHeaders),
-        params: this.httpService.setParams(this._customParams)
+        headers: headers,
+        params: this._customParams || new HttpParams()
       };
       // Allow logging on server even if client log level is off
       this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
