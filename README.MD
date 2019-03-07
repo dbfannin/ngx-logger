@@ -6,6 +6,8 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 
 ## Latest Updates to NGX Logger
 
+- Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type. 
+
 - Custom HTTP Params
     - If you need to pass in custom HTTP Params to your backend server, you can now use setCustomParams()
 ```typescript
@@ -124,10 +126,11 @@ export class YourComponent {
 
 ## Config Options
 
-- serverLogLevel - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
-- serverLoggingUrl - URL to POST logs
-- level: The app will only log message for that level or higher (OFF disables the logger for the client)
-- disableConsoleLogging: disables the console logging, while still alerting the log monitor
+- serverLogLevel {NgxLoggerLevel} - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
+- serverLoggingUrl {string} - URL to POST logs
+- level {NgxLoggerLevel} - The app will only log message for that level or higher (OFF disables the logger for the client)
+- disableConsoleLogging {boolean} - disables the console logging, while still alerting the log monitor
+- httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'} - The response type of the HTTP Logging request.
 
 ```
 TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF

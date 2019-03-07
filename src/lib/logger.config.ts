@@ -5,4 +5,5 @@ export class LoggerConfig {
   serverLogLevel?: NgxLoggerLevel;
   serverLoggingUrl?: string;
   disableConsoleLogging?: boolean;
+  httpResponseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
 }

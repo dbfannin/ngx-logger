@@ -190,7 +190,8 @@ export class NGXLogger {
 
       const options = {
         headers: headers,
-        params: this._customParams || new HttpParams()
+        params: this._customParams || new HttpParams(),
+        responseType: config.httpResponseType || 'json'
       };
       // Allow logging on server even if client log level is off
       this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
