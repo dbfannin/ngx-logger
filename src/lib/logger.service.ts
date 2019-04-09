@@ -26,7 +26,7 @@ export const Levels = [
 export class NGXLogger {
   private readonly _isIE: boolean;
   private readonly _logFunc: Function;
-  private configService: NGXLoggerConfigEngine;
+  private config: NGXLoggerConfigEngine;
   private _customHttpHeaders: HttpHeaders;
   private _customParams: HttpParams;
 
@@ -38,7 +38,7 @@ export class NGXLogger {
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
     // each instance of the logger should have their own config engine
-    this.configService = new NGXLoggerConfigEngine(loggerConfig);
+    this.config = new NGXLoggerConfigEngine(loggerConfig);
 
     this._logFunc = this._isIE ? this._logIE.bind(this) : this._logModern.bind(this);
 
@@ -85,11 +85,11 @@ export class NGXLogger {
   }
 
   public updateConfig(config: LoggerConfig) {
-    this.configService.updateConfig(config);
+    this.config.updateConfig(config);
   }
 
   public getConfigSnapshot(): LoggerConfig {
-    return this.configService.getConfig();
+    return this.config.getConfig();
   }
 
   private _logIE(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
@@ -148,7 +148,7 @@ export class NGXLogger {
   }
 
   private _log(level: NgxLoggerLevel, message, additional: any[] = [], logOnServer: boolean = true): void {
-    const config = this.configService.getConfig();
+    const config = this.config.getConfig();
     const isLog2Server = logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel;
     const isLogLevelEnabled = level >= config.level;
 

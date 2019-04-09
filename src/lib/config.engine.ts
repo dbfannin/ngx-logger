@@ -17,7 +17,8 @@ export class NGXLoggerConfigEngine {
 
 
   // TODO: add tests around cloning the config. updating an object passed into the config (or retrieving from the config)
-  // should not update the active config
+  // should not update the active config, this is a shallow clone. If our config ever becomes hierarchical we must make
+  // this a deep clone
   private _clone(object: any) {
     const cloneConfig: LoggerConfig = new LoggerConfig();
 
