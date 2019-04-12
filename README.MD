@@ -9,69 +9,63 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 - Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type. 
 
 - Custom HTTP Params
-    - If you need to pass in custom HTTP Params to your backend server, you can now use setCustomParams()
+    - If you need to pass in custom HTTP Params to your backend server, you can now use `setCustomParams()`.
 ```typescript
-    this.logger.setCustomParams(new HttpParams());
+  this.logger.setCustomParams(new HttpParams());
 ```  
-    
 
-- Using the NGXLoggerMonitor and want to disable console logs? now you can!
-    - new config option disableConsoleLogging will disable console logs, but still alert to the log monitor
+- Using the NGXLoggerMonitor and want to disable console logs? Now you can!
+    - New config option disableConsoleLogging will disable console logs, but still alert to the log monitor.
 
 - Custom HTTP Headers
     - If you use an auth token, or need to pass in a custom header, now you can!
 ```typescript
-    this.logger.setCustomHttpHeaders(new HttpHeaders({'X-Custom-Header': '123456'}));
+  this.logger.setCustomHttpHeaders(new HttpHeaders({'X-Custom-Header': '123456'}));
 ```  
-    
 
-- Custom Log Monitoring is now available
-    - Only 1 monitor can be registered at a time, registering a new monitor overwrites the previous monitor
+- Custom Log Monitoring is now available.
+    - Only one monitor can be registered at a time; registering a new monitor overwrites the previous monitor.
     - This should be registered as soon as possible so that it does not miss any logs.
 ```typescript
-import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
+  import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
 
-export class MyLoggerMonitor implements NGXLoggerMonitor {
-  onLog(log: NGXLogInterface) {
-    console.log('myCustomLoggerMonitor', log);
+  export class MyLoggerMonitor implements NGXLoggerMonitor {
+    onLog(log: NGXLogInterface) {
+      console.log('myCustomLoggerMonitor', log);
+    }
   }
-}
 ```
 
 ```typescript
-import {NGXLogger} from 'ngx-logger';
-import {MyLoggerMonitor} from './my-logger-monitor';
+  import {NGXLogger} from 'ngx-logger';
+  import {MyLoggerMonitor} from './my-logger-monitor';
 
-export class MyService {
-  constructor(private logger: NGXLogger) {
-    this.logger.registerMonitor(new MyLoggerMonitor())
+  export class MyService {
+    constructor(private logger: NGXLogger) {
+      this.logger.registerMonitor(new MyLoggerMonitor())
 
-    this.logger.error('BLAHBLAHBLAH');
+      this.logger.error('BLAHBLAHBLAH');
+    }
   }
-}
 ```
-
-
 
 - Updating your config after importing the module has never been easier...
 
-
 ```typescript
-this.logger.updateConfig({ level: NgxLoggerLevel.DEBUG });
+  this.logger.updateConfig({ level: NgxLoggerLevel.DEBUG });
 ```
 
-- You can now create a standalone logger with it's own config!
-
+- You can now create a standalone logger with its own config!
 
 ```typescript
-export class MyService {
-  private logger: NGXLogger;
-  constructor(customLogger: CustomNGXLoggerService) {
-    this.logger = customLogger.create({ level: NgxLoggerLevel.ERROR });
+  export class MyService {
+    private logger: NGXLogger;
+    constructor(customLogger: CustomNGXLoggerService) {
+      this.logger = customLogger.create({ level: NgxLoggerLevel.ERROR });
 
-    this.logger.error('BLAHBLAHBLAH');
+      this.logger.error('BLAHBLAHBLAH');
+    }
   }
-}
 ```
 
 ## Dependencies
@@ -126,58 +120,56 @@ export class YourComponent {
 
 ## Config Options
 
-- serverLogLevel {NgxLoggerLevel} - Only sends logs to the server for the level specified or higher (OFF disables the logger for the server)
-- serverLoggingUrl {string} - URL to POST logs
-- level {NgxLoggerLevel} - The app will only log message for that level or higher (OFF disables the logger for the client)
-- disableConsoleLogging {boolean} - disables the console logging, while still alerting the log monitor
-- httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'} - The response type of the HTTP Logging request.
+- level {NgxLoggerLevel}: only log messages of this level or higher (`OFF` disables the logger for the client).
+- disableConsoleLogging {boolean}: disables console logging, while still alerting the log monitor.
+- serverLogLevel {NgxLoggerLevel}: only send log messages of this level or higher to the server (`OFF` disables the logger for the server).
+- serverLoggingUrl {string}: URL to POST logs.
+- httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'}: the response type of the HTTP Logging request.
 
-```
-TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF
-```
+NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 
-## Server Side Logging
+## Server-Side Logging
 
-If serverLogginUrl exists, NGX Logger will attempt to POST that log to the server.
+If serverLoggingUrl exists, NGX Logger will attempt to POST that log to the server.
 
 Payload Example
 `{level: 'DEBUG', message: 'Your log message goes here'}`
 
-## Testing your App when using NGXLogger
+## Testing Your App When Using NGXLogger
 
-If you inject the of the NGX Logger services into your application. you will need to provide it in your Testing Module.
-All services have mocked classes that can be used for testing
+If you inject any of the NGX Logger services into your application, you will need to provide them in your Testing Module.
+All services have mocked classes that can be used for testing:
 
 - NGXLoggerHttpService: NGXLoggerHttpServiceMock
 - CustomNGXLoggerService: CustomNGXLoggerServiceMock
 - NGXLogger: NGXLoggerMock
 
-To provide them in your Testing Module
+To provide them in your Testing Module:
 
 ```typescript
-     TestBed.configureTestingModule({
-       imports: [
-         LoggerTestingModule
-       ],
-       ...
-     });
+TestBed.configureTestingModule({
+  imports: [
+    LoggerTestingModule
+  ],
+  ...
+});
 ```
 
 ## Demo App
 
-There is a demo application with examples of how to use ngx-logger. To run it perform the following
+There is a demo application with examples of how to use ngx-logger. To run it perform the following:
 
 - Clone the repo
 - Run `npm ci` or `npm install`
 - Build ngx-logger using `ng build`
 - Run `ng serve demo` to serve the app
 
-A convenience script has been added to `package.json` that performs the above steps. Simpley run `npm run demo`
+A convenience script has been added to `package.json` that performs the above steps. Simply run `npm run demo`
 to have the demo built and served.
 
 ## Development
 
-All are welcome to contribute to NGX Logger. A couple quick notes to get started..
+All are welcome to contribute to NGX Logger. A couple quick notes to get started:
 
 - NGX Logger is built with angular-cli
 - To use npm link, you must link the /src (or /dist after it is built) directory not root.
