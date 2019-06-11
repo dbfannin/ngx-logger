@@ -3,6 +3,8 @@ import {inject, TestBed} from '@angular/core/testing';
 import {NGXLogger} from './logger.service';
 import {NGXLoggerHttpService} from './http.service';
 import {NGXLoggerHttpServiceMock} from './testing/http.service.mock';
+import {NGXMapperService} from './mapper.service';
+import {NGXMapperServiceMock} from './testing/mapper.service.mock';
 import {LoggerConfig} from './logger.config';
 
 describe('NGXLogger', () => {
@@ -11,6 +13,7 @@ describe('NGXLogger', () => {
       providers: [
           NGXLogger,
         {provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock},
+        {provide: NGXMapperService, useClass: NGXMapperServiceMock},
         LoggerConfig
       ]
     });

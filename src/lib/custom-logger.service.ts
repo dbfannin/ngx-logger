@@ -4,6 +4,7 @@ import {LoggerConfig} from './logger.config';
 import {NGXLoggerHttpService} from './http.service';
 import {NGXLogger} from './logger.service';
 import {NGXLoggerMonitor} from './logger-monitor';
+import {NGXMapperService} from './mapper.service';
 
 
 /**
@@ -12,13 +13,16 @@ import {NGXLoggerMonitor} from './logger-monitor';
 @Injectable()
 export class CustomNGXLoggerService {
 
-  constructor(private readonly httpService: NGXLoggerHttpService,
+  constructor(private readonly mapperService: NGXMapperService,
+              private readonly httpService: NGXLoggerHttpService,
               @Inject(PLATFORM_ID) private readonly platformId) {
   }
 
-  create(config: LoggerConfig, httpService?: NGXLoggerHttpService, logMonitor?: NGXLoggerMonitor): NGXLogger {
+  create(config: LoggerConfig, httpService?: NGXLoggerHttpService, logMonitor?: NGXLoggerMonitor,
+         mapperService?: NGXMapperService): NGXLogger {
     // you can inject your own httpService or use the default,
-    const logger = new NGXLogger(httpService || this.httpService, config, this.platformId);
+    const logger = new NGXLogger(mapperService || this.mapperService,
+      httpService || this.httpService, config, this.platformId);
 
     if (logMonitor) {
       logger.registerMonitor(logMonitor);
