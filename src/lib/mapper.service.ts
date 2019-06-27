@@ -74,10 +74,10 @@ export class NGXMapperService {
         if (lineIndex === position.lineNumber) {
           if (generatedCodeColumn === position.columnNumber) {
             // matching column and line found
-            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine -1, sourceCodeColumn);
+            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine - 1, sourceCodeColumn);
           } else if (columnIndex + 1 === columns.length) {
             // matching column not found, but line is correct
-            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine -1, 0);
+            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine - 1, 0);
           }
         }
       }
