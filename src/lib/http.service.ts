@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpBackend, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NGXLogInterface } from './types/ngx-log.interface';
 
@@ -7,10 +7,13 @@ import { NGXLogInterface } from './types/ngx-log.interface';
 
 @Injectable()
 export class NGXLoggerHttpService {
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly httpBackend: HttpBackend) { }
 
   logOnServer(url: string, log: NGXLogInterface, options: object): Observable<any> {
-    return this.http.post(url, log, options || {});
+    // HttpBackend skips all HttpInterceptors 
+    // They may log errors using this service causing circular calls
+    const req = new HttpRequest<any>("POST", url, log, options || {});
+    return this.httpBackend.handle(req);
   }
 
 }
