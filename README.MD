@@ -135,8 +135,7 @@ NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 
 If serverLoggingUrl exists, NGX Logger will attempt to POST that log to the server.
 
-Payload Example
-`{level: 'DEBUG', message: 'Your log message goes here'}`
+The payload body is of type **NGXLogInterface**
 
 ## Testing Your App When Using NGXLogger
 
