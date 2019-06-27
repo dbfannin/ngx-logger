@@ -6,6 +6,7 @@ import {NGXLogger} from './logger.service';
 import {LoggerConfig} from './logger.config';
 import {CustomNGXLoggerService} from './custom-logger.service';
 import {NGXLoggerHttpService} from './http.service';
+import {NGXMapperService} from './mapper.service';
 
 export * from './logger.service';
 
@@ -16,6 +17,8 @@ export * from './custom-logger.service';
 export * from './logger-monitor';
 
 export * from './http.service';
+
+export * from './mapper.service';
 
 export * from './utils/logger.utils';
 export * from './types/logger-level.enum';
@@ -29,7 +32,8 @@ export * from './types/ngx-log.interface';
   providers: [
     NGXLogger,
     NGXLoggerHttpService,
-    CustomNGXLoggerService
+    CustomNGXLoggerService,
+    NGXMapperService
   ]
 })
 export class LoggerModule {
@@ -40,7 +44,8 @@ export class LoggerModule {
         {provide: LoggerConfig, useValue: config || {}},
         NGXLogger,
         NGXLoggerHttpService,
-        CustomNGXLoggerService
+        CustomNGXLoggerService,
+        NGXMapperService
       ]
     };
   }
@@ -50,7 +55,8 @@ export class LoggerModule {
       providers: [
         NGXLogger,
         NGXLoggerHttpService,
-        CustomNGXLoggerService
+        CustomNGXLoggerService,
+        NGXMapperService
       ]
     };
   }

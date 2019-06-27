@@ -9,6 +9,7 @@ import { NGXLoggerConfigEngine } from './config.engine';
 import { NGXLoggerUtils } from './utils/logger.utils';
 import { NGXLoggerMonitor } from './logger-monitor';
 import { NGXLogInterface } from './types/ngx-log.interface';
+import { NGXMapperService } from './mapper.service';
 
 export const Levels = [
   'TRACE',
@@ -32,8 +33,8 @@ export class NGXLogger {
 
   private _loggerMonitor: NGXLoggerMonitor;
 
-  constructor(private readonly httpService: NGXLoggerHttpService, loggerConfig: LoggerConfig,
-    @Inject(PLATFORM_ID) private readonly platformId) {
+  constructor(private readonly mapperService: NGXMapperService, private readonly httpService: NGXLoggerHttpService,
+              loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private readonly platformId) {
     this._isIE = isPlatformBrowser(platformId) &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
@@ -165,51 +166,52 @@ export class NGXLogger {
 
     const timestamp = new Date().toISOString();
 
-    const callerDetails = NGXLoggerUtils.getCallerDetails();
-
-    const logObject: NGXLogInterface = {
-      message: message,
-      additional: validatedAdditionalParameters,
-      level: level,
-      timestamp: timestamp,
-      fileName: callerDetails.fileName,
-      lineNumber: callerDetails.lineNumber
-    };
-
-    if (this._loggerMonitor && isLogLevelEnabled) {
-      this._loggerMonitor.onLog(logObject);
-    }
-
-    if (isLog2Server) {
-      // make sure the stack gets sent to the server
-      message = message instanceof Error ? message.stack : message;
-      logObject.message = message;
-
-      const headers = this._customHttpHeaders || new HttpHeaders();
-      headers.set('Content-Type', 'application/json');
-
-      const options = {
-        headers: headers,
-        params: this._customParams || new HttpParams(),
-        responseType: config.httpResponseType || 'json'
+    // const callerDetails = NGXLoggerUtils.getCallerDetails();
+    this.mapperService.getCallerDetails().subscribe(callerDetails => {
+      const logObject: NGXLogInterface = {
+        message: message,
+        additional: validatedAdditionalParameters,
+        level: level,
+        timestamp: timestamp,
+        fileName: callerDetails.fileName,
+        lineNumber: callerDetails.lineNumber.toString()
       };
-      // Allow logging on server even if client log level is off
-      this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
-        // I don't think we should do anything on success
-      },
-        (error: HttpErrorResponse) => {
-          this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
-        }
-      );
-    }
+
+      if (this._loggerMonitor && isLogLevelEnabled) {
+        this._loggerMonitor.onLog(logObject);
+      }
+
+      if (isLog2Server) {
+        // make sure the stack gets sent to the server
+        message = message instanceof Error ? message.stack : message;
+        logObject.message = message;
+
+        const headers = this._customHttpHeaders || new HttpHeaders();
+        headers.set('Content-Type', 'application/json');
+
+        const options = {
+          headers: headers,
+          params: this._customParams || new HttpParams(),
+          responseType: config.httpResponseType || 'json'
+        };
+        // Allow logging on server even if client log level is off
+        this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
+            // I don't think we should do anything on success
+          },
+          (error: HttpErrorResponse) => {
+            this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
+          }
+        );
+      }
 
 
-    // if no message or the log level is less than the environ
-    if (isLogLevelEnabled && !config.disableConsoleLogging) {
-      const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString, callerDetails.fileName, callerDetails.lineNumber);
+      // if no message or the log level is less than the environ
+      if (isLogLevelEnabled && !config.disableConsoleLogging) {
+        const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString,
+          callerDetails.fileName, callerDetails.lineNumber.toString());
 
-      return this._logFunc(level, metaString, message, additional);
-    }
-
+        return this._logFunc(level, metaString, message, additional);
+      }
+    });
   }
 }
