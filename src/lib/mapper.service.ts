@@ -1,9 +1,9 @@
 import {SourceMap} from '@angular/compiler';
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpBackend, HttpRequest, HttpResponse} from '@angular/common/http';
 import * as vlq from 'vlq';
 import {Observable, of} from 'rxjs';
-import {catchError, map, retry, switchMap} from 'rxjs/operators';
+import {catchError, filter, map, retry, switchMap} from 'rxjs/operators';
 import {LogPosition} from './types/log-position';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class NGXMapperService {
   private cache: { [key: string]: SourceMap } = {};
   private errorCache: { [key: string]: boolean } = {};
 
-  constructor(private http: HttpClient) {
+  constructor(private httpBackend: HttpBackend) {
   }
 
   /*
@@ -92,7 +92,11 @@ export class NGXMapperService {
    * @param distPosition
    */
   private _getSourceMap(sourceMapLocation: string, distPosition: LogPosition): Observable<LogPosition> {
-    return this.http.get<SourceMap>(sourceMapLocation).pipe(
+    const req = new HttpRequest<SourceMap>('GET', sourceMapLocation);
+
+    return this.httpBackend.handle(req).pipe(
+      filter(e => (e instanceof HttpResponse)),
+      map<HttpResponse<SourceMap>, SourceMap>((httpResponse: HttpResponse<SourceMap>) => httpResponse.body),
       map<SourceMap, LogPosition>(sourceMap => {
         // store file in cache if not already stored
         if (!this.cache.hasOwnProperty(sourceMapLocation)) {

@@ -1,5 +1,4 @@
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 
 import {NGXLogger} from './logger.service';
@@ -26,8 +25,7 @@ export * from './types/ngx-log.interface';
 
 @NgModule({
   imports: [
-    CommonModule,
-    HttpClientModule
+    CommonModule
   ],
   providers: [
     NGXLogger,
