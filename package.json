@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "3.3.13",
+  "version": "3.4.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -29,7 +29,8 @@
     "slindenberg",
     "yildiraymeric",
     "th3n3wguy <tarleton.shane@gmail.com>",
-    "bniedermeyer"
+    "bniedermeyer",
+    "jbarrett732"
   ],
   "keywords": [
     "angular",
@@ -37,6 +38,9 @@
   ],
   "bugs": {
     "url": "https://github.com/dbfannin/ngx-logger/issues"
+  },
+  "dependencies": {
+    "vlq": "^1.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.5.0",
@@ -46,7 +50,7 @@
     "@angular/cli": "^6.0.8",
     "@angular/common": "^6.0.9",
     "@angular/compiler": "^6.0.9",
-    "@angular/compiler-cli": "^8.0.0",
+    "@angular/compiler-cli": "^6.0.9",
     "@angular/core": "^6.0.9",
     "@angular/forms": "^6.0.8",
     "@angular/material": "^6.0.9",
@@ -59,26 +63,24 @@
     "core-js": "^2.5.4",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^4.1.0",
+    "karma": "~1.7.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~1.4.2",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "^5.3.0",
-    "protractor": "^6.0.0",
+    "ng-packagr": "^2.4.1",
+    "protractor": "~5.3.0",
     "rxjs": "^6.2.2",
     "ts-node": "~5.0.1",
     "tsickle": ">=0.25.5",
     "tslib": "^1.7.1",
     "tslint": "~5.9.1",
-    "typescript": "^3.4.5",
-    "vlq": "^1.0.0",
+    "typescript": "~2.7.2",
     "zone.js": "^0.8.24"
   },
   "peerDependencies": {
-    "@angular/common": "^6.0.0 || ^7.0.0",
-    "@angular/core": "^6.0.0 || ^7.0.0",
-    "rxjs": "^6.0.0",
-    "vlq": "^1.0.0"
+    "@angular/common": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@angular/core": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "rxjs": "^6.0.0"
   }
 }

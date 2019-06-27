@@ -6,4 +6,5 @@ export class LoggerConfig {
   serverLoggingUrl?: string;
   disableConsoleLogging?: boolean;
   httpResponseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
+  enableSourceMaps?: boolean;
 }

@@ -6,6 +6,8 @@ NGX Logger is a simple logging module for angular (currently supports angular 6.
 
 ## Latest Updates to NGX Logger
 
+- Support for custom parsing of source maps. In order to use it, you must set **enableSourceMaps: true** in your logger config
+
 - Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type. 
 
 - Custom HTTP Params
@@ -125,6 +127,7 @@ export class YourComponent {
 - serverLogLevel {NgxLoggerLevel}: only send log messages of this level or higher to the server (`OFF` disables the logger for the server).
 - serverLoggingUrl {string}: URL to POST logs.
 - httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'}: the response type of the HTTP Logging request.
+- enableSourceMaps {boolean}: enables manual parsing of Source Maps
 
 NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 

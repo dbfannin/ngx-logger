@@ -3,6 +3,7 @@ import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http
 import { isPlatformBrowser } from '@angular/common';
 
 import { NGXLoggerHttpService } from './http.service';
+import {LogPosition} from './types/log-position';
 import { NgxLoggerLevel } from './types/logger-level.enum';
 import { LoggerConfig } from './logger.config';
 import { NGXLoggerConfigEngine } from './config.engine';
@@ -167,7 +168,7 @@ export class NGXLogger {
     const timestamp = new Date().toISOString();
 
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
-    this.mapperService.getCallerDetails().subscribe(callerDetails => {
+    this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
       const logObject: NGXLogInterface = {
         message: message,
         additional: validatedAdditionalParameters,
