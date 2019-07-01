@@ -21,7 +21,18 @@ export class NGXMapperService {
  */
   private static getStackLine(): string {
     const error = new Error();
-    return error.stack.split('\n')[5];
+
+    try {
+      // noinspection ExceptionCaughtLocallyJS
+      throw error;
+    } catch (e) {
+
+      try {
+        return error.stack.split('\n')[5];
+      } catch (e) {
+        return null;
+      }
+    }
   }
 
   private static getPosition(stackLine: string): LogPosition {
@@ -124,6 +135,11 @@ export class NGXMapperService {
     // parse generated file mapping from stack trace
 
     const stackLine = NGXMapperService.getStackLine();
+
+    // if we were not able to parse the stackLine, just return an empty Log Position
+    if (!stackLine) {
+      return of(new LogPosition('', 0, 0));
+    }
 
     return of([
       NGXMapperService.getPosition(stackLine),
