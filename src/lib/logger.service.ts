@@ -31,6 +31,7 @@ export class NGXLogger {
   private config: NGXLoggerConfigEngine;
   private _customHttpHeaders: HttpHeaders;
   private _customParams: HttpParams;
+  private _withCredentials: boolean = false;
 
   private _loggerMonitor: NGXLoggerMonitor;
 
@@ -80,6 +81,10 @@ export class NGXLogger {
 
   public setCustomParams(params: HttpParams) {
     this._customParams = params;
+  }
+
+  public setWithCredentialsOptionValue(withCredentials: boolean) {
+    this._withCredentials = withCredentials;
   }
 
   public registerMonitor(monitor: NGXLoggerMonitor) {
@@ -193,7 +198,8 @@ export class NGXLogger {
         const options = {
           headers: headers,
           params: this._customParams || new HttpParams(),
-          responseType: config.httpResponseType || 'json'
+          responseType: config.httpResponseType || 'json',
+          withCredentials: this._withCredentials
         };
         // Allow logging on server even if client log level is off
         this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
