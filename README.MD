@@ -2,12 +2,14 @@
 
 # NGX Logger
 
+NGX Logger is a simple logging module for angular (currently supports angular 6.x and 7.x). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
+
+
 ## Breaking changes for NGX Logger 3.* to 4.*
 - Importing mocks and the logger testing module should now be imported from the new testing entrypoint 
    - `import {LoggerTestingModule} from 'ngx-logger/testing';`
-
-NGX Logger is a simple logging module for angular (currently supports angular 6.x and 7.x). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
-
+   
+   
 ## Latest Updates to NGX Logger
 - Support to set WithCredentials on your HTTP requests.
 ```typescript
