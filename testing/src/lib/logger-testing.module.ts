@@ -5,6 +5,7 @@ import { NGXLoggerHttpServiceMock } from './http.service.mock';
 import { CustomNGXLoggerServiceMock } from './custom-logger.service.mock';
 import { NGXMapperServiceMock } from './mapper.service.mock';
 import {
+  LoggerModule,
   NGXLogger,
   NGXLoggerHttpService,
   CustomNGXLoggerService,
@@ -12,6 +13,7 @@ import {
 } from 'ngx-logger';
 
 @NgModule({
+  imports: [LoggerModule],
   providers: [
     { provide: NGXLogger, useClass: NGXLoggerMock },
     { provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock },
