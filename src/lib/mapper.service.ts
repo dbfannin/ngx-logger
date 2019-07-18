@@ -145,7 +145,7 @@ export class NGXMapperService {
       NGXMapperService.getPosition(stackLine),
       NGXMapperService.getMapFilePath(stackLine)
     ]).pipe(
-      switchMap<[LogPosition, string], LogPosition>(([distPosition, sourceMapLocation]) => {
+      switchMap<[LogPosition, string], Observable<LogPosition>>(([distPosition, sourceMapLocation]) => {
 
         // if source maps are not enabled, or if we've previously tried to get the source maps, but they failed,
         // then just use the position of the JS instead of the source
