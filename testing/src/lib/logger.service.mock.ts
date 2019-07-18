@@ -40,6 +40,9 @@ export class NGXLoggerMock {
   registerMonitor(monitor: NGXLoggerMonitor) {
   }
 
+  setWithCredentialsOptionValue(withCredentials: boolean) {
+  }
+
   getConfigSnapshot(): LoggerConfig {
     return new LoggerConfig();
   }
