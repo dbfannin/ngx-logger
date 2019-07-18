@@ -14,15 +14,14 @@ import {NGXMapperService} from './mapper.service';
 export class CustomNGXLoggerService {
 
   constructor(private readonly mapperService: NGXMapperService,
-              private readonly httpService: NGXLoggerHttpService,
-              @Inject(PLATFORM_ID) private readonly platformId) {
+              private readonly httpService: NGXLoggerHttpService) {
   }
 
   create(config: LoggerConfig, httpService?: NGXLoggerHttpService, logMonitor?: NGXLoggerMonitor,
          mapperService?: NGXMapperService): NGXLogger {
     // you can inject your own httpService or use the default,
     const logger = new NGXLogger(mapperService || this.mapperService,
-      httpService || this.httpService, config, this.platformId);
+      httpService || this.httpService, config);
 
     if (logMonitor) {
       logger.registerMonitor(logMonitor);

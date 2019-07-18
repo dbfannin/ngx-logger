@@ -2,9 +2,17 @@
 
 # NGX Logger
 
+## Breaking changes for NGX Logger 3.* to 4.*
+- Importing mocks and the logger testing module should now be imported from the new testing entrypoint 
+   - `import {LoggerTestingModule} from 'ngx-logger/testing';`
+
 NGX Logger is a simple logging module for angular (currently supports angular 6.x and 7.x). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
 ## Latest Updates to NGX Logger
+- Support to set WithCredentials on your HTTP requests.
+```typescript
+this.logger.setWithCredentialsOptionValue(true);
+```
 
 - Support for custom parsing of source maps. In order to use it, you must set **enableSourceMaps: true** in your logger config
   - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json 
