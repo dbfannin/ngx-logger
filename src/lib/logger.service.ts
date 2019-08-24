@@ -158,7 +158,6 @@ export class NGXLogger {
     const config = this.config.getConfig();
     const isLog2Server = logOnServer && config.serverLoggingUrl && level >= config.serverLogLevel;
     const isLogLevelEnabled = level >= config.level;
-    message = typeof message === 'function' ? message() : message;
 
     if (!(message && (isLog2Server || isLogLevelEnabled))) {
       return;
@@ -166,6 +165,7 @@ export class NGXLogger {
 
     const logLevelString = Levels[level];
 
+    message = typeof message === 'function' ? message() : message;
     message = NGXLoggerUtils.prepareMessage(message);
 
     // only use validated parameters for HTTP requests
