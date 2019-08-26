@@ -165,6 +165,7 @@ export class NGXLogger {
 
     const logLevelString = Levels[level];
 
+    message = typeof message === 'function' ? message() : message;
     message = NGXLoggerUtils.prepareMessage(message);
 
     // only use validated parameters for HTTP requests
