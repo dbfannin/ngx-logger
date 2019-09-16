@@ -2,7 +2,11 @@
 
 # NGX Logger
 
-NGX Logger is a simple logging module for angular (currently supports angular 6.x and 7.x). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
+NGX Logger is a simple logging module for angular (currently supports angular 6.x - 8.x). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
+
+
+## We need your help!
+As open source projects grow, they become more and more work to maintain. Feature requests and bug fixes take up more and more time. We need your help to make sure we can support our community well. If you're interested in supporting ngx-logger by answering question on github, or submitting PRs for bug fixes or feature requests, please reach out to us! We would love your help!
 
 
 ## Breaking changes for NGX Logger 3.* to 4.*
