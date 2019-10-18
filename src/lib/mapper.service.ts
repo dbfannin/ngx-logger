@@ -37,7 +37,13 @@ export class NGXMapperService {
 
   private static getPosition(stackLine: string): LogPosition {
     // strip base path, then parse filename, line, and column
-    const position = stackLine.substring(stackLine.lastIndexOf('\/') + 1, stackLine.indexOf(')'));
+    const positionStartIndex = stackLine.lastIndexOf('\/');
+    let positionEndIndex = stackLine.indexOf(')');
+    if (positionEndIndex < 0) {
+      positionEndIndex = undefined;
+    }
+
+    const position = stackLine.substring(positionStartIndex + 1, positionEndIndex);
     const dataArray = position.split(':');
     if (dataArray.length === 3) {
       return new LogPosition(dataArray[0], +dataArray[1], +dataArray[2]);
@@ -46,7 +52,17 @@ export class NGXMapperService {
   }
 
   private static getTranspileLocation(stackLine: string): string {
-    return stackLine.substring(stackLine.indexOf('(') + 1, stackLine.indexOf(')'));
+    let locationStartIndex = stackLine.indexOf('(');
+    if (locationStartIndex < 0) {
+      locationStartIndex = stackLine.lastIndexOf(' ');
+    }
+
+    let locationEndIndex = stackLine.indexOf(')');
+    if (locationEndIndex < 0) {
+      locationEndIndex = undefined;
+    }
+
+    return stackLine.substring(locationStartIndex + 1, locationEndIndex);
   }
 
   private static getMapFilePath(stackLine: string): string {
