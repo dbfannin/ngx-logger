@@ -3,15 +3,14 @@ import {Injectable} from '@angular/core';
 import {HttpBackend, HttpRequest, HttpResponse} from '@angular/common/http';
 import * as vlq from 'vlq';
 import {Observable, of} from 'rxjs';
-import {catchError, filter, map, retry, switchMap} from 'rxjs/operators';
+import {catchError, filter, map, retry, shareReplay, switchMap} from 'rxjs/operators';
 import {LogPosition} from './types/log-position';
 
 @Injectable()
 export class NGXMapperService {
 
   // used to cache source maps
-  private cache: { [key: string]: SourceMap } = {};
-  private errorCache: { [key: string]: boolean } = {};
+  private logPositionRequests: Map<string, Observable<LogPosition>> = new Map();
 
   constructor(private httpBackend: HttpBackend) {
   }
@@ -121,24 +120,25 @@ export class NGXMapperService {
   private _getSourceMap(sourceMapLocation: string, distPosition: LogPosition): Observable<LogPosition> {
     const req = new HttpRequest<SourceMap>('GET', sourceMapLocation);
 
-    return this.httpBackend.handle(req).pipe(
-      filter(e => (e instanceof HttpResponse)),
-      map<HttpResponse<SourceMap>, SourceMap>((httpResponse: HttpResponse<SourceMap>) => httpResponse.body),
-      map<SourceMap, LogPosition>(sourceMap => {
-        // store file in cache if not already stored
-        if (!this.cache.hasOwnProperty(sourceMapLocation)) {
-          this.cache[sourceMapLocation] = sourceMap;
-        }
-        // map generated position to source position
-        return NGXMapperService.getMapping(sourceMap, distPosition);
-      }),
-      retry(3),
-      // if there is an error getting the source, map fall back to the filename and line number of
-      catchError(() => {
-        this.errorCache[sourceMapLocation] = true;
-        return of(distPosition);
-      })
-    );
+    if (!this.logPositionRequests.has(sourceMapLocation)) {
+      const logPosition = this.httpBackend.handle(req).pipe(
+        filter(e => (e instanceof HttpResponse)),
+        map<HttpResponse<SourceMap>, SourceMap>((httpResponse: HttpResponse<SourceMap>) => httpResponse.body),
+        map<SourceMap, LogPosition>(sourceMap => {
+          // map generated position to source position
+          return NGXMapperService.getMapping(sourceMap, distPosition);
+        }),
+        retry(3),
+        // if there is an error getting the source, map fall back to the filename and line number of
+        catchError(() => {
+          return of(distPosition);
+        }),
+        shareReplay(1)
+      );
+      this.logPositionRequests.set(sourceMapLocation, logPosition);
+    }
+
+    return this.logPositionRequests.get(sourceMapLocation);
   }
 
   /**
@@ -165,14 +165,8 @@ export class NGXMapperService {
 
         // if source maps are not enabled, or if we've previously tried to get the source maps, but they failed,
         // then just use the position of the JS instead of the source
-        if (!sourceMapsEnabled || this.errorCache.hasOwnProperty(sourceMapLocation)) {
+        if (!sourceMapsEnabled) {
           return of(distPosition);
-        }
-
-
-        // check if we have map has already, otherwise request from server
-        if (this.cache.hasOwnProperty(sourceMapLocation)) {
-          return of(NGXMapperService.getMapping(this.cache[sourceMapLocation], distPosition));
         }
 
         // finally try to get the source map and return the position
