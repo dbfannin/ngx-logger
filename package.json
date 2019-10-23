@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -20,6 +20,7 @@
     "email": "dbfannin.npm@gmail.com"
   },
   "contributors": [
+    "martin-reiterer",
     "danielsogl",
     "IsNull",
     "jensengar",
