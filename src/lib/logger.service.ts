@@ -36,8 +36,8 @@ export class NGXLogger {
   private _loggerMonitor: NGXLoggerMonitor;
 
   constructor(private readonly mapperService: NGXMapperService, private readonly httpService: NGXLoggerHttpService,
-              loggerConfig: LoggerConfig) {
-    this._isIE = navigator && navigator.userAgent &&
+              loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId) {
+    this._isIE = isPlatformBrowser(platformId) && navigator && navigator.userAgent &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
     // each instance of the logger should have their own config engine
