@@ -7,4 +7,6 @@ export class LoggerConfig {
   disableConsoleLogging?: boolean;
   httpResponseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
   enableSourceMaps?: boolean;
+  /** Custom timestamp formatter. Defaults to toISOString if undefined */
+  timestampFormatter?: (Date) => string;
 }

@@ -171,7 +171,10 @@ export class NGXLogger {
     // only use validated parameters for HTTP requests
     const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
 
-    const timestamp = new Date().toISOString();
+    /** Use custom timestamp when provided in the config, defaults to toISOString */
+    const timestamp = config.timestampFormatter ?
+      config.timestampFormatter(new Date()) :
+      new Date().toISOString();
 
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
     this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
