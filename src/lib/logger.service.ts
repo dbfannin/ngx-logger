@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, DatePipe } from '@angular/common';
 
 import { NGXLoggerHttpService } from './http.service';
 import {LogPosition} from './types/log-position';
@@ -36,7 +36,8 @@ export class NGXLogger {
   private _loggerMonitor: NGXLoggerMonitor;
 
   constructor(private readonly mapperService: NGXMapperService, private readonly httpService: NGXLoggerHttpService,
-              loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId) {
+              loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId,
+              private datePipe: DatePipe) {
     this._isIE = isPlatformBrowser(platformId) && navigator && navigator.userAgent &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
@@ -171,7 +172,9 @@ export class NGXLogger {
     // only use validated parameters for HTTP requests
     const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
 
-    const timestamp = new Date().toISOString();
+    const timestamp = config.timestampFormat ?
+     this.datePipe.transform(new Date(), config.timestampFormat) :
+     new Date().toISOString();
 
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
     this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
