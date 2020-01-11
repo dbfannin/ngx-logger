@@ -37,7 +37,7 @@ export class NGXLogger {
 
   constructor(private readonly mapperService: NGXMapperService, private readonly httpService: NGXLoggerHttpService,
               loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId,
-              private datePipe: DatePipe) {
+              private readonly datePipe: DatePipe) {
     this._isIE = isPlatformBrowser(platformId) && navigator && navigator.userAgent &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
