@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {ModuleWithProviders, NgModule} from '@angular/core';
 
 import {NGXLogger} from './logger.service';
@@ -15,7 +15,8 @@ import {NGXMapperService} from './mapper.service';
     NGXLogger,
     NGXLoggerHttpService,
     CustomNGXLoggerService,
-    NGXMapperService
+    NGXMapperService,
+    DatePipe
   ]
 })
 export class LoggerModule {
