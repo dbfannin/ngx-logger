@@ -1,3 +1,4 @@
+import {DatePipe} from '@angular/common';
 import {inject, TestBed} from '@angular/core/testing';
 import {NGXLogger} from './logger.service';
 import {NGXLoggerHttpService} from './http.service';
@@ -14,7 +15,8 @@ describe('NGXLogger', () => {
         NGXLogger,
         {provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock},
         {provide: NGXMapperService, useClass: NGXMapperServiceMock},
-        {provide: LoggerConfig, useValue: {level: NgxLoggerLevel.ERROR}}
+        {provide: LoggerConfig, useValue: {level: NgxLoggerLevel.ERROR}},
+        DatePipe
       ]
     });
   });
