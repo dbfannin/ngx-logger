@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "demo": "ng build && ng serve demo -o"
+    "demo": "ng build && ng serve demo -o",
+    "publish": "cd dist/ngx-logger && npm publish"
   },
   "repository": {
     "type": "git",
