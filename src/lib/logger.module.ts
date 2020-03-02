@@ -20,7 +20,7 @@ import {NGXMapperService} from './mapper.service';
   ]
 })
 export class LoggerModule {
-  static forRoot(config: LoggerConfig | null | undefined): ModuleWithProviders {
+  static forRoot(config: LoggerConfig | null | undefined): ModuleWithProviders<LoggerModule> {
     return {
       ngModule: LoggerModule,
       providers: [
@@ -32,7 +32,7 @@ export class LoggerModule {
       ]
     };
   }
-  static forChild(): ModuleWithProviders {
+  static forChild(): ModuleWithProviders<LoggerModule> {
     return {
       ngModule: LoggerModule,
       providers: [
