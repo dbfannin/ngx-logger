@@ -149,7 +149,7 @@ export class NGXMapperService {
    */
   public getCallerDetails(sourceMapsEnabled: boolean): Observable<LogPosition> {
     // parse generated file mapping from stack trace
-
+    this.logPositionRequests.clear();
     const stackLine = NGXMapperService.getStackLine();
 
     // if we were not able to parse the stackLine, just return an empty Log Position
