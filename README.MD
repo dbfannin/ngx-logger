@@ -4,16 +4,18 @@
 
 NGX Logger is a simple logging module for angular (currently supports angular 6+). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
+## Join the NGX Logger discord server!
+[Join our discord server!](https://discord.gg/ksAv7K) Get updated on the latest changes and newest feature! Get help faster from the community! Share implementation strategies! Make friends :)
 
 ## We need your help!
 As open source projects grow, they become more and more work to maintain. Feature requests and bug fixes take up more and more time. We need your help to make sure we can support our community well. If you're interested in supporting ngx-logger by answering question on github, or submitting PRs for bug fixes or feature requests, please reach out to us! We would love your help!
 
 
 ## Breaking changes for NGX Logger 3.* to 4.*
-- Importing mocks and the logger testing module should now be imported from the new testing entrypoint 
+- Importing mocks and the logger testing module should now be imported from the new testing entrypoint
    - `import {LoggerTestingModule} from 'ngx-logger/testing';`
-   
-   
+
+
 ## Latest Updates to NGX Logger
 - Support to set WithCredentials on your HTTP requests.
 ```typescript
@@ -21,15 +23,15 @@ this.logger.setWithCredentialsOptionValue(true);
 ```
 
 - Support for custom parsing of source maps. In order to use it, you must set **enableSourceMaps: true** in your logger config
-  - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json 
+  - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
 
-- Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type. 
+- Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type.
 
 - Custom HTTP Params
     - If you need to pass in custom HTTP Params to your backend server, you can now use `setCustomParams()`.
 ```typescript
   this.logger.setCustomParams(new HttpParams());
-```  
+```
 
 - Using the NGXLoggerMonitor and want to disable console logs? Now you can!
     - New config option disableConsoleLogging will disable console logs, but still alert to the log monitor.
@@ -38,7 +40,7 @@ this.logger.setWithCredentialsOptionValue(true);
     - If you use an auth token, or need to pass in a custom header, now you can!
 ```typescript
   this.logger.setCustomHttpHeaders(new HttpHeaders({'X-Custom-Header': '123456'}));
-```  
+```
 
 - Custom Log Monitoring is now available.
     - Only one monitor can be registered at a time; registering a new monitor overwrites the previous monitor.
