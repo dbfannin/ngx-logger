@@ -6,12 +6,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-publish": "npm run build && npm run publish",
-    "test": "ng test",
+    "test-build-publish": "npm run test && npm run build && cd dist/ngx-logger && npm publish",
+    "test": "ng test --project=ngx-logger --watch=false",
+    "test-watch": "ng test --project=ngx-logger --watch=true",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "demo": "ng build && ng serve demo -o",
-    "publish": "cd dist/ngx-logger && npm publish"
+    "demo": "ng build && ng serve demo -o"
   },
   "repository": {
     "type": "git",
