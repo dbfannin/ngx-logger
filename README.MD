@@ -145,9 +145,8 @@ export class YourComponent {
 - serverLoggingUrl {string}: URL to POST logs.
 - httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'}: the response type of the HTTP Logging request.
 - enableSourceMaps {boolean}: enables manual parsing of Source Maps
-   - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
-- timestampFormat {'short' | 'medium' | 'long' | 'full' | 'shortDate' | 'mediumDate' | 'longDate' | 'fullDate' | 'shortTime' | 'mediumTime' | 'longTime' | 'fullTime'}: format for the timestamp displayed with each log message. Can be any of the classic formatting options from the Angular [DatePipe](https://angular.io/api/common/DatePipe#pre-defined-format-options).
-
+  - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
+- timestampFormat {string}: format for the timestamp displayed with each log message. Can be any of the formatting options accepted by the classic Angular [DatePipe](https://angular.io/api/common/DatePipe#pre-defined-format-options).
 
 NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 
