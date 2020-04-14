@@ -8,10 +8,10 @@ export class NGXLoggerUtils {
     return `${timestamp} ${logLevel}${fileDetails}`;
   }
 
-  static getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
+  static getColor(level: NgxLoggerLevel): 'purple' | 'teal' | 'gray' | 'red' | undefined {
     switch (level) {
       case NgxLoggerLevel.TRACE:
-        return 'blue';
+        return 'purple';
       case NgxLoggerLevel.DEBUG:
         return 'teal';
       case NgxLoggerLevel.INFO:
