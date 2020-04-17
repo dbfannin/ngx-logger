@@ -10,5 +10,5 @@ export class LoggerConfig {
   enableSourceMaps?: boolean;
   /** Timestamp format: any format accepted by Angular DatePipe. Defaults to ISOString */
   timestampFormat?: string;
-  customColorScheme?: LoggerColorScheme;
+  colorScheme?: LoggerColorScheme;
 }

@@ -123,7 +123,7 @@ export class NGXLogger {
   }
 
   private _logModern(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
-    const configuredColors = this.getConfigSnapshot().customColorScheme;
+    const configuredColors = this.getConfigSnapshot().colorScheme;
     const color = NGXLoggerUtils.getColor(level, configuredColors);
 
     // make sure additional isn't null or undefined so that ...additional doesn't error

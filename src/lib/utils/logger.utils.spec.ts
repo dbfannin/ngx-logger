@@ -18,16 +18,16 @@ describe('NGXLoggerUtils', () => {
 
     it('should return custom values if config is provided', () => {
       const config = new LoggerConfig();
-      config.customColorScheme = ['#800080', '#008080', '#808080', '#808080', '#FF0000', '#FF0000', '#FF0000'];
+      config.colorScheme = ['#800080', '#008080', '#808080', '#808080', '#FF0000', '#FF0000', '#FF0000'];
 
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.TRACE, config.customColorScheme)).toBe('#800080');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.customColorScheme)).toBe('#008080');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.INFO, config.customColorScheme)).toBe('#808080');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.LOG, config.customColorScheme)).toBe('#808080');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.WARN, config.customColorScheme)).toBe('#FF0000');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.ERROR, config.customColorScheme)).toBe('#FF0000');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.FATAL, config.customColorScheme)).toBe('#FF0000');
-      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.OFF, config.customColorScheme)).toBeUndefined();
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.TRACE, config.colorScheme)).toBe('#800080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.colorScheme)).toBe('#008080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.INFO, config.colorScheme)).toBe('#808080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.LOG, config.colorScheme)).toBe('#808080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.WARN, config.colorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.ERROR, config.colorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.FATAL, config.colorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.OFF, config.colorScheme)).toBeUndefined();
     });
   });
 });
