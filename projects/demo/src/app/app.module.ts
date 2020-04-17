@@ -16,7 +16,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { AppComponent } from './app.component';
 import { LogConfigComponent } from './log-config/log-config.component';
 import { LoggerFormComponent } from './logger-form/logger-form.component';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, LogConfigComponent, LoggerFormComponent],
@@ -25,7 +25,9 @@ import { HttpClientModule } from "@angular/common/http";
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    LoggerModule.forRoot({ level: NgxLoggerLevel.DEBUG }),
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.DEBUG
+    }),
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
@@ -37,4 +39,4 @@ import { HttpClientModule } from "@angular/common/http";
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

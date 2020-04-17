@@ -17,7 +17,9 @@ export class AppComponent {
    * @param newLevel
    */
   handleLogLevelChange(newLevel: NgxLoggerLevel) {
-    this.logger.updateConfig({level: newLevel});
+    const updatedConfig = this.logger.getConfigSnapshot();
+    updatedConfig.level = newLevel;
+    this.logger.updateConfig(updatedConfig);
   }
 
   /**

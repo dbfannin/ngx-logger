@@ -1,4 +1,4 @@
-import {NgxLoggerLevel} from '../types/logger-level.enum';
+import { NgxLoggerLevel } from '../types/logger-level.enum';
 
 export class NGXLoggerUtils {
 
@@ -8,25 +8,34 @@ export class NGXLoggerUtils {
     return `${timestamp} ${logLevel}${fileDetails}`;
   }
 
-  static getColor(level: NgxLoggerLevel): 'blue' | 'teal' | 'gray' | 'red' | undefined {
+  static getColor(level: NgxLoggerLevel, config?: Array<string>): string | undefined {
     switch (level) {
       case NgxLoggerLevel.TRACE:
-        return 'blue';
+        return this.getColorFromConfig(NgxLoggerLevel.TRACE, 'purple', config);
       case NgxLoggerLevel.DEBUG:
-        return 'teal';
+        return this.getColorFromConfig(NgxLoggerLevel.DEBUG, 'teal', config);
       case NgxLoggerLevel.INFO:
+        return this.getColorFromConfig(NgxLoggerLevel.INFO, 'gray', config);
       case NgxLoggerLevel.LOG:
-        return 'gray';
+        return this.getColorFromConfig(NgxLoggerLevel.INFO, 'gray', config);
       case NgxLoggerLevel.WARN:
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
       case NgxLoggerLevel.ERROR:
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
       case NgxLoggerLevel.FATAL:
-        return 'red';
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
       case NgxLoggerLevel.OFF:
       default:
         return;
     }
   }
 
+  private static getColorFromConfig(level: number, defaultValue: string, config: Array<string>): string | undefined {
+    if (!config) {
+      return defaultValue;
+    }
+    return config[level];
+  }
 
   /**
    *  This allows us to see who called the logger

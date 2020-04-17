@@ -3,7 +3,7 @@ import { HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http
 import { isPlatformBrowser, DatePipe } from '@angular/common';
 
 import { NGXLoggerHttpService } from './http.service';
-import {LogPosition} from './types/log-position';
+import { LogPosition } from './types/log-position';
 import { NgxLoggerLevel } from './types/logger-level.enum';
 import { LoggerConfig } from './logger.config';
 import { NGXLoggerConfigEngine } from './config.engine';
@@ -36,8 +36,8 @@ export class NGXLogger {
   private _loggerMonitor: NGXLoggerMonitor;
 
   constructor(private readonly mapperService: NGXMapperService, private readonly httpService: NGXLoggerHttpService,
-              loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId,
-              private readonly datePipe: DatePipe) {
+    loggerConfig: LoggerConfig, @Inject(PLATFORM_ID) private platformId,
+    private readonly datePipe: DatePipe) {
     this._isIE = isPlatformBrowser(platformId) && navigator && navigator.userAgent &&
       !!(navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.match(/Trident\//) || navigator.userAgent.match(/Edge\//));
 
@@ -123,8 +123,8 @@ export class NGXLogger {
   }
 
   private _logModern(level: NgxLoggerLevel, metaString: string, message: string, additional: any[]): void {
-
-    const color = NGXLoggerUtils.getColor(level);
+    const configuredColors = this.getConfigSnapshot().customColorScheme;
+    const color = NGXLoggerUtils.getColor(level, configuredColors);
 
     // make sure additional isn't null or undefined so that ...additional doesn't error
     additional = additional || [];
@@ -173,8 +173,8 @@ export class NGXLogger {
     const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
 
     const timestamp = config.timestampFormat ?
-     this.datePipe.transform(new Date(), config.timestampFormat) :
-     new Date().toISOString();
+      this.datePipe.transform(new Date(), config.timestampFormat) :
+      new Date().toISOString();
 
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
     this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
@@ -207,8 +207,8 @@ export class NGXLogger {
         };
         // Allow logging on server even if client log level is off
         this.httpService.logOnServer(config.serverLoggingUrl, logObject, options).subscribe((res: any) => {
-            // I don't think we should do anything on success
-          },
+          // I don't think we should do anything on success
+        },
           (error: HttpErrorResponse) => {
             this._log(NgxLoggerLevel.ERROR, `FAILED TO LOG ON SERVER: ${message}`, [error], false);
           }

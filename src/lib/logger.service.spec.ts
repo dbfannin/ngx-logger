@@ -46,8 +46,6 @@ describe('NGXLogger', () => {
     it('should call _log with trace', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.trace('message');
@@ -61,8 +59,6 @@ describe('NGXLogger', () => {
     it('should call _log with debug', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.debug('message');
@@ -76,8 +72,6 @@ describe('NGXLogger', () => {
     it('should call _log with info', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.info('message');
@@ -91,8 +85,6 @@ describe('NGXLogger', () => {
     it('should call _log with log', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.log('message');
@@ -106,8 +98,6 @@ describe('NGXLogger', () => {
     it('should call _log with warn', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.warn('message');
@@ -121,8 +111,6 @@ describe('NGXLogger', () => {
     it('should call _log with error', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.error('message');
@@ -136,8 +124,6 @@ describe('NGXLogger', () => {
     it('should call _log with fatal', inject(
       [NGXLogger],
       (logger: NGXLogger) => {
-
-
         const logSpy = spyOn(<any>logger, '_log');
 
         logger.fatal('message');
