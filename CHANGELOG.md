@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - None at the time.
 
+## [4.1.6] - 2020-04-16
+
+### Added
+
+- Now supports custom color schemes for logs (see README)
+
+
 ## [4.1.5] - 2020-04-16
 
 ### Fixed

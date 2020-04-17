@@ -1,4 +1,5 @@
-import { NgxLoggerLevel } from '../types/logger-level.enum';
+import {DEFAULT_COLOR_SCHEME} from '../resources/color-schemes';
+import {NgxLoggerLevel} from '../types/logger-level.enum';
 
 export class NGXLoggerUtils {
 
@@ -8,33 +9,34 @@ export class NGXLoggerUtils {
     return `${timestamp} ${logLevel}${fileDetails}`;
   }
 
-  static getColor(level: NgxLoggerLevel, config?: Array<string>): string | undefined {
+  static getColor(level: NgxLoggerLevel, configColorScheme?: Array<string>): string | undefined {
     switch (level) {
       case NgxLoggerLevel.TRACE:
-        return this.getColorFromConfig(NgxLoggerLevel.TRACE, 'purple', config);
+        return this.getColorFromConfig(NgxLoggerLevel.TRACE, configColorScheme);
       case NgxLoggerLevel.DEBUG:
-        return this.getColorFromConfig(NgxLoggerLevel.DEBUG, 'teal', config);
+        return this.getColorFromConfig(NgxLoggerLevel.DEBUG, configColorScheme);
       case NgxLoggerLevel.INFO:
-        return this.getColorFromConfig(NgxLoggerLevel.INFO, 'gray', config);
+        return this.getColorFromConfig(NgxLoggerLevel.INFO, configColorScheme);
       case NgxLoggerLevel.LOG:
-        return this.getColorFromConfig(NgxLoggerLevel.INFO, 'gray', config);
+        return this.getColorFromConfig(NgxLoggerLevel.INFO, configColorScheme);
       case NgxLoggerLevel.WARN:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
       case NgxLoggerLevel.ERROR:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
       case NgxLoggerLevel.FATAL:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, 'red', config);
+        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
       case NgxLoggerLevel.OFF:
       default:
         return;
     }
   }
 
-  private static getColorFromConfig(level: number, defaultValue: string, config: Array<string>): string | undefined {
-    if (!config) {
-      return defaultValue;
+  private static getColorFromConfig(level: number, configColorScheme: Array<string>): string | undefined {
+    if (!configColorScheme) {
+      return DEFAULT_COLOR_SCHEME[level];
     }
-    return config[level];
+
+    return configColorScheme[level];
   }
 
   /**

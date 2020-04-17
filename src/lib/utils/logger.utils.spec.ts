@@ -1,4 +1,4 @@
-import { LoggerConfig } from './../logger.config';
+import { LoggerConfig } from '../logger.config';
 import { NGXLoggerUtils } from './logger.utils';
 
 import { NgxLoggerLevel } from '../types/logger-level.enum';
@@ -19,8 +19,6 @@ describe('NGXLoggerUtils', () => {
     it('should return custom values if config is provided', () => {
       const config = new LoggerConfig();
       config.customColorScheme = ['#800080', '#008080', '#808080', '#808080', '#FF0000', '#FF0000', '#FF0000'];
-
-      const color = NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.customColorScheme);
 
       expect(NGXLoggerUtils.getColor(NgxLoggerLevel.TRACE, config.customColorScheme)).toBe('#800080');
       expect(NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.customColorScheme)).toBe('#008080');
