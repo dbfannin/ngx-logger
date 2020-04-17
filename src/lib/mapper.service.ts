@@ -9,8 +9,11 @@ import {LogPosition} from './types/log-position';
 @Injectable()
 export class NGXMapperService {
 
-  // used to cache source maps
-  private logPositionRequests: Map<string, Observable<LogPosition>> = new Map();
+  // cache for source maps, key is source map location, ie. 'http://localhost:4200/main.js.map'
+  private sourceMapCache: Map<string, Observable<SourceMap>> = new Map();
+
+  // cache for specific log position, key is the dist position, ie 'main.js:339:21'
+  private logPositionCache: Map<string, Observable<LogPosition>> = new Map();
 
   constructor(private httpBackend: HttpBackend) {
   }
@@ -119,26 +122,43 @@ export class NGXMapperService {
    */
   private _getSourceMap(sourceMapLocation: string, distPosition: LogPosition): Observable<LogPosition> {
     const req = new HttpRequest<SourceMap>('GET', sourceMapLocation);
+    const distPositionKey = distPosition.toString();
 
-    if (!this.logPositionRequests.has(sourceMapLocation)) {
-      const logPosition = this.httpBackend.handle(req).pipe(
-        filter(e => (e instanceof HttpResponse)),
-        map<HttpResponse<SourceMap>, SourceMap>((httpResponse: HttpResponse<SourceMap>) => httpResponse.body),
-        map<SourceMap, LogPosition>(sourceMap => {
-          // map generated position to source position
-          return NGXMapperService.getMapping(sourceMap, distPosition);
-        }),
-        retry(3),
-        // if there is an error getting the source, map fall back to the filename and line number of
-        catchError(() => {
-          return of(distPosition);
-        }),
-        shareReplay(1)
-      );
-      this.logPositionRequests.set(sourceMapLocation, logPosition);
+    // if the specific log position is already in cache return it
+    if (this.logPositionCache.has(distPositionKey)) {
+      return this.logPositionCache.get(distPositionKey);
     }
 
-    return this.logPositionRequests.get(sourceMapLocation);
+    // otherwise check if the source map is already cached for given source map location
+    if (!this.sourceMapCache.has(sourceMapLocation)) {
+      // obtain the source map if not cached
+      this.sourceMapCache.set(
+        sourceMapLocation,
+        this.httpBackend.handle(req).pipe(
+          filter((e) => e instanceof HttpResponse),
+          map<HttpResponse<SourceMap>, SourceMap>(
+            (httpResponse: HttpResponse<SourceMap>) => httpResponse.body
+          ),
+          retry(3),
+          shareReplay(1)
+        )
+      );
+    }
+
+    // at this point the source map is cached, use it to get specific log position mapping
+    const logPosition$ = this.sourceMapCache.get(sourceMapLocation).pipe(
+      map<SourceMap, LogPosition>((sourceMap) =>
+        // map generated position to source position
+        NGXMapperService.getMapping(sourceMap, distPosition)
+      ),
+      catchError(() => of(distPosition)),
+      shareReplay(1)
+    );
+
+    // store specific log position in cache for given dest position and return it
+    this.logPositionCache.set(distPositionKey, logPosition$);
+
+    return logPosition$;
   }
 
   /**
