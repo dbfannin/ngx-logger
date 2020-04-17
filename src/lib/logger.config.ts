@@ -8,6 +8,7 @@ export class LoggerConfig {
   disableConsoleLogging?: boolean;
   httpResponseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
   enableSourceMaps?: boolean;
+  proxiedCaller?: boolean;
   /** Timestamp format: any format accepted by Angular DatePipe. Defaults to ISOString */
   timestampFormat?: string;
   colorScheme?: LoggerColorScheme;
