@@ -7,9 +7,7 @@ export class LoggerConfig {
   disableConsoleLogging?: boolean;
   httpResponseType?: 'arraybuffer' | 'blob' | 'text' | 'json';
   enableSourceMaps?: boolean;
-  /** Timestamp format. Defaults to ISOString */
-  timestampFormat?: 'short' | 'medium' | 'long' | 'full' | 'shortDate' |
-    'mediumDate' | 'longDate' | 'fullDate' | 'shortTime' | 'mediumTime' |
-    'longTime' | 'fullTime' ;
+  /** Timestamp format: any format accepted by Angular DatePipe. Defaults to ISOString */
+  timestampFormat?: string;
   customColorScheme?: Array<string>;
 }
