@@ -11,4 +11,5 @@ export class LoggerConfig {
   timestampFormat?: 'short' | 'medium' | 'long' | 'full' | 'shortDate' |
     'mediumDate' | 'longDate' | 'fullDate' | 'shortTime' | 'mediumTime' |
     'longTime' | 'fullTime' ;
+  customColorScheme?: Array<string>;
 }
