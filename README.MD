@@ -17,6 +17,15 @@ As open source projects grow, they become more and more work to maintain. Featur
 
 
 ## Latest Updates to NGX Logger
+- Support for Custom Color Schemes in the config
+  - uses the LoggerColorScheme type, it is an array of 7 colors, each color matches to a log level. see LogLevelEnum
+```typescript
+LoggerModule.forRoot({
+...,
+  colorScheme: ['purple', 'teal', 'gray', 'gray', 'red', 'red', 'red']
+})
+```
+
 - Support to set WithCredentials on your HTTP requests.
 ```typescript
 this.logger.setWithCredentialsOptionValue(true);
@@ -61,7 +70,7 @@ this.logger.setWithCredentialsOptionValue(true);
 
   export class MyService {
     constructor(private logger: NGXLogger) {
-      this.logger.registerMonitor(new MyLoggerMonitor())
+      this.logger.registerMonitor(new MyLoggerMonitor());
 
       this.logger.error('BLAHBLAHBLAH');
     }
@@ -147,6 +156,8 @@ export class YourComponent {
 - enableSourceMaps {boolean}: enables manual parsing of Source Maps
   - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
 - timestampFormat {string}: format for the timestamp displayed with each log message. Can be any of the formatting options accepted by the classic Angular [DatePipe](https://angular.io/api/common/DatePipe#pre-defined-format-options).
+- colorScheme {LoggerColorScheme}: a color scheme that defines which color should be used for each log level
+  - Note: the index of the scheme relates to the log level value
 
 NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 
