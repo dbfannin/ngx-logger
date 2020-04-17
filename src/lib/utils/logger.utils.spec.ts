@@ -22,8 +22,14 @@ describe('NGXLoggerUtils', () => {
 
       const color = NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.customColorScheme);
 
-      expect(color).toBe('#008080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.TRACE, config.customColorScheme)).toBe('#800080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.DEBUG, config.customColorScheme)).toBe('#008080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.INFO, config.customColorScheme)).toBe('#808080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.LOG, config.customColorScheme)).toBe('#808080');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.WARN, config.customColorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.ERROR, config.customColorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.FATAL, config.customColorScheme)).toBe('#FF0000');
+      expect(NGXLoggerUtils.getColor(NgxLoggerLevel.OFF, config.customColorScheme)).toBeUndefined();
     });
   });
-
 });
