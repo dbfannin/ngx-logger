@@ -189,7 +189,7 @@ TestBed.configureTestingModule({
 
 ## Demo App
 
-There is a demo application with examples of how to use ngx-logger. To run it perform the following:
+There is [a demo application](https://github.com/dbfannin/ngx-logger/tree/master/projects/demo/src) with examples of how to use ngx-logger. To run it perform the following:
 
 - Clone the repo
 - Run `npm ci` or `npm install`
