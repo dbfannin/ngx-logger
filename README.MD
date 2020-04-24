@@ -5,7 +5,7 @@
 NGX Logger is a simple logging module for angular (currently supports angular 6+). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
 ## Join the NGX Logger discord server!
-[Join our discord server!](https://discord.gg/ksAv7K) Get updated on the latest changes and newest feature! Get help faster from the community! Share implementation strategies! Make friends :)
+[Join our discord server!](https://discord.gg/zzkz9ny) Get updated on the latest changes and newest feature! Get help faster from the community! Share implementation strategies! Make friends :)
 
 ## We need your help!
 As open source projects grow, they become more and more work to maintain. Feature requests and bug fixes take up more and more time. We need your help to make sure we can support our community well. If you're interested in supporting ngx-logger by answering question on github, or submitting PRs for bug fixes or feature requests, please reach out to us! We would love your help!
