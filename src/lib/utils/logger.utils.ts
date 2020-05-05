@@ -1,5 +1,6 @@
 import {DEFAULT_COLOR_SCHEME} from '../resources/color-schemes';
 import {NgxLoggerLevel} from '../types/logger-level.enum';
+import {stringify} from 'flatted/esm';
 
 export class NGXLoggerUtils {
 
@@ -68,11 +69,11 @@ export class NGXLoggerUtils {
   static prepareMessage(message) {
     try {
       if (typeof message !== 'string' && !(message instanceof Error)) {
-        message = JSON.stringify(message, null, 2);
+        message = stringify(message, null, 2);
       }
     } catch (e) {
       // additional = [message, ...additional];
-      message = 'The provided "message" value could not be parsed with JSON.stringify().';
+      message = 'The provided "message" value could not be parsed with Flatted.stringify().';
     }
 
     return message;
@@ -87,12 +88,12 @@ export class NGXLoggerUtils {
       try {
         // We just want to make sure the JSON can be parsed, we do not want to actually change the type
         if (typeof next === 'object') {
-          JSON.stringify(next);
+          stringify(next);
         }
 
         return next;
       } catch (e) {
-        return `The additional[${idx}] value could not be parsed using JSON.stringify().`;
+        return `The additional[${idx}] value could not be parsed using Flatted.stringify().`;
       }
     });
   }

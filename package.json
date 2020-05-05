@@ -43,6 +43,7 @@
     "url": "https://github.com/dbfannin/ngx-logger/issues"
   },
   "dependencies": {
+    "flatted": "^2.0.2",
     "vlq": "^1.0.0"
   },
   "devDependencies": {
