@@ -51,4 +51,10 @@ export class AppComponent {
         break;
     }
   }
+
+  handleDisableFileDetails(disableFileDetails: boolean) {
+    const updatedConfig = this.logger.getConfigSnapshot();
+    updatedConfig.disableFileDetails = disableFileDetails;
+    this.logger.updateConfig(updatedConfig);
+  }
 }

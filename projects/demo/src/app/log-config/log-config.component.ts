@@ -1,4 +1,5 @@
 import {Component, Output, EventEmitter} from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material';
 import {NgxLoggerLevel} from 'ngx-logger';
 
 @Component({
@@ -15,6 +16,9 @@ export class LogConfigComponent {
   private currentLogLevel: NgxLoggerLevel = NgxLoggerLevel.DEBUG;
 
   NgxLoggerLevel = NgxLoggerLevel;
+
+  @Output()
+  disableFileDetails: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   /**
    * Get the chip color based on the current logger level configuration
@@ -47,5 +51,9 @@ export class LogConfigComponent {
     this.currentLogLevel = newLevel;
 
     this.loggerLevelChange.emit(this.currentLogLevel);
+  }
+
+  disableFileDetailsChange(change: MatSlideToggleChange) {
+    this.disableFileDetails.emit(change.checked);
   }
 }

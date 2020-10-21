@@ -29,5 +29,10 @@
     <div class="button-row">
       <button mat-stroked-button (click)="handleButtonClick(NgxLoggerLevel.OFF)">Off (Nothing will be logged)</button>
     </div>
+
+    <hr/>
+
+    <mat-slide-toggle (change)="disableFileDetailsChange($event)" color="primary" matTooltip="The file name and line won't be logged">Disable file details</mat-slide-toggle>
+
   </mat-card-content>
 </mat-card>
