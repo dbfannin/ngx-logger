@@ -11,4 +11,5 @@ export class LoggerConfig {
   /** Timestamp format: any format accepted by Angular DatePipe. Defaults to ISOString */
   timestampFormat?: string;
   colorScheme?: LoggerColorScheme;
+  disableFileDetails?: boolean;
 }

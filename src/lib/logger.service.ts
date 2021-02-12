@@ -218,8 +218,12 @@ export class NGXLogger {
 
       // if no message or the log level is less than the environ
       if (isLogLevelEnabled && !config.disableConsoleLogging) {
-        const metaString = NGXLoggerUtils.prepareMetaString(timestamp, logLevelString,
-          callerDetails.fileName, callerDetails.lineNumber.toString());
+        const metaString = NGXLoggerUtils.prepareMetaString(
+          timestamp,
+          logLevelString,
+          config.disableFileDetails ? null : callerDetails.fileName,
+          callerDetails.lineNumber.toString()
+        );
 
         return this._logFunc(level, metaString, message, additional);
       }

@@ -9,7 +9,9 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatToolbarModule,
-  MatSelectModule
+  MatSelectModule,
+  MatSlideToggleModule,
+  MatTooltipModule,
 } from '@angular/material';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
@@ -26,7 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     LoggerModule.forRoot({
-      level: NgxLoggerLevel.DEBUG
+      level: NgxLoggerLevel.DEBUG,
     }),
     MatButtonModule,
     MatCardModule,
@@ -34,7 +36,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatFormFieldModule,
     MatInputModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
