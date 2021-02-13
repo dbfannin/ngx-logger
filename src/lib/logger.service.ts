@@ -167,7 +167,6 @@ export class NGXLogger {
     const logLevelString = Levels[level];
 
     message = typeof message === 'function' ? message() : message;
-    message = NGXLoggerUtils.prepareMessage(message);
 
     // only use validated parameters for HTTP requests
     const validatedAdditionalParameters = NGXLoggerUtils.prepareAdditionalParameters(additional);
@@ -192,6 +191,7 @@ export class NGXLogger {
       }
 
       if (isLog2Server) {
+        message = NGXLoggerUtils.prepareMessage(message);
         // make sure the stack gets sent to the server
         message = message instanceof Error ? message.stack : message;
         logObject.message = message;

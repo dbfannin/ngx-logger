@@ -20,6 +20,9 @@ export class LogConfigComponent {
   @Output()
   disableFileDetails: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Output()
+  serverLogging: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   /**
    * Get the chip color based on the current logger level configuration
    */
@@ -55,5 +58,9 @@ export class LogConfigComponent {
 
   disableFileDetailsChange(change: MatSlideToggleChange) {
     this.disableFileDetails.emit(change.checked);
+  }
+
+  serverLoggingChange(change: MatSlideToggleChange) {
+    this.serverLogging.emit(change.checked);
   }
 }

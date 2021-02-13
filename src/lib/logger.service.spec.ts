@@ -7,6 +7,7 @@ import {NGXMapperService} from './mapper.service';
 import {NGXMapperServiceMock} from '../../testing/src/lib/mapper.service.mock';
 import {LoggerConfig} from './logger.config';
 import {NgxLoggerLevel} from './types/logger-level.enum';
+import { FormGroup } from '@angular/forms';
 
 describe('NGXLogger', () => {
   beforeEach(() => {
@@ -40,6 +41,25 @@ describe('NGXLogger', () => {
       expect(console.error).toHaveBeenCalled();
       expect(console.warn).not.toHaveBeenCalled();
     }
+  ));
+
+  it('should handle complex circular structures', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+          // This structure is not "stringifyable" this make sure anything can be logged
+          // Before that we used JSON.stringify and it was not working
+          const complexStructure = new FormGroup({ sub: new FormGroup({}) });
+
+          spyOn(console, 'error');
+
+          logger.error('error', complexStructure);
+
+          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), jasmine.anything(), complexStructure);
+
+          logger.error(complexStructure);
+
+          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), complexStructure);
+        }
   ));
 
   describe('trace', () => {
