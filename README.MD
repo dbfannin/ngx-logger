@@ -107,10 +107,11 @@ this.logger.setWithCredentialsOptionValue(true);
 npm install --save ngx-logger
 ```
 
-Once installed you need to import our main module:
+Once installed you need to import our main module and it's dependency on HttpClientModule:
 
 ```typescript
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { HttpClientModule } from "@angular/common/http";
 ```
 
 The only remaining part is to list the imported module in your application module, passing in a config to intialize the logger.
@@ -118,7 +119,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
+  imports: [HttpClientModule, LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
