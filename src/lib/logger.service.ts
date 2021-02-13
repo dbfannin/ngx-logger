@@ -146,10 +146,9 @@ export class NGXLogger {
       //   console.trace(`%c${metaString}`, `color:${color}`, message, ...additional);
       //   break;
 
-      //  Disabling console.debug, because Has this hidden by default.
-      // case NgxLoggerLevel.DEBUG:
-      //   console.debug(`%c${metaString}`, `color:${color}`, message, ...additional);
-      //   break;
+      case NgxLoggerLevel.DEBUG:
+        console.debug(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
       default:
         console.log(`%c${metaString}`, `color:${color}`, message, ...additional);
     }
