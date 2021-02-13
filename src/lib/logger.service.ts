@@ -178,7 +178,10 @@ export class NGXLogger {
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
     this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
       const logObject: NGXLogInterface = {
-        message: message,
+        // prepareMessage is needed to match NGXLogInterface
+        // Even though I think message should be of type any (same as console.xxx signature)
+        // I'm not doing this right now as this would be a breaking change
+        message: NGXLoggerUtils.prepareMessage(message),
         additional: validatedAdditionalParameters,
         level: level,
         timestamp: timestamp,
@@ -191,10 +194,9 @@ export class NGXLogger {
       }
 
       if (isLog2Server) {
-        message = NGXLoggerUtils.prepareMessage(message);
-        // make sure the stack gets sent to the server
-        message = message instanceof Error ? message.stack : message;
-        logObject.message = message;
+        // make sure the stack gets sent to the server (without altering the message for console logging)
+        logObject.message = message instanceof Error ? message.stack : message;
+        logObject.message = NGXLoggerUtils.prepareMessage(logObject.message);
 
         const headers = this._customHttpHeaders || new HttpHeaders();
         headers.set('Content-Type', 'application/json');
