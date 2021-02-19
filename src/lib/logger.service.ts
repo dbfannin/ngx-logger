@@ -48,6 +48,16 @@ export class NGXLogger {
 
   }
 
+  /** Get a readonly access to the level configured for the NGXLogger */
+  get level(): NgxLoggerLevel {
+    return this.config.level;
+  }
+
+  /** Get a readonly access to the serverLogLevel configured for the NGXLogger */
+  get serverLogLevel(): NgxLoggerLevel {
+    return this.config.serverLogLevel;
+  }
+
   public trace(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.TRACE, message, additional);
   }

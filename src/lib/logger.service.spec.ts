@@ -133,6 +133,42 @@ describe('NGXLogger', () => {
     ));
   });
 
+  describe('level', () => {
+    it('should return the level', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+        expect(logger.level).toEqual(NgxLoggerLevel.ERROR);
+      }
+    ));
+
+    it('should return the good level after config changes', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+        logger.updateConfig({ level: NgxLoggerLevel.TRACE });
+
+        expect(logger.level).toEqual(NgxLoggerLevel.TRACE);
+      }
+    ));
+  });
+
+  describe('serverLogLevel', () => {
+    it('should return the serverLogLevel', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+        expect(logger.serverLogLevel).toBe(undefined);
+      }
+    ));
+
+    it('should return the good serverLogLevel after config changes', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+        logger.updateConfig({ level: NgxLoggerLevel.ERROR, serverLogLevel: NgxLoggerLevel.TRACE });
+
+        expect(logger.serverLogLevel).toEqual(NgxLoggerLevel.TRACE);
+      }
+    ));
+  });
+
   describe('setCustomHttpHeaders', () => {
     // TODO
   });
