@@ -177,7 +177,7 @@ export class NGXLogger {
       new Date().toISOString();
 
     // const callerDetails = NGXLoggerUtils.getCallerDetails();
-    this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
+    this.mapperService.getCallerDetails(config.enableSourceMaps, config.proxiedSteps).subscribe((callerDetails: LogPosition) => {
       const logObject: NGXLogInterface = {
         message: message,
         additional: validatedAdditionalParameters,

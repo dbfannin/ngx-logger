@@ -21,7 +21,7 @@ export class NGXMapperService {
   /*
   Static Functions
  */
-  private static getStackLine(): string {
+  private static getStackLine(proxiedSteps: number): string {
     const error = new Error();
 
     try {
@@ -30,7 +30,7 @@ export class NGXMapperService {
     } catch (e) {
 
       try {
-        return error.stack.split('\n')[5];
+        return error.stack.split('\n')[(5 + (proxiedSteps || 0))];
       } catch (e) {
         return null;
       }
@@ -166,11 +166,12 @@ export class NGXMapperService {
    * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the file name
    * and number of the call
    * @param sourceMapsEnabled
+   * @param proxiedSteps
    */
-  public getCallerDetails(sourceMapsEnabled: boolean): Observable<LogPosition> {
+  public getCallerDetails(sourceMapsEnabled: boolean, proxiedSteps: number): Observable<LogPosition> {
     // parse generated file mapping from stack trace
 
-    const stackLine = NGXMapperService.getStackLine();
+    const stackLine = NGXMapperService.getStackLine(proxiedSteps);
 
     // if we were not able to parse the stackLine, just return an empty Log Position
     if (!stackLine) {
