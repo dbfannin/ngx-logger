@@ -51,7 +51,7 @@ export class NGXMapperService {
         const firstStackLine = error.stack.split('\n')[0];
         if (!firstStackLine.includes('.js:')) {
           // The stacktrace starts with no function call (example in Chrome or Edge)
-          defaultProxy = 5;
+          defaultProxy = defaultProxy + 1;
         }
 
         return error.stack.split('\n')[(defaultProxy + (proxiedSteps || 0))];
