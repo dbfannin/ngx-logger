@@ -39,32 +39,6 @@ export class NGXLoggerUtils {
     return configColorScheme[level];
   }
 
-  /**
-   *  This allows us to see who called the logger
-   */
-  static getCallerDetails(): { lineNumber: string, fileName: string } {
-    const err = (new Error(''));
-
-    try {
-      // this should produce the line which NGX Logger was called
-      const callerLine = err.stack.split('\n')[4].split('/');
-
-      // returns the file:lineNumber
-      const fileLineNumber = callerLine[callerLine.length - 1].replace(/[)]/g, '').split(':');
-
-      return {
-        fileName: fileLineNumber[0],
-        lineNumber: fileLineNumber[1]
-      };
-    } catch (e) {
-      return {
-        fileName: null,
-        lineNumber: null
-      };
-    }
-
-  }
-
   static prepareMessage(message) {
     try {
       if (typeof message !== 'string' && !(message instanceof Error)) {
