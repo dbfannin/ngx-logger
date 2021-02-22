@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "4.1.9",
+  "version": "4.2.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -33,7 +33,9 @@
     "th3n3wguy <tarleton.shane@gmail.com>",
     "bniedermeyer",
     "jbarrett732",
-    "qortex"
+    "qortex",
+    "bmtheo",
+    "amilor"
   ],
   "keywords": [
     "angular",
