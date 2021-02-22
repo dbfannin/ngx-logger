@@ -1,21 +1,24 @@
-import {DatePipe} from '@angular/common';
-import {inject, TestBed} from '@angular/core/testing';
-import {NGXLogger} from './logger.service';
-import {NGXLoggerHttpService} from './http.service';
-import {NGXLoggerHttpServiceMock} from '../../testing/src/lib/http.service.mock';
-import {NGXMapperService} from './mapper.service';
-import {NGXMapperServiceMock} from '../../testing/src/lib/mapper.service.mock';
-import {LoggerConfig} from './logger.config';
-import {NgxLoggerLevel} from './types/logger-level.enum';
+import { DatePipe } from '@angular/common';
+import { inject, TestBed } from '@angular/core/testing';
+import { NGXLogger } from './logger.service';
+import { NGXLoggerHttpService } from './http.service';
+import { NGXLoggerHttpServiceMock } from '../../testing/src/lib/http.service.mock';
+import { NGXMapperService } from './mapper.service';
+import { NGXMapperServiceMock } from '../../testing/src/lib/mapper.service.mock';
+import { LoggerConfig } from './logger.config';
+import { NgxLoggerLevel } from './types/logger-level.enum';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { LogPosition } from 'dist/ngx-logger/lib/types/log-position';
+import { of } from 'rxjs';
 
 describe('NGXLogger', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         NGXLogger,
-        {provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock},
-        {provide: NGXMapperService, useClass: NGXMapperServiceMock},
-        {provide: LoggerConfig, useValue: {level: NgxLoggerLevel.ERROR}},
+        { provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock },
+        { provide: NGXMapperService, useClass: NGXMapperServiceMock },
+        { provide: LoggerConfig, useValue: { level: NgxLoggerLevel.ERROR } },
         DatePipe
       ]
     });
@@ -204,4 +207,69 @@ describe('NGXLogger', () => {
   describe('_log', () => {
     // TODO
   });
+});
+
+describe('NGXLogger with mapper service', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+      ],
+      providers: [
+        NGXLogger,
+        NGXMapperService,
+        { provide: NGXLoggerHttpService, useClass: NGXLoggerHttpServiceMock },
+        { provide: LoggerConfig, useValue: { level: NgxLoggerLevel.ERROR } },
+        DatePipe
+      ]
+    });
+  });
+
+  describe('call stack', () => {
+    it('should get good sourceMap', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+
+        const mapperService = TestBed.get(NGXMapperService);
+
+        const _getSourceMapSpy = spyOn(mapperService, '_getSourceMap')
+          // calling fake _getSourceMap so it does not fail the test because of failed http request
+          .and.callFake((_: string, distPosition: LogPosition) => of(distPosition));
+
+        logger.updateConfig({
+          level: NgxLoggerLevel.ERROR,
+          enableSourceMaps: true,
+        });
+
+        logger.error('test should get good sourceMap');
+
+        // trying to match the sourceMap URL that looks like this : http://localhost:9876/src/lib/logger.service.spec.ts.map
+        expect(_getSourceMapSpy).toHaveBeenCalledWith(jasmine.stringMatching('\/src\/lib\/logger\.service\.spec\.ts\.map'), jasmine.anything());
+      }
+    ));
+
+    it('should get good LogPosition', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+
+        const mapperService = TestBed.get(NGXMapperService);
+
+        const _getSourceMapSpy = spyOn(mapperService, '_getSourceMap')
+          // calling fake _getSourceMap so it does not fail the test because of failed http request
+          .and.callFake((_: string, distPosition: LogPosition) => of(distPosition));
+
+        logger.updateConfig({
+          level: NgxLoggerLevel.ERROR,
+          enableSourceMaps: true,
+        });
+
+        logger.error('test should get good LogPosition');
+
+        // trying to match the LogPosition that looks like this logger.service.spec.ts:lineNumber:columnNumber
+        // not trying to test the lineNumber and the columnNumber as these would change when the spec file changes and is too heavy to maintain 
+        expect(_getSourceMapSpy).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({ fileName: 'logger.service.spec.ts' }));
+      }
+    ));
+  });
+
 });

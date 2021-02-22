@@ -185,7 +185,6 @@ export class NGXLogger {
       this.datePipe.transform(new Date(), config.timestampFormat) :
       new Date().toISOString();
 
-    // const callerDetails = NGXLoggerUtils.getCallerDetails();
     this.mapperService.getCallerDetails(config.enableSourceMaps, config.proxiedSteps).subscribe((callerDetails: LogPosition) => {
       const logObject: NGXLogInterface = {
         message: message,
