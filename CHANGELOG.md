@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
-- [in progress] Fix for sourcemap parsing in Firefox [#227](https://github.com/dbfannin/ngx-logger/pull/227)
-- [in progress] Fix for logging complex structures (circular) without introducing a new dependency [#223](https://github.com/dbfannin/ngx-logger/pull/223)
+## [4.2.1] - 2021-02-23
+
+### Fixed
+
+- Fix for sourcemap parsing in Firefox [#227](https://github.com/dbfannin/ngx-logger/pull/227). Thanks [@bmtheo](https://github.com/bmtheo)
+- Fix for logging complex structures (circular) without introducing a new dependency [#223](https://github.com/dbfannin/ngx-logger/pull/223). Thanks [@bmtheo](https://github.com/bmtheo)
 
 ## [4.2.0] - 2021-02-22
 
