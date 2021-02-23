@@ -1,6 +1,8 @@
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {LoggerConfig, NGXLoggerMonitor} from 'ngx-logger';
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class NGXLoggerMock {
 
   constructor() {
