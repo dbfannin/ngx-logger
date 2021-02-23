@@ -10,6 +10,7 @@ import { NgxLoggerLevel } from './types/logger-level.enum';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LogPosition } from 'dist/ngx-logger/lib/types/log-position';
 import { of } from 'rxjs';
+import { FormGroup } from '@angular/forms';
 
 describe('NGXLogger', () => {
   beforeEach(() => {
@@ -43,6 +44,25 @@ describe('NGXLogger', () => {
       expect(console.error).toHaveBeenCalled();
       expect(console.warn).not.toHaveBeenCalled();
     }
+  ));
+
+  it('should handle complex circular structures', inject(
+      [NGXLogger],
+      (logger: NGXLogger) => {
+          // This structure is not "stringifyable" this make sure anything can be logged
+          // Before that we used JSON.stringify and it was not working
+          const complexStructure = new FormGroup({ sub: new FormGroup({}) });
+
+          spyOn(console, 'error');
+
+          logger.error('error', complexStructure);
+
+          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), jasmine.anything(), complexStructure);
+
+          logger.error(complexStructure);
+
+          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), complexStructure);
+        }
   ));
 
   describe('trace', () => {

@@ -33,6 +33,7 @@
     <hr/>
 
     <mat-slide-toggle (change)="disableFileDetailsChange($event)" color="primary" matTooltip="The file name and line won't be logged">Disable file details</mat-slide-toggle>
+    <mat-slide-toggle class="server-logging" (change)="serverLoggingChange($event)" color="primary" matTooltip="The logger will send logs on a dummy url" >Server logging</mat-slide-toggle>
 
   </mat-card-content>
 </mat-card>

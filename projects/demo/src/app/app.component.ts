@@ -19,6 +19,7 @@ export class AppComponent {
   handleLogLevelChange(newLevel: NgxLoggerLevel) {
     const updatedConfig = this.logger.getConfigSnapshot();
     updatedConfig.level = newLevel;
+    updatedConfig.serverLogLevel = newLevel;
     this.logger.updateConfig(updatedConfig);
   }
 
@@ -56,5 +57,11 @@ export class AppComponent {
     const updatedConfig = this.logger.getConfigSnapshot();
     updatedConfig.disableFileDetails = disableFileDetails;
     this.logger.updateConfig(updatedConfig);
+  }
+
+  serverLogging(enabled: boolean) {
+      const updatedConfig = this.logger.getConfigSnapshot();
+      updatedConfig.serverLoggingUrl = enabled ? '/dummyURL' : null;
+      this.logger.updateConfig(updatedConfig);
   }
 }

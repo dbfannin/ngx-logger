@@ -13,7 +13,7 @@ import {
   MatSlideToggleModule,
   MatTooltipModule,
 } from '@angular/material';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppComponent } from './app.component';
 import { LogConfigComponent } from './log-config/log-config.component';
@@ -29,6 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     LoggerModule.forRoot({
       level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.DEBUG,
     }),
     MatButtonModule,
     MatCardModule,

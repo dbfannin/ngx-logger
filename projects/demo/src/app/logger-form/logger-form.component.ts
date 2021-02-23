@@ -1,6 +1,6 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {Validators, FormBuilder} from '@angular/forms';
-import {NgxLoggerLevel} from 'ngx-logger';
+import {Validators, FormBuilder, FormGroup} from '@angular/forms';
+import {NGXLogger, NgxLoggerLevel} from 'ngx-logger';
 
 import {LogEvent} from '../models/log-event.model';
 
@@ -36,7 +36,10 @@ export class LoggerFormComponent implements OnInit {
     {value: NgxLoggerLevel.ERROR, viewValue: 'Error'}
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private logger: NGXLogger
+  ) {
   }
 
   ngOnInit() {
@@ -48,4 +51,11 @@ export class LoggerFormComponent implements OnInit {
   handleFormSubmission() {
     this.logToConsole.emit(this.loggerForm.value);
   }
+
+  logComplex() {
+      const complexStructure = new FormGroup({ sub: new FormGroup({}) });
+      this.logger.error('Test complex', complexStructure);
+      this.logger.error(complexStructure);
+  }
+
 }
