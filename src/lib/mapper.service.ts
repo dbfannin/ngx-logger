@@ -1,10 +1,10 @@
-import {SourceMap} from '@angular/compiler';
-import {Injectable} from '@angular/core';
-import {HttpBackend, HttpRequest, HttpResponse} from '@angular/common/http';
+import { SourceMap } from '@angular/compiler';
+import { Injectable } from '@angular/core';
+import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import * as vlq from 'vlq';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, retry, shareReplay, switchMap} from 'rxjs/operators';
-import {LogPosition} from './types/log-position';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, retry, shareReplay, switchMap } from 'rxjs/operators';
+import { LogPosition } from './types/log-position';
 
 @Injectable()
 export class NGXMapperService {
@@ -21,7 +21,7 @@ export class NGXMapperService {
   /*
   Static Functions
  */
-  private static getStackLine(): string {
+  private static getStackLine(proxiedSteps: number): string {
     const error = new Error();
 
     try {
@@ -30,7 +30,31 @@ export class NGXMapperService {
     } catch (e) {
 
       try {
-        return error.stack.split('\n')[5];
+        // Here are different examples of stacktrace 
+
+        // Firefox (last line is the user code, the 4 first are ours):
+        // getStackLine@http://localhost:4200/main.js:358:23
+        // getCallerDetails@http://localhost:4200/main.js:557:44
+        // _log@http://localhost:4200/main.js:830:28
+        // debug@http://localhost:4200/main.js:652:14
+        // handleLog@http://localhost:4200/main.js:1158:29
+
+        // Chrome and Edge (last line is the user code):
+        // Error
+        // at Function.getStackLine (ngx-logger.js:329)
+        // at NGXMapperService.getCallerDetails (ngx-logger.js:528)
+        // at NGXLogger._log (ngx-logger.js:801)
+        // at NGXLogger.info (ngx-logger.js:631)
+        // at AppComponent.handleLog (app.component.ts:38)
+
+        let defaultProxy = 4; // We make 4 functions call before getting here
+        const firstStackLine = error.stack.split('\n')[0];
+        if (!firstStackLine.includes('.js:')) {
+          // The stacktrace starts with no function call (example in Chrome or Edge)
+          defaultProxy = defaultProxy + 1;
+        }
+
+        return error.stack.split('\n')[(defaultProxy + (proxiedSteps || 0))];
       } catch (e) {
         return null;
       }
@@ -54,9 +78,15 @@ export class NGXMapperService {
   }
 
   private static getTranspileLocation(stackLine: string): string {
+    // Example stackLine:
+    // Firefox : getStackLine@http://localhost:4200/main.js:358:23
+    // Chrome and Edge : at Function.getStackLine (ngx-logger.js:329)
     let locationStartIndex = stackLine.indexOf('(');
     if (locationStartIndex < 0) {
-      locationStartIndex = stackLine.lastIndexOf(' ');
+      locationStartIndex = stackLine.lastIndexOf('@');
+      if (locationStartIndex < 0) {
+        locationStartIndex = stackLine.lastIndexOf(' ');
+      }
     }
 
     let locationEndIndex = stackLine.indexOf(')');
@@ -166,11 +196,12 @@ export class NGXMapperService {
    * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the file name
    * and number of the call
    * @param sourceMapsEnabled
+   * @param proxiedSteps
    */
-  public getCallerDetails(sourceMapsEnabled: boolean): Observable<LogPosition> {
+  public getCallerDetails(sourceMapsEnabled: boolean, proxiedSteps: number): Observable<LogPosition> {
     // parse generated file mapping from stack trace
 
-    const stackLine = NGXMapperService.getStackLine();
+    const stackLine = NGXMapperService.getStackLine(proxiedSteps);
 
     // if we were not able to parse the stackLine, just return an empty Log Position
     if (!stackLine) {

@@ -5,20 +5,18 @@
 NGX Logger is a simple logging module for angular (currently supports angular 6+). It allows "pretty print" to the console, as well as allowing log messages to be POSTed to a URL for server-side logging.
 
 ## Join the NGX Logger discord server!
+
 [Join our discord server!](https://discord.gg/zzkz9ny) Get updated on the latest changes and newest feature! Get help faster from the community! Share implementation strategies! Make friends :)
 
 ## We need your help!
+
 As open source projects grow, they become more and more work to maintain. Feature requests and bug fixes take up more and more time. We need your help to make sure we can support our community well. If you're interested in supporting ngx-logger by answering question on github, or submitting PRs for bug fixes or feature requests, please reach out to us! We would love your help!
 
-
-## Breaking changes for NGX Logger 3.* to 4.*
-- Importing mocks and the logger testing module should now be imported from the new testing entrypoint
-   - `import {LoggerTestingModule} from 'ngx-logger/testing';`
-
-
 ## Latest Updates to NGX Logger
+
 - Support for Custom Color Schemes in the config
   - uses the LoggerColorScheme type, it is an array of 7 colors, each color matches to a log level. see LogLevelEnum
+
 ```typescript
 LoggerModule.forRoot({
 ...,
@@ -27,73 +25,88 @@ LoggerModule.forRoot({
 ```
 
 - Support to set WithCredentials on your HTTP requests.
+
 ```typescript
 this.logger.setWithCredentialsOptionValue(true);
 ```
 
 - Support for custom parsing of source maps. In order to use it, you must set **enableSourceMaps: true** in your logger config
+
   - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
 
-- Support of responseType for HTTP Requests. A new config option *httpResponseType* now allows you to set your server's response type.
+- Support of responseType for HTTP Requests. A new config option _httpResponseType_ now allows you to set your server's response type.
 
 - Custom HTTP Params
-    - If you need to pass in custom HTTP Params to your backend server, you can now use `setCustomParams()`.
+  - If you need to pass in custom HTTP Params to your backend server, you can now use `setCustomParams()`.
+
 ```typescript
-  this.logger.setCustomParams(new HttpParams());
+this.logger.setCustomParams(new HttpParams());
 ```
 
 - Using the NGXLoggerMonitor and want to disable console logs? Now you can!
-    - New config option disableConsoleLogging will disable console logs, but still alert to the log monitor.
+
+  - New config option disableConsoleLogging will disable console logs, but still alert to the log monitor.
 
 - Custom HTTP Headers
-    - If you use an auth token, or need to pass in a custom header, now you can!
+  - If you use an auth token, or need to pass in a custom header, now you can!
+
 ```typescript
-  this.logger.setCustomHttpHeaders(new HttpHeaders({'X-Custom-Header': '123456'}));
+this.logger.setCustomHttpHeaders(
+  new HttpHeaders({ "X-Custom-Header": "123456" })
+);
 ```
 
-- Custom Log Monitoring is now available.
-    - Only one monitor can be registered at a time; registering a new monitor overwrites the previous monitor.
-    - This should be registered as soon as possible so that it does not miss any logs.
-```typescript
-  import {NGXLoggerMonitor, NGXLogInterface} from 'ngx-logger';
+- Custom Log Monitoring is available.
+  - Only one monitor can be registered at a time; registering a new monitor overwrites the previous monitor.
+  - This should be registered as soon as possible so that it does not miss any logs.
 
-  export class MyLoggerMonitor implements NGXLoggerMonitor {
-    onLog(log: NGXLogInterface) {
-      console.log('myCustomLoggerMonitor', log);
-    }
+```typescript
+import { NGXLoggerMonitor, NGXLogInterface } from "ngx-logger";
+
+export class MyLoggerMonitor implements NGXLoggerMonitor {
+  onLog(log: NGXLogInterface) {
+    console.log("myCustomLoggerMonitor", log);
   }
+}
 ```
 
 ```typescript
-  import {NGXLogger} from 'ngx-logger';
-  import {MyLoggerMonitor} from './my-logger-monitor';
+import { NGXLogger } from "ngx-logger";
+import { MyLoggerMonitor } from "./my-logger-monitor";
 
-  export class MyService {
-    constructor(private logger: NGXLogger) {
-      this.logger.registerMonitor(new MyLoggerMonitor());
+export class MyService {
+  constructor(private logger: NGXLogger) {
+    this.logger.registerMonitor(new MyLoggerMonitor());
 
-      this.logger.error('BLAHBLAHBLAH');
-    }
+    this.logger.error("BLAHBLAHBLAH");
   }
+}
 ```
 
 - Updating your config after importing the module has never been easier...
 
 ```typescript
-  this.logger.updateConfig({ level: NgxLoggerLevel.DEBUG });
+this.logger.updateConfig({ level: NgxLoggerLevel.DEBUG });
 ```
 
-- You can now create a standalone logger with its own config!
+- You can also create a standalone logger with its own config!
 
 ```typescript
-  export class MyService {
-    private logger: NGXLogger;
-    constructor(customLogger: CustomNGXLoggerService) {
-      this.logger = customLogger.create({ level: NgxLoggerLevel.ERROR });
+export class MyService {
+  private logger: NGXLogger;
+  constructor(customLogger: CustomNGXLoggerService) {
+    this.logger = customLogger.create({ level: NgxLoggerLevel.ERROR });
 
-      this.logger.error('BLAHBLAHBLAH');
-    }
+    this.logger.error("BLAHBLAHBLAH");
   }
+}
+```
+
+- You can test the current log levels set:
+
+```typescript
+this.logger.level();
+this.logger.serverLogLevel();
 ```
 
 ## Dependencies
@@ -107,10 +120,11 @@ this.logger.setWithCredentialsOptionValue(true);
 npm install --save ngx-logger
 ```
 
-Once installed you need to import our main module:
+Once installed you need to import our main module and it's dependency on HttpClientModule:
 
 ```typescript
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+import { HttpClientModule } from "@angular/common/http";
 ```
 
 The only remaining part is to list the imported module in your application module, passing in a config to intialize the logger.
@@ -118,7 +132,7 @@ The only remaining part is to list the imported module in your application modul
 ```typescript
 @NgModule({
   declarations: [AppComponent, ...],
-  imports: [LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
+  imports: [HttpClientModule, LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}), ...],
   bootstrap: [AppComponent]
 })
 export class AppModule {
@@ -130,36 +144,38 @@ export class AppModule {
 To use the Logger, you will need import it locally, then call one of the logging functions
 
 ```typescript
-import { Component } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
+import { Component } from "@angular/core";
+import { NGXLogger } from "ngx-logger";
 
 @Component({
-  selector: 'your-component',
-  templateUrl: './your.component.html',
-  styleUrls: ['your.component.scss']
+  selector: "your-component",
+  templateUrl: "./your.component.html",
+  styleUrls: ["your.component.scss"],
 })
 export class YourComponent {
   constructor(private logger: NGXLogger) {
-    this.logger.debug('Your log message goes here');
-    this.logger.debug('Multiple', 'Argument', 'support');
+    this.logger.debug("Your log message goes here");
+    this.logger.debug("Multiple", "Argument", "support");
   }
 }
 ```
 
 ## Config Options
 
-- level {NgxLoggerLevel}: only log messages of this level or higher (`OFF` disables the logger for the client).
-- disableConsoleLogging {boolean}: disables console logging, while still alerting the log monitor.
-- serverLogLevel {NgxLoggerLevel}: only send log messages of this level or higher to the server (`OFF` disables the logger for the server).
-- serverLoggingUrl {string}: URL to POST logs.
-- httpResponseType {'arraybuffer' | 'blob' | 'text' | 'json'}: the response type of the HTTP Logging request.
-- enableSourceMaps {boolean}: enables manual parsing of Source Maps
+- `level` {NgxLoggerLevel}: only log messages of this level or higher (`OFF` disables the logger for the client).
+- `disableConsoleLogging` {boolean}: disables console logging, while still alerting the log monitor.
+- `serverLogLevel` {NgxLoggerLevel}: only send log messages of this level or higher to the server (`OFF` disables the logger for the server).
+- `serverLoggingUrl` {string}: URL to POST logs.
+- `httpResponseType` {'arraybuffer' | 'blob' | 'text' | 'json'}: the response type of the HTTP Logging request.
+- `enableSourceMaps` {boolean}: enables manual parsing of Source Maps
   - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
-- timestampFormat {string}: format for the timestamp displayed with each log message. Can be any of the formatting options accepted by the classic Angular [DatePipe](https://angular.io/api/common/DatePipe#pre-defined-format-options).
-- colorScheme {LoggerColorScheme}: a color scheme that defines which color should be used for each log level
+- `timestampFormat` {string}: format for the timestamp displayed with each log message. Can be any of the formatting options accepted by the classic Angular [DatePipe](https://angular.io/api/common/DatePipe#pre-defined-format-options).
+- `colorScheme` {LoggerColorScheme}: a color scheme that defines which color should be used for each log level
   - Note: the index of the scheme relates to the log level value
+- `disableFileDetails` {boolean} (defaults to false). When set to `true`, filename details will not be shown in log messages.
+- `proxiedSteps` {number}. That many steps will be ignored in the stack trace to compute the caller location. If you happen to always see the same location reported in the logs (for example a wrapper service of your own), tune this option to skip this step in the stack traces.
 
-NgxLoggerLevels: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
+`NgxLoggerLevels` are: `TRACE|DEBUG|INFO|LOG|WARN|ERROR|FATAL|OFF`
 
 ## Server-Side Logging
 

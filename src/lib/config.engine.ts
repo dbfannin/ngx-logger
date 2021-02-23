@@ -1,10 +1,21 @@
 import {LoggerConfig} from './logger.config';
+import { NgxLoggerLevel } from './types/logger-level.enum';
 
 export class NGXLoggerConfigEngine {
 
-  private _config;
+  private _config: LoggerConfig;
   constructor(readonly config: LoggerConfig) {
     this._config = config;
+  }
+
+  /** Get a readonly access to the level configured for the NGXLogger */
+  get level(): NgxLoggerLevel {
+    return this._config.level;
+  }
+
+  /** Get a readonly access to the serverLogLevel configured for the NGXLogger */
+  get serverLogLevel(): NgxLoggerLevel {
+    return this._config.serverLogLevel;
   }
 
   updateConfig(config: LoggerConfig) {

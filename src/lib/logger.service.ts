@@ -48,6 +48,16 @@ export class NGXLogger {
 
   }
 
+  /** Get a readonly access to the level configured for the NGXLogger */
+  get level(): NgxLoggerLevel {
+    return this.config.level;
+  }
+
+  /** Get a readonly access to the serverLogLevel configured for the NGXLogger */
+  get serverLogLevel(): NgxLoggerLevel {
+    return this.config.serverLogLevel;
+  }
+
   public trace(message, ...additional: any[]): void {
     this._log(NgxLoggerLevel.TRACE, message, additional);
   }
@@ -146,10 +156,9 @@ export class NGXLogger {
       //   console.trace(`%c${metaString}`, `color:${color}`, message, ...additional);
       //   break;
 
-      //  Disabling console.debug, because Has this hidden by default.
-      // case NgxLoggerLevel.DEBUG:
-      //   console.debug(`%c${metaString}`, `color:${color}`, message, ...additional);
-      //   break;
+      case NgxLoggerLevel.DEBUG:
+        console.debug(`%c${metaString}`, `color:${color}`, message, ...additional);
+        break;
       default:
         console.log(`%c${metaString}`, `color:${color}`, message, ...additional);
     }
@@ -175,8 +184,7 @@ export class NGXLogger {
       this.datePipe.transform(new Date(), config.timestampFormat) :
       new Date().toISOString();
 
-    // const callerDetails = NGXLoggerUtils.getCallerDetails();
-    this.mapperService.getCallerDetails(config.enableSourceMaps).subscribe((callerDetails: LogPosition) => {
+    this.mapperService.getCallerDetails(config.enableSourceMaps, config.proxiedSteps).subscribe((callerDetails: LogPosition) => {
       const logObject: NGXLogInterface = {
         // prepareMessage is needed to match NGXLogInterface
         // Even though I think message should be of type any (same as console.xxx signature)
