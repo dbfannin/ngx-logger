@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter} from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import {NgxLoggerLevel} from 'ngx-logger';
 
 @Component({
