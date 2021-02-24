@@ -13,7 +13,7 @@ import {NgxLoggerLevel} from 'ngx-logger';
 export class LogConfigComponent {
   @Output()
   loggerLevelChange: EventEmitter<NgxLoggerLevel> = new EventEmitter();
-  private currentLogLevel: NgxLoggerLevel = NgxLoggerLevel.DEBUG;
+  public currentLogLevel: NgxLoggerLevel = NgxLoggerLevel.DEBUG;
 
   NgxLoggerLevel = NgxLoggerLevel;
 

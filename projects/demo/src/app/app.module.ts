@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { LoggerModule, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 import { AppComponent } from './app.component';
 import { LogConfigComponent } from './log-config/log-config.component';
