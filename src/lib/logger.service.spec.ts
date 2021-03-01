@@ -8,7 +8,7 @@ import { NGXMapperServiceMock } from '../../testing/src/lib/mapper.service.mock'
 import { LoggerConfig } from './logger.config';
 import { NgxLoggerLevel } from './types/logger-level.enum';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { LogPosition } from 'dist/ngx-logger/lib/types/log-position';
+import { LogPosition } from './types/log-position';
 import { of } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 
@@ -286,7 +286,7 @@ describe('NGXLogger with mapper service', () => {
         logger.error('test should get good LogPosition');
 
         // trying to match the LogPosition that looks like this logger.service.spec.ts:lineNumber:columnNumber
-        // not trying to test the lineNumber and the columnNumber as these would change when the spec file changes and is too heavy to maintain 
+        // not trying to test the lineNumber and the columnNumber as these would change when the spec file changes and is too heavy to maintain
         expect(_getSourceMapSpy).toHaveBeenCalledWith(jasmine.anything(), jasmine.objectContaining({ fileName: 'logger.service.spec.ts' }));
       }
     ));
