@@ -194,7 +194,8 @@ export class NGXLogger {
         level: level,
         timestamp: timestamp,
         fileName: callerDetails.fileName,
-        lineNumber: callerDetails.lineNumber.toString()
+        lineNumber: callerDetails.lineNumber.toString(),
+        columnNumber: callerDetails.columnNumber.toString()
       };
 
       if (this._loggerMonitor && isLogLevelEnabled) {
