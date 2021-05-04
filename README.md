@@ -159,6 +159,7 @@ export class YourComponent {
   }
 }
 ```
+*For most browsers, you need to enable "verbose" or "debug" mode in the developper tools to see debug logs*
 
 ## Config Options
 
