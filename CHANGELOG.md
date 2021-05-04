@@ -30,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Now in order to display the messages in the debug level you need to enable “verbose” or "debug" mode in the developer tools console.
+- Now in order to display the messages in the debug level you need to enable “verbose” or "debug" mode in the developer tools - console of the browser.
 
 - Firefox – Enable debug
 - Chrome – Enable verbose
