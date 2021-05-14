@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+- Fix getcolor, colorscheme was not binded correctly [#253](https://github.com/dbfannin/ngx-logger/pull/253). Thanks [@jschank](https://github.com/jschank)
+
+
 ## [4.2.1] - 2021-02-23
 
 ### Fixed
