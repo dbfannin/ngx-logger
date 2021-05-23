@@ -18,11 +18,11 @@ export class NGXLoggerUtils {
       case NgxLoggerLevel.INFO:
         return this.getColorFromConfig(NgxLoggerLevel.INFO, configColorScheme);
       case NgxLoggerLevel.LOG:
-        return this.getColorFromConfig(NgxLoggerLevel.INFO, configColorScheme);
+        return this.getColorFromConfig(NgxLoggerLevel.LOG, configColorScheme);
       case NgxLoggerLevel.WARN:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
+        return this.getColorFromConfig(NgxLoggerLevel.WARN, configColorScheme);
       case NgxLoggerLevel.ERROR:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
+        return this.getColorFromConfig(NgxLoggerLevel.ERROR, configColorScheme);
       case NgxLoggerLevel.FATAL:
         return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
       case NgxLoggerLevel.OFF:

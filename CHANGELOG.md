@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+### Fixed
+
+- Fix getcolor, colorscheme was not binded correctly [#253](https://github.com/dbfannin/ngx-logger/pull/253). Thanks [@jschank](https://github.com/jschank)
+
 ### Added
 
 - Updates to Angular 11 [#251](https://github.com/dbfannin/ngx-logger/pull/251). Thanks [@bmtheo](https://github.com/bmtheo)
+
 
 ## [4.2.1] - 2021-02-23
 
@@ -31,6 +36,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix missing `HttpClientModule` import ([#212](https://github.com/dbfannin/ngx-logger/pull/212)). Thanks [@markterrill](https://github.com/markterrill)
 - Various dependencies bumps
+
+### Changed
+
+- Now in order to display the messages in the debug level you need to enable “verbose” or "debug" mode in the developer tools - console of the browser.
+
+- Firefox – Enable debug
+- Chrome – Enable verbose
+- Edge – Enable verbose
+- Opera – Enable verbose
+
 
 ## [4.1.8] - 2020-04-16
 
