@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter} from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import {NgxLoggerLevel} from 'ngx-logger';
 
 @Component({
@@ -13,7 +13,7 @@ import {NgxLoggerLevel} from 'ngx-logger';
 export class LogConfigComponent {
   @Output()
   loggerLevelChange: EventEmitter<NgxLoggerLevel> = new EventEmitter();
-  private currentLogLevel: NgxLoggerLevel = NgxLoggerLevel.DEBUG;
+  public currentLogLevel: NgxLoggerLevel = NgxLoggerLevel.DEBUG;
 
   NgxLoggerLevel = NgxLoggerLevel;
 

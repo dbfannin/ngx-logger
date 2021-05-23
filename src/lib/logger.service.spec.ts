@@ -250,9 +250,9 @@ describe('NGXLogger with mapper service', () => {
       [NGXLogger],
       (logger: NGXLogger) => {
 
-        const mapperService = TestBed.get(NGXMapperService);
+        const mapperService = TestBed.inject(NGXMapperService);
 
-        const _getSourceMapSpy = spyOn(mapperService, '_getSourceMap')
+        const _getSourceMapSpy = spyOn<any>(mapperService, '_getSourceMap')
           // calling fake _getSourceMap so it does not fail the test because of failed http request
           .and.callFake((_: string, distPosition: LogPosition) => of(distPosition));
 
@@ -272,9 +272,9 @@ describe('NGXLogger with mapper service', () => {
       [NGXLogger],
       (logger: NGXLogger) => {
 
-        const mapperService = TestBed.get(NGXMapperService);
+        const mapperService = TestBed.inject(NGXMapperService);
 
-        const _getSourceMapSpy = spyOn(mapperService, '_getSourceMap')
+        const _getSourceMapSpy = spyOn<any>(mapperService, '_getSourceMap')
           // calling fake _getSourceMap so it does not fail the test because of failed http request
           .and.callFake((_: string, distPosition: LogPosition) => of(distPosition));
 
