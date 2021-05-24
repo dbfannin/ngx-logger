@@ -1,43 +1,6 @@
-import {DEFAULT_COLOR_SCHEME} from '../resources/color-schemes';
 import {NgxLoggerLevel} from '../types/logger-level.enum';
 
 export class NGXLoggerUtils {
-
-  static prepareMetaString(timestamp: string, logLevel: string, fileName: string, lineNumber: string) {
-    const fileDetails = fileName ? ` [${fileName}:${lineNumber}]` : '';
-
-    return `${timestamp} ${logLevel}${fileDetails}`;
-  }
-
-  static getColor(level: NgxLoggerLevel, configColorScheme?: Array<string>): string | undefined {
-    switch (level) {
-      case NgxLoggerLevel.TRACE:
-        return this.getColorFromConfig(NgxLoggerLevel.TRACE, configColorScheme);
-      case NgxLoggerLevel.DEBUG:
-        return this.getColorFromConfig(NgxLoggerLevel.DEBUG, configColorScheme);
-      case NgxLoggerLevel.INFO:
-        return this.getColorFromConfig(NgxLoggerLevel.INFO, configColorScheme);
-      case NgxLoggerLevel.LOG:
-        return this.getColorFromConfig(NgxLoggerLevel.LOG, configColorScheme);
-      case NgxLoggerLevel.WARN:
-        return this.getColorFromConfig(NgxLoggerLevel.WARN, configColorScheme);
-      case NgxLoggerLevel.ERROR:
-        return this.getColorFromConfig(NgxLoggerLevel.ERROR, configColorScheme);
-      case NgxLoggerLevel.FATAL:
-        return this.getColorFromConfig(NgxLoggerLevel.FATAL, configColorScheme);
-      case NgxLoggerLevel.OFF:
-      default:
-        return;
-    }
-  }
-
-  private static getColorFromConfig(level: number, configColorScheme: Array<string>): string | undefined {
-    if (!configColorScheme) {
-      return DEFAULT_COLOR_SCHEME[level];
-    }
-
-    return configColorScheme[level];
-  }
 
   static prepareMessage(message) {
     try {

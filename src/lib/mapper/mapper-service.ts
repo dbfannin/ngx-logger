@@ -4,24 +4,30 @@ import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import * as vlq from 'vlq';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, retry, shareReplay, switchMap } from 'rxjs/operators';
-import { LogPosition } from './types/log-position';
+import { INGXLoggerMapperService } from './imapper-service';
+import { INGXLoggerConfig } from '../config/iconfig';
+import { INGXLoggerMetadata } from '../metadata/imetadata';
+import { NgxLoggerLevel } from '../types/logger-level.enum';
+import { INGXLoggerLogPosition } from './ilog-position';
 
 @Injectable()
-export class NGXMapperService {
+export class NGXLoggerMapperService implements INGXLoggerMapperService {
 
   // cache for source maps, key is source map location, ie. 'http://localhost:4200/main.js.map'
   private sourceMapCache: Map<string, Observable<SourceMap>> = new Map();
 
   // cache for specific log position, key is the dist position, ie 'main.js:339:21'
-  private logPositionCache: Map<string, Observable<LogPosition>> = new Map();
+  private logPositionCache: Map<string, Observable<INGXLoggerLogPosition>> = new Map();
 
   constructor(private httpBackend: HttpBackend) {
   }
 
-  /*
-  Static Functions
- */
-  private static getStackLine(proxiedSteps: number): string {
+  getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): INGXLoggerLogPosition {
+    // todo bmtheo
+    return null;
+  }
+
+  private getStackLine(proxiedSteps: number): string {
     const error = new Error();
 
     try {
@@ -61,7 +67,7 @@ export class NGXMapperService {
     }
   }
 
-  private static getPosition(stackLine: string): LogPosition {
+  private getPosition(stackLine: string): INGXLoggerLogPosition {
     // strip base path, then parse filename, line, and column
     const positionStartIndex = stackLine.lastIndexOf('\/');
     let positionEndIndex = stackLine.indexOf(')');
@@ -72,12 +78,12 @@ export class NGXMapperService {
     const position = stackLine.substring(positionStartIndex + 1, positionEndIndex);
     const dataArray = position.split(':');
     if (dataArray.length === 3) {
-      return new LogPosition(dataArray[0], +dataArray[1], +dataArray[2]);
+      return { fileName: dataArray[0], lineNumber: +dataArray[1], columnNumber: +dataArray[2] };
     }
-    return new LogPosition('unknown', 0, 0);
+    return { fileName: 'unknown', lineNumber: 0, columnNumber: 0 };
   }
 
-  private static getTranspileLocation(stackLine: string): string {
+  private getTranspileLocation(stackLine: string): string {
     // Example stackLine:
     // Firefox : getStackLine@http://localhost:4200/main.js:358:23
     // Chrome and Edge : at Function.getStackLine (ngx-logger.js:329)
@@ -97,13 +103,13 @@ export class NGXMapperService {
     return stackLine.substring(locationStartIndex + 1, locationEndIndex);
   }
 
-  private static getMapFilePath(stackLine: string): string {
-    const file = NGXMapperService.getTranspileLocation(stackLine);
+  private getMapFilePath(stackLine: string): string {
+    const file = this.getTranspileLocation(stackLine);
     const mapFullPath = file.substring(0, file.lastIndexOf(':'));
     return mapFullPath.substring(0, mapFullPath.lastIndexOf(':')) + '.map';
   }
 
-  private static getMapping(sourceMap: SourceMap, position: LogPosition): LogPosition {
+  private getMapping(sourceMap: SourceMap, position: INGXLoggerLogPosition): INGXLoggerLogPosition {
     // => ';' indicates end of a line
     // => ',' separates mappings in a line
     // decoded mapping => [ generatedCodeColumn, sourceFileIndex, sourceCodeLine, sourceCodeColumn, nameIndex ]
@@ -133,16 +139,16 @@ export class NGXMapperService {
         if (lineIndex === position.lineNumber) {
           if (generatedCodeColumn === position.columnNumber) {
             // matching column and line found
-            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine, sourceCodeColumn);
+            return { fileName: sourceMap.sources[sourceFileIndex], lineNumber: sourceCodeLine, columnNumber: sourceCodeColumn };
           } else if (columnIndex + 1 === columns.length) {
             // matching column not found, but line is correct
-            return new LogPosition(sourceMap.sources[sourceFileIndex], sourceCodeLine, 0);
+            return { fileName: sourceMap.sources[sourceFileIndex], lineNumber: sourceCodeLine, columnNumber: 0 };
           }
         }
       }
     }
     // failed if reached
-    return new LogPosition('unknown', 0, 0);
+    return { fileName: 'unknown', lineNumber: 0, columnNumber: 0 };
   }
 
   /**
@@ -150,7 +156,7 @@ export class NGXMapperService {
    * @param sourceMapLocation
    * @param distPosition
    */
-  private _getSourceMap(sourceMapLocation: string, distPosition: LogPosition): Observable<LogPosition> {
+  private _getSourceMap(sourceMapLocation: string, distPosition: INGXLoggerLogPosition): Observable<INGXLoggerLogPosition> {
     const req = new HttpRequest<SourceMap>('GET', sourceMapLocation);
     const distPositionKey = distPosition.toString();
 
@@ -177,9 +183,9 @@ export class NGXMapperService {
 
     // at this point the source map is cached, use it to get specific log position mapping
     const logPosition$ = this.sourceMapCache.get(sourceMapLocation).pipe(
-      map<SourceMap, LogPosition>((sourceMap) =>
+      map<SourceMap, INGXLoggerLogPosition>((sourceMap) =>
         // map generated position to source position
-        NGXMapperService.getMapping(sourceMap, distPosition)
+        this.getMapping(sourceMap, distPosition)
       ),
       catchError(() => of(distPosition)),
       shareReplay(1)
@@ -198,21 +204,21 @@ export class NGXMapperService {
    * @param sourceMapsEnabled
    * @param proxiedSteps
    */
-  public getCallerDetails(sourceMapsEnabled: boolean, proxiedSteps: number): Observable<LogPosition> {
+  public getCallerDetails(sourceMapsEnabled: boolean, proxiedSteps: number): Observable<INGXLoggerLogPosition> {
     // parse generated file mapping from stack trace
 
-    const stackLine = NGXMapperService.getStackLine(proxiedSteps);
+    const stackLine = this.getStackLine(proxiedSteps);
 
     // if we were not able to parse the stackLine, just return an empty Log Position
     if (!stackLine) {
-      return of(new LogPosition('', 0, 0));
+      return of({ fileName: '', lineNumber: 0, columnNumber: 0 });
     }
 
     return of([
-      NGXMapperService.getPosition(stackLine),
-      NGXMapperService.getMapFilePath(stackLine)
+      this.getPosition(stackLine),
+      this.getMapFilePath(stackLine)
     ]).pipe(
-      switchMap<[LogPosition, string], Observable<LogPosition>>(([distPosition, sourceMapLocation]) => {
+      switchMap<[INGXLoggerLogPosition, string], Observable<INGXLoggerLogPosition>>(([distPosition, sourceMapLocation]) => {
 
         // if source maps are not enabled, or if we've previously tried to get the source maps, but they failed,
         // then just use the position of the JS instead of the source
@@ -224,11 +230,5 @@ export class NGXMapperService {
         return this._getSourceMap(sourceMapLocation, distPosition);
       })
     );
-
-
   }
 }
-
-
-
-

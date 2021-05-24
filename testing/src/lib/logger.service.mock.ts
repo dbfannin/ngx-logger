@@ -1,5 +1,5 @@
-import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {LoggerConfig, NGXLoggerMonitor} from 'ngx-logger';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { ILoggerConfig, NGXLoggerMonitor } from 'ngx-logger';
 import { Injectable } from "@angular/core";
 
 @Injectable()
@@ -45,7 +45,7 @@ export class NGXLoggerMock {
   setWithCredentialsOptionValue(withCredentials: boolean) {
   }
 
-  getConfigSnapshot(): LoggerConfig {
-    return new LoggerConfig();
+  getConfigSnapshot(): ILoggerConfig {
+    return {};
   }
 }

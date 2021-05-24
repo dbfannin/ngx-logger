@@ -11,12 +11,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_CONFIG_ENGINE } from '../../../../src/public_api';
 
 import { AppComponent } from './app.component';
 import { LogConfigComponent } from './log-config/log-config.component';
 import { LoggerFormComponent } from './logger-form/logger-form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomConfig } from './custom-config';
+import { CustomConfigEngine } from './custom-config-engine';
+
+const loggerConfig: CustomConfig = {
+  level: NgxLoggerLevel.DEBUG,
+  customProp: 'custom prop',
+}
 
 @NgModule({
   declarations: [AppComponent, LogConfigComponent, LoggerFormComponent],
@@ -25,9 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    LoggerModule.forRoot({
-      level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.DEBUG,
+    LoggerModule.forRoot(loggerConfig, {
+      configEngineProvider: { provide: TOKEN_LOGGER_CONFIG_ENGINE, useClass: CustomConfigEngine },
     }),
     MatButtonModule,
     MatCardModule,

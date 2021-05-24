@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {NgxLoggerLevel, NGXLogger} from 'ngx-logger';
+import { Component } from '@angular/core';
+import { NGXLogger, NgxLoggerLevel } from '../../../../src/public_api';
 
-import {LogEvent} from './models/log-event.model';
+import { LogEvent } from './models/log-event.model';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ import {LogEvent} from './models/log-event.model';
 })
 export class AppComponent {
   constructor(private logger: NGXLogger) {
+    logger.updateConfig
   }
 
   /**
@@ -60,8 +61,8 @@ export class AppComponent {
   }
 
   serverLogging(enabled: boolean) {
-      const updatedConfig = this.logger.getConfigSnapshot();
-      updatedConfig.serverLoggingUrl = enabled ? '/dummyURL' : null;
-      this.logger.updateConfig(updatedConfig);
+    const updatedConfig = this.logger.getConfigSnapshot();
+    updatedConfig.serverLoggingUrl = enabled ? '/dummyURL' : null;
+    this.logger.updateConfig(updatedConfig);
   }
 }

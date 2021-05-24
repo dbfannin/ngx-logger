@@ -1,6 +1,6 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import {NgxLoggerLevel} from 'ngx-logger';
+import { NgxLoggerLevel } from '../../../../../src/public_api';
 
 @Component({
   selector: 'app-log-config',

@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+### Added
+- NGXLogger is now fully customisable, see more in docs
+
+### Breaking Changes
+- LoggerConfig is renamed to INGXLoggerConfig
+- ConfigEngine is shared through all logger instances. It was not before. TODO bmtheo to check (what happens when using forchild ?)
+- null sent in message will still log something
+    before "this.logger.error(null, myVar)" would not log anything, now it does
+    if you want to come back to the old behavior, you can override INGXLoggerRulesService
+- NGXLogInterface was changed to INGXLoggerMetadata
+- Column number is now displayed by default in metadata
+    before "... [my-component.ts:15] ..."
+    after "... [my-component.ts:15:10] ..."
+- LoggerColorScheme is renamed to NGXLoggerColorScheme
+- NGXMapperService is renamed to INGXLoggerMapperService
+- NGXLoggerHttpService is renamed to INGXLoggerServerService
+- If server logger fails it now throws an exception instead of logging an error
+
+### Deprecated features
+- CustomNGXLoggerService is now deprecated because the Logger is now fully customisable
+- NGXLoggerMonitor is now deprecated, you should use INGXLoggerMonitor instead
+- setCustomHttpHeaders in config now
+- setCustomParams in config now
+- setWithCredentialsOptionValue in config now
 
 ## [4.2.2] - 2021-05-23
 
