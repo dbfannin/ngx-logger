@@ -10,5 +10,5 @@ import { Observable } from "rxjs";
 export const TOKEN_LOGGER_MAPPER_SERVICE = 'TOKEN_LOGGER_MAPPER_SERVICE';
 
 export interface INGXLoggerMapperService {
-    getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition>;
+  getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition>;
 }

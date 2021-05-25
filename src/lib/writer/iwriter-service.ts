@@ -7,5 +7,5 @@ import { INGXLoggerMetadata } from "../metadata/imetadata";
 export const TOKEN_LOGGER_WRITER_SERVICE = 'TOKEN_LOGGER_WRITER_SERVICE';
 
 export interface INGXLoggerWriterService {
-    writeMessage(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void;
+  writeMessage(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void;
 }

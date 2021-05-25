@@ -7,7 +7,7 @@ import { NgxLoggerLevel } from "../types/logger-level.enum";
 export const TOKEN_LOGGER_RULES_SERVICE = 'TOKEN_LOGGER_RULES_SERVICE';
 
 export interface INGXLoggerRulesService {
-    shouldCallWritter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
-    shouldCallServer(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
-    shouldCallMonitor(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
+  shouldCallWritter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
+  shouldCallServer(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
+  shouldCallMonitor(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
 }

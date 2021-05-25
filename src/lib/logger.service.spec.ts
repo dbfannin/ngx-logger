@@ -47,22 +47,22 @@ describe('NGXLogger', () => {
   ));
 
   it('should handle complex circular structures', inject(
-      [NGXLogger],
-      (logger: NGXLogger) => {
-          // This structure is not "stringifyable" this make sure anything can be logged
-          // Before that we used JSON.stringify and it was not working
-          const complexStructure = new FormGroup({ sub: new FormGroup({}) });
+    [NGXLogger],
+    (logger: NGXLogger) => {
+      // This structure is not "stringifyable" this make sure anything can be logged
+      // Before that we used JSON.stringify and it was not working
+      const complexStructure = new FormGroup({ sub: new FormGroup({}) });
 
-          spyOn(console, 'error');
+      spyOn(console, 'error');
 
-          logger.error('error', complexStructure);
+      logger.error('error', complexStructure);
 
-          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), jasmine.anything(), complexStructure);
+      expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), jasmine.anything(), complexStructure);
 
-          logger.error(complexStructure);
+      logger.error(complexStructure);
 
-          expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), complexStructure);
-        }
+      expect(console.error).toHaveBeenCalledWith(jasmine.anything(), jasmine.anything(), complexStructure);
+    }
   ));
 
   describe('trace', () => {

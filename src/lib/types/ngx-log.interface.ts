@@ -1,4 +1,4 @@
-import {NgxLoggerLevel} from './logger-level.enum';
+import { NgxLoggerLevel } from './logger-level.enum';
 
 export class NGXLogInterface {
   level: NgxLoggerLevel;
