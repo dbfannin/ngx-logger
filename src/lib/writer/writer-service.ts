@@ -23,7 +23,7 @@ export class NGXLoggerWriterService implements INGXLoggerWriterService {
 
   /** Generate a "meta" string that is displayed before the content sent to the log function */
   protected prepareMetaString(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
-    const fileDetails = config.disableFileDetails ? `[${metadata.fileName}:${metadata.lineNumber}:${metadata.columnNumber}]` : '';
+		const fileDetails = config.disableFileDetails === true ? '' : `[${metadata.fileName}:${metadata.lineNumber}:${metadata.columnNumber}]`;
 
     return `${metadata.timestamp} ${NgxLoggerLevel[metadata.level]} ${fileDetails}`;
   }
