@@ -9,6 +9,7 @@ import { INGXLoggerMapperService, TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/i
 import { INGXLoggerMonitor } from './monitor/ilogger-monitor';
 import { INGXLoggerWriterService, TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter-service';
 import { INGXLoggerServerService, TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver-service';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class NGXLogger {
@@ -103,7 +104,7 @@ export class NGXLogger {
     return this.configEngine.getConfig();
   }
 
-  private _log(level: NgxLoggerLevel, message?: any | (() => any), additional: any[] = [], logOnServer: boolean = true): void {
+  private _log(level: NgxLoggerLevel, message?: any | (() => any), additional: any[] = []): void {
     const config = this.configEngine.getConfig();
 
     const shouldCallWriter = this.ruleService.shouldCallWritter(level, config, message, additional);
@@ -116,20 +117,22 @@ export class NGXLogger {
     }
 
     const metadata = this.metadataService.getMetadata(level, config, message, additional);
-    const logPosition = this.mapperService.getLogPosition(level, config, metadata);
-    if (logPosition) {
-      metadata.fileName = logPosition.fileName;
-      metadata.lineNumber = logPosition.lineNumber;
-      metadata.columnNumber = logPosition.columnNumber;
-    }
-    if (shouldCallMonitor && this._loggerMonitor) {
-      this._loggerMonitor.onLog(metadata, config);
-    }
-    if (shouldCallWriter) {
-      this.writerService.writeMessage(metadata, config);
-    }
-    if (shouldCallServer) {
-      this.serverService.sendToServer(metadata, config);
-    }
+    this.mapperService.getLogPosition(level, config, metadata).pipe(take(1)).subscribe(logPosition => {
+      if (logPosition) {
+        metadata.fileName = logPosition.fileName;
+        metadata.lineNumber = logPosition.lineNumber;
+        metadata.columnNumber = logPosition.columnNumber;
+      }
+
+      if (shouldCallMonitor && this._loggerMonitor) {
+        this._loggerMonitor.onLog(metadata, config);
+      }
+      if (shouldCallWriter) {
+        this.writerService.writeMessage(metadata, config);
+      }
+      if (shouldCallServer) {
+        this.serverService.sendToServer(metadata, config);
+      }
+    });
   }
 }

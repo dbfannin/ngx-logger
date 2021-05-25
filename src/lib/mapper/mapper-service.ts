@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import * as vlq from 'vlq';
 import { Observable, of } from 'rxjs';
-import { catchError, filter, map, retry, shareReplay, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, retry, shareReplay } from 'rxjs/operators';
 import { INGXLoggerMapperService } from './imapper-service';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
@@ -13,21 +13,47 @@ import { INGXLoggerLogPosition } from './ilog-position';
 @Injectable()
 export class NGXLoggerMapperService implements INGXLoggerMapperService {
 
-  // cache for source maps, key is source map location, ie. 'http://localhost:4200/main.js.map'
-  private sourceMapCache: Map<string, Observable<SourceMap>> = new Map();
+  /** cache for source maps, key is source map location, ie. 'http://localhost:4200/main.js.map' */
+  protected sourceMapCache: Map<string, Observable<SourceMap>> = new Map();
 
-  // cache for specific log position, key is the dist position, ie 'main.js:339:21'
-  private logPositionCache: Map<string, Observable<INGXLoggerLogPosition>> = new Map();
+  /** cache for specific log position, key is the dist position, ie 'main.js:339:21' */
+  protected logPositionCache: Map<string, Observable<INGXLoggerLogPosition>> = new Map();
 
   constructor(private httpBackend: HttpBackend) {
   }
 
-  getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): INGXLoggerLogPosition {
-    // todo bmtheo
-    return null;
+  /**
+   * Returns the log position for the current log
+   * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the position
+   * @param level 
+   * @param config 
+   * @param metadata 
+   * @returns 
+   */
+  public getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition> {
+    const stackLine = this.getStackLine(config);
+
+    // if we were not able to parse the stackLine, just return an empty Log Position
+    if (!stackLine) {
+      return of({ fileName: '', lineNumber: 0, columnNumber: 0 });
+    }
+
+    const logPosition = this.getLocalPosition(stackLine);
+
+    if (!config.enableSourceMaps) {
+      return of(logPosition);
+    }
+
+    const sourceMapLocation = this.getSourceMapLocation(stackLine);
+    return this.getSourceMap(sourceMapLocation, logPosition);
   }
 
-  private getStackLine(proxiedSteps: number): string {
+  /**
+   * Get the stackline of the original caller
+   * @param config 
+   * @returns null if stackline was not found
+   */
+  protected getStackLine(config: INGXLoggerConfig): string {
     const error = new Error();
 
     try {
@@ -60,15 +86,25 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
           defaultProxy = defaultProxy + 1;
         }
 
-        return error.stack.split('\n')[(defaultProxy + (proxiedSteps || 0))];
+        return error.stack.split('\n')[(defaultProxy + (config.proxiedSteps || 0))];
       } catch (e) {
         return null;
       }
     }
   }
 
-  private getPosition(stackLine: string): INGXLoggerLogPosition {
-    // strip base path, then parse filename, line, and column
+  /**
+   * Get position of caller without using sourceMaps
+   * @param stackLine 
+   * @returns 
+   */
+  protected getLocalPosition(stackLine: string): INGXLoggerLogPosition {
+    // strip base path, then parse filename, line, and column, stackline looks like this :
+    // Firefox
+    // handleLog@http://localhost:4200/main.js:1158:29
+    // Chrome and Edge
+    // at AppComponent.handleLog (app.component.ts:38)
+
     const positionStartIndex = stackLine.lastIndexOf('\/');
     let positionEndIndex = stackLine.indexOf(')');
     if (positionEndIndex < 0) {
@@ -103,7 +139,12 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
     return stackLine.substring(locationStartIndex + 1, locationEndIndex);
   }
 
-  private getMapFilePath(stackLine: string): string {
+  /**
+   * Gets the URL of the sourcemap (the URL can be relative or absolute, it is browser dependant)
+   * @param stackLine 
+   * @returns 
+   */
+  protected getSourceMapLocation(stackLine: string): string {
     const file = this.getTranspileLocation(stackLine);
     const mapFullPath = file.substring(0, file.lastIndexOf(':'));
     return mapFullPath.substring(0, mapFullPath.lastIndexOf(':')) + '.map';
@@ -156,9 +197,9 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
    * @param sourceMapLocation
    * @param distPosition
    */
-  private _getSourceMap(sourceMapLocation: string, distPosition: INGXLoggerLogPosition): Observable<INGXLoggerLogPosition> {
+  protected getSourceMap(sourceMapLocation: string, distPosition: INGXLoggerLogPosition): Observable<INGXLoggerLogPosition> {
     const req = new HttpRequest<SourceMap>('GET', sourceMapLocation);
-    const distPositionKey = distPosition.toString();
+    const distPositionKey = `${distPosition.fileName}:${distPosition.lineNumber}:${distPosition.columnNumber}`;
 
     // if the specific log position is already in cache return it
     if (this.logPositionCache.has(distPositionKey)) {
@@ -195,40 +236,5 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
     this.logPositionCache.set(distPositionKey, logPosition$);
 
     return logPosition$;
-  }
-
-  /**
-   * Returns the LogPosition for the current log
-   * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the file name
-   * and number of the call
-   * @param sourceMapsEnabled
-   * @param proxiedSteps
-   */
-  public getCallerDetails(sourceMapsEnabled: boolean, proxiedSteps: number): Observable<INGXLoggerLogPosition> {
-    // parse generated file mapping from stack trace
-
-    const stackLine = this.getStackLine(proxiedSteps);
-
-    // if we were not able to parse the stackLine, just return an empty Log Position
-    if (!stackLine) {
-      return of({ fileName: '', lineNumber: 0, columnNumber: 0 });
-    }
-
-    return of([
-      this.getPosition(stackLine),
-      this.getMapFilePath(stackLine)
-    ]).pipe(
-      switchMap<[INGXLoggerLogPosition, string], Observable<INGXLoggerLogPosition>>(([distPosition, sourceMapLocation]) => {
-
-        // if source maps are not enabled, or if we've previously tried to get the source maps, but they failed,
-        // then just use the position of the JS instead of the source
-        if (!sourceMapsEnabled) {
-          return of(distPosition);
-        }
-
-        // finally try to get the source map and return the position
-        return this._getSourceMap(sourceMapLocation, distPosition);
-      })
-    );
   }
 }
