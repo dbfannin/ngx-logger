@@ -22,11 +22,7 @@ import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver-service';
     CommonModule
   ],
   providers: [
-    // todo bmtheo : is this needed ?
-    NGXLogger,
-    CustomNGXLoggerService,
-    NGXLoggerMapperService,
-    DatePipe
+    DatePipe // DatePipe is required by mapper-service.ts
   ]
 })
 export class LoggerModule {
