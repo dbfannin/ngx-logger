@@ -1,13 +1,10 @@
-import {Observable, of} from 'rxjs';
-import { Injectable } from "@angular/core";
+import { INGXLoggerConfig, NgxLoggerLevel, INGXLoggerMapperService, INGXLoggerMetadata, INGXLoggerLogPosition } from 'ngx-logger';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
-export class NGXMapperServiceMock {
-  constructor() {
-
-  }
-
-  public getCallerDetails(): Observable<{fileName: string, lineNumber: number, columnNumber: number}> {
-    return of({fileName: 'test.ts', lineNumber: 0, columnNumber: 0});
+export class NGXLoggerMapperServiceMock implements INGXLoggerMapperService {
+  public getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition> {
+    return of({ fileName: 'test.ts' });
   }
 }

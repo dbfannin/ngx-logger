@@ -1,4 +1,4 @@
-import {NGXLoggerMock} from './logger.service.mock';
+import { NGXLoggerMock } from './logger.service.mock';
 import { Injectable } from "@angular/core";
 
 /**
@@ -7,11 +7,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class CustomNGXLoggerServiceMock {
 
-  constructor() {
-  }
-
   create(): NGXLoggerMock {
-    // you can inject your own httpService or use the default,
     return new NGXLoggerMock();
   }
 }
