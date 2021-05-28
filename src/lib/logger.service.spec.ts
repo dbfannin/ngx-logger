@@ -9,12 +9,12 @@ import { NGXLoggerWriterServiceMock } from 'testing/src/lib/writer.service.mock'
 import { TOKEN_LOGGER_CONFIG } from './config/iconfig';
 import { TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
 import { NGXLogger } from './logger.service';
-import { TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper-service';
-import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata-service';
-import { TOKEN_LOGGER_RULES_SERVICE } from './rules/irules-service';
-import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver-service';
+import { TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper.service';
+import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
+import { TOKEN_LOGGER_RULES_SERVICE } from './rules/irules.service';
+import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
 import { NgxLoggerLevel } from './types/logger-level.enum';
-import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter-service';
+import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
 
 describe('NGXLogger', () => {
   beforeEach(() => {

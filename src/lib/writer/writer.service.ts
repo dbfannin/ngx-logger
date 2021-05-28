@@ -1,7 +1,7 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
-import { INGXLoggerConfig } from './../config/iconfig';
-import { INGXLoggerWriterService } from './iwriter-service';
+import { INGXLoggerConfig } from '../config/iconfig';
+import { INGXLoggerWriterService } from './iwriter.service';
 import { isPlatformBrowser } from '@angular/common';
 import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { DEFAULT_COLOR_SCHEME } from './color-scheme';

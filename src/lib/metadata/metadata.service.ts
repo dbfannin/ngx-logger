@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { NgxLoggerLevel } from '../types/logger-level.enum';
-import { INGXLoggerConfig } from './../config/iconfig';
+import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerMetadata } from './imetadata';
-import { INGXLoggerMetadataService } from './imetadata-service';
+import { INGXLoggerMetadataService } from './imetadata.service';
 
 @Injectable()
 export class NGXLoggerMetadataService implements INGXLoggerMetadataService {

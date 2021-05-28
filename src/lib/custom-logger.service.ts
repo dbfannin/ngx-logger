@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@angular/core';
 import { INGXLoggerConfig } from './config/iconfig';
 import { NGXLogger } from './logger.service';
 import { INGXLoggerConfigEngine, TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
-import { TOKEN_LOGGER_MAPPER_SERVICE, INGXLoggerMapperService } from './mapper/imapper-service';
-import { TOKEN_LOGGER_METADATA_SERVICE, INGXLoggerMetadataService } from './metadata/imetadata-service';
-import { TOKEN_LOGGER_RULES_SERVICE, INGXLoggerRulesService } from './rules/irules-service';
-import { TOKEN_LOGGER_SERVER_SERVICE, INGXLoggerServerService } from './server/iserver-service';
-import { TOKEN_LOGGER_WRITER_SERVICE, INGXLoggerWriterService } from './writer/iwriter-service';
+import { TOKEN_LOGGER_MAPPER_SERVICE, INGXLoggerMapperService } from './mapper/imapper.service';
+import { TOKEN_LOGGER_METADATA_SERVICE, INGXLoggerMetadataService } from './metadata/imetadata.service';
+import { TOKEN_LOGGER_RULES_SERVICE, INGXLoggerRulesService } from './rules/irules.service';
+import { TOKEN_LOGGER_SERVER_SERVICE, INGXLoggerServerService } from './server/iserver.service';
+import { TOKEN_LOGGER_WRITER_SERVICE, INGXLoggerWriterService } from './writer/iwriter.service';
 import { INGXLoggerMonitor } from './monitor/ilogger-monitor';
 
 // Keeping this to avoid any breaking change for now, this class should be removed later

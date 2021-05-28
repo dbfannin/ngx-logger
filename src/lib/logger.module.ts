@@ -6,16 +6,16 @@ import { CustomNGXLoggerService } from './custom-logger.service';
 import { INGXLoggerConfig, TOKEN_LOGGER_CONFIG } from './config/iconfig';
 import { NGXLoggerConfigEngine } from './config/config-engine';
 import { TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
-import { NGXLoggerMapperService } from './mapper/mapper-service';
-import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata-service';
-import { NGXLoggerMetadataService } from './metadata/metadata-service';
-import { TOKEN_LOGGER_RULES_SERVICE } from './rules/irules-service';
-import { NGXLoggerRulesService } from './rules/rules-service';
-import { TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper-service';
-import { NGXLoggerWriterService } from './writer/writer-service';
-import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter-service';
-import { NGXLoggerServerService } from './server/server-service';
-import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver-service';
+import { NGXLoggerMapperService } from './mapper/mapper.service';
+import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
+import { NGXLoggerMetadataService } from './metadata/metadata.service';
+import { TOKEN_LOGGER_RULES_SERVICE } from './rules/irules.service';
+import { NGXLoggerRulesService } from './rules/rules.service';
+import { TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper.service';
+import { NGXLoggerWriterService } from './writer/writer.service';
+import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
+import { NGXLoggerServerService } from './server/server.service';
+import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
 
 @NgModule({
   imports: [

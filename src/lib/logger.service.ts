@@ -3,12 +3,12 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { NgxLoggerLevel } from './types/logger-level.enum';
 import { INGXLoggerConfigEngine, TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
 import { INGXLoggerConfig } from './config/iconfig';
-import { INGXLoggerMetadataService, TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata-service';
-import { INGXLoggerRulesService, TOKEN_LOGGER_RULES_SERVICE } from './rules/irules-service';
-import { INGXLoggerMapperService, TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper-service';
+import { INGXLoggerMetadataService, TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
+import { INGXLoggerRulesService, TOKEN_LOGGER_RULES_SERVICE } from './rules/irules.service';
+import { INGXLoggerMapperService, TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper.service';
 import { INGXLoggerMonitor } from './monitor/ilogger-monitor';
-import { INGXLoggerWriterService, TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter-service';
-import { INGXLoggerServerService, TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver-service';
+import { INGXLoggerWriterService, TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
+import { INGXLoggerServerService, TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
 import { take } from 'rxjs/operators';
 
 @Injectable()

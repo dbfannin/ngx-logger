@@ -4,7 +4,7 @@ import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import * as vlq from 'vlq';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, retry, shareReplay } from 'rxjs/operators';
-import { INGXLoggerMapperService } from './imapper-service';
+import { INGXLoggerMapperService } from './imapper.service';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { NgxLoggerLevel } from '../types/logger-level.enum';

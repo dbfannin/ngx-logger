@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
-import { INGXLoggerConfig } from './../config/iconfig';
-import { INGXLoggerServerService } from './iserver-service';
+import { INGXLoggerConfig } from '../config/iconfig';
+import { INGXLoggerServerService } from './iserver.service';
 
 @Injectable()
 export class NGXLoggerServerService implements INGXLoggerServerService {
