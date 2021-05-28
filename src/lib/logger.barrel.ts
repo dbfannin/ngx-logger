@@ -24,7 +24,6 @@ export * from './writer/writer-service';
 export * from './writer/color-scheme';
 
 export * from './types/logger-level.enum';
-export * from './types/ngx-log.interface';
 
 export * from './logger.service';
 export * from './custom-logger.service';

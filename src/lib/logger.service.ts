@@ -87,6 +87,12 @@ export class NGXLogger {
     this.updateConfig(config);
   }
 
+  /**
+   * Register a INGXLoggerMonitor that will be trigger when a log is either written or sent to server
+   * 
+   * There is only one monitor, registering one will overwrite the last one if there was one
+   * @param monitor 
+   */
   public registerMonitor(monitor: INGXLoggerMonitor) {
     this._loggerMonitor = monitor;
   }

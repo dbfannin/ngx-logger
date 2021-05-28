@@ -8,5 +8,12 @@ import { INGXLoggerMetadata } from "./imetadata";
 export const TOKEN_LOGGER_METADATA_SERVICE = 'TOKEN_LOGGER_METADATA_SERVICE';
 
 export interface INGXLoggerMetadataService {
+  /**
+   * Gets the content to be logged and some metadata around it
+   * @param level 
+   * @param config 
+   * @param message 
+   * @param additional 
+   */
   getMetadata(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): INGXLoggerMetadata;
 }

@@ -23,7 +23,7 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
   }
 
   /**
-   * Returns the log position for the current log
+   * Returns the log position of the caller
    * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the position
    * @param level 
    * @param config 
