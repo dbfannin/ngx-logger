@@ -28,9 +28,7 @@ export class NGXLoggerConfigEngine implements INGXLoggerConfigEngine {
     return this._clone(this.config);
   }
 
-  // TODO: add tests around cloning the config. updating an object passed into the config (or retrieving from the config)
-  // should not update the active config, this is a shallow clone. If our config ever becomes hierarchical we must make
-  // this a deep clone
+  // TODO: This is a shallow clone, If the config ever becomes hierarchical we must make this a deep clone
   private _clone(object: any) {
     const cloneConfig: INGXLoggerConfig = { level: null };
 

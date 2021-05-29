@@ -3,7 +3,7 @@ import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { NGXLoggerConfigEngine } from './config-engine';
 import { TOKEN_LOGGER_CONFIG } from './iconfig';
 
-describe('NGXLogger', () => {
+describe('NGXLoggerConfigEngine', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
