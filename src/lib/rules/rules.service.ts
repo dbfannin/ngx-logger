@@ -12,7 +12,7 @@ export class NGXLoggerRulesService implements INGXLoggerRulesService {
   }
 
   public shouldCallServer(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any, additional?: any[]): boolean {
-    return config.serverLoggingUrl && level >= config.serverLogLevel;
+    return !!config.serverLoggingUrl && level >= config.serverLogLevel;
   }
 
   public shouldCallMonitor(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any, additional?: any[]): boolean {
