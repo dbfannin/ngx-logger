@@ -1,5 +1,4 @@
 import { INGXLoggerConfig } from "../config/iconfig";
-import { NgxLoggerLevel } from "../types/logger-level.enum";
 import { INGXLoggerMetadata } from "../metadata/imetadata";
 import { INGXLoggerLogPosition } from "./ilog-position";
 import { Observable } from "rxjs";
@@ -13,10 +12,9 @@ export interface INGXLoggerMapperService {
   /**
    * Returns the log position of the caller
    * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the position
-   * @param level 
    * @param config 
    * @param metadata 
    * @returns 
    */
-   getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition>;
+  getLogPosition(config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition>;
 }

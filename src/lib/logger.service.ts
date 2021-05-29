@@ -123,7 +123,7 @@ export class NGXLogger {
     }
 
     const metadata = this.metadataService.getMetadata(level, config, message, additional);
-    this.mapperService.getLogPosition(level, config, metadata).pipe(take(1)).subscribe(logPosition => {
+    this.mapperService.getLogPosition(config, metadata).pipe(take(1)).subscribe(logPosition => {
       if (logPosition) {
         metadata.fileName = logPosition.fileName;
         metadata.lineNumber = logPosition.lineNumber;

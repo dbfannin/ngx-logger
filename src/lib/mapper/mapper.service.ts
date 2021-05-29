@@ -1,14 +1,13 @@
+import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import { SourceMap } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
-import * as vlq from 'vlq';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, retry, shareReplay } from 'rxjs/operators';
-import { INGXLoggerMapperService } from './imapper.service';
+import * as vlq from 'vlq';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
-import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { INGXLoggerLogPosition } from './ilog-position';
+import { INGXLoggerMapperService } from './imapper.service';
 
 @Injectable()
 export class NGXLoggerMapperService implements INGXLoggerMapperService {
@@ -25,12 +24,11 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
   /**
    * Returns the log position of the caller
    * If sourceMaps are enabled, it attemps to get the source map from the server, and use that to parse the position
-   * @param level 
    * @param config 
    * @param metadata 
    * @returns 
    */
-  public getLogPosition(level: NgxLoggerLevel, config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition> {
+  public getLogPosition(config: INGXLoggerConfig, metadata: INGXLoggerMetadata): Observable<INGXLoggerLogPosition> {
     const stackLine = this.getStackLine(config);
 
     // if we were not able to parse the stackLine, just return an empty Log Position
