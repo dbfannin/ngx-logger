@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { NGXLoggerMapperService } from './mapper.service';
 
-describe('NGXLogger', () => {
+describe('NGXLoggerMapperService', () => {
   let mapper: NGXLoggerMapperService;
   const proxiedSteps = -2; // This is the number of call that are ignored by calling the mapper directly (instead of using loggerService)
 
