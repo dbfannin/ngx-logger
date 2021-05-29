@@ -17,7 +17,7 @@ export interface INGXLoggerRulesService {
    * @param message 
    * @param additional 
    */
-  shouldCallWritter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
+  shouldCallWriter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any | (() => any), additional?: any[]): boolean;
   /**
    * If true the logger will send logs to server
    * @param level 

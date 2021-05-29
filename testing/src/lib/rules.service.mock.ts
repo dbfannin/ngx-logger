@@ -4,7 +4,7 @@ import { INGXLoggerConfig, INGXLoggerRulesService, NgxLoggerLevel } from 'ngx-lo
 @Injectable()
 export class NGXLoggerRulesServiceMock implements INGXLoggerRulesService {
 
-  public shouldCallWritter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any, additional?: any[]): boolean {
+  public shouldCallWriter(level: NgxLoggerLevel, config: INGXLoggerConfig, message?: any, additional?: any[]): boolean {
     return false;
   }
 

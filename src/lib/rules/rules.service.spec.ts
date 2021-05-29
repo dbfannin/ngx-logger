@@ -15,13 +15,13 @@ describe('NGXLoggerRulesService', () => {
     rulesService = TestBed.inject(NGXLoggerRulesService);
   });
 
-  describe('shouldCallWritter', () => {
+  describe('shouldCallWriter', () => {
     it('should return good value', () => {
 
-      expect(rulesService.shouldCallWritter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR })).toBe(true);
-      expect(rulesService.shouldCallWritter(NgxLoggerLevel.TRACE, { level: NgxLoggerLevel.ERROR })).toBe(false);
-      expect(rulesService.shouldCallWritter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR, disableConsoleLogging: true })).toBe(false);
-      expect(rulesService.shouldCallWritter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR, disableConsoleLogging: false })).toBe(true);
+      expect(rulesService.shouldCallWriter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR })).toBe(true);
+      expect(rulesService.shouldCallWriter(NgxLoggerLevel.TRACE, { level: NgxLoggerLevel.ERROR })).toBe(false);
+      expect(rulesService.shouldCallWriter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR, disableConsoleLogging: true })).toBe(false);
+      expect(rulesService.shouldCallWriter(NgxLoggerLevel.ERROR, { level: NgxLoggerLevel.ERROR, disableConsoleLogging: false })).toBe(true);
     });
   });
 
@@ -38,22 +38,22 @@ describe('NGXLoggerRulesService', () => {
   describe('shouldCallMonitor', () => {
     it('should return good value', () => {
       spyOn(rulesService, 'shouldCallServer').and.returnValue(false);
-      spyOn(rulesService, 'shouldCallWritter').and.returnValue(false);
+      spyOn(rulesService, 'shouldCallWriter').and.returnValue(false);
 
       expect(rulesService.shouldCallMonitor(null, null)).toBe(false);
 
       rulesService.shouldCallServer = jasmine.createSpy().and.returnValue(true);
-      rulesService.shouldCallWritter = jasmine.createSpy().and.returnValue(false);
+      rulesService.shouldCallWriter = jasmine.createSpy().and.returnValue(false);
 
       expect(rulesService.shouldCallMonitor(null, null)).toBe(true);
 
       rulesService.shouldCallServer = jasmine.createSpy().and.returnValue(false);
-      rulesService.shouldCallWritter = jasmine.createSpy().and.returnValue(true);
+      rulesService.shouldCallWriter = jasmine.createSpy().and.returnValue(true);
 
       expect(rulesService.shouldCallMonitor(null, null)).toBe(true);
 
       rulesService.shouldCallServer = jasmine.createSpy().and.returnValue(true);
-      rulesService.shouldCallWritter = jasmine.createSpy().and.returnValue(true);
+      rulesService.shouldCallWriter = jasmine.createSpy().and.returnValue(true);
 
       expect(rulesService.shouldCallMonitor(null, null)).toBe(true);
     });

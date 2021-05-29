@@ -113,7 +113,7 @@ export class NGXLogger {
   private _log(level: NgxLoggerLevel, message?: any | (() => any), additional: any[] = []): void {
     const config = this.configEngine.getConfig();
 
-    const shouldCallWriter = this.ruleService.shouldCallWritter(level, config, message, additional);
+    const shouldCallWriter = this.ruleService.shouldCallWriter(level, config, message, additional);
     const shouldCallServer = this.ruleService.shouldCallServer(level, config, message, additional);
     const shouldCallMonitor = this.ruleService.shouldCallMonitor(level, config, message, additional);
 

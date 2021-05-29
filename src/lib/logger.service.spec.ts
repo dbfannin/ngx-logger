@@ -157,7 +157,7 @@ describe('NGXLogger', () => {
     it('should not do anything if nothing should be called', inject(
       [NGXLogger, TOKEN_LOGGER_RULES_SERVICE, TOKEN_LOGGER_METADATA_SERVICE],
       (logger: NGXLogger, ruleService: NGXLoggerRulesServiceMock, metadataService: NGXLoggerMetadataServiceMock) => {
-        spyOn(ruleService, 'shouldCallWritter').and.returnValue(false);
+        spyOn(ruleService, 'shouldCallWriter').and.returnValue(false);
         spyOn(ruleService, 'shouldCallServer').and.returnValue(false);
         spyOn(ruleService, 'shouldCallMonitor').and.returnValue(false);
 
@@ -172,7 +172,7 @@ describe('NGXLogger', () => {
     it('should not call writer', inject(
       [NGXLogger, TOKEN_LOGGER_RULES_SERVICE, TOKEN_LOGGER_WRITER_SERVICE],
       (logger: NGXLogger, ruleService: NGXLoggerRulesServiceMock, writerService: NGXLoggerWriterServiceMock) => {
-        spyOn(ruleService, 'shouldCallWritter').and.returnValue(false);
+        spyOn(ruleService, 'shouldCallWriter').and.returnValue(false);
 
         const writerSpy = spyOn(writerService, 'writeMessage');
 
@@ -185,7 +185,7 @@ describe('NGXLogger', () => {
     it('should call writer', inject(
       [NGXLogger, TOKEN_LOGGER_RULES_SERVICE, TOKEN_LOGGER_WRITER_SERVICE],
       (logger: NGXLogger, ruleService: NGXLoggerRulesServiceMock, writerService: NGXLoggerWriterServiceMock) => {
-        spyOn(ruleService, 'shouldCallWritter').and.returnValue(true);
+        spyOn(ruleService, 'shouldCallWriter').and.returnValue(true);
 
         const writerSpy = spyOn(writerService, 'writeMessage');
 
