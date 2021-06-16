@@ -58,4 +58,15 @@ export class LoggerFormComponent implements OnInit {
     this.logger.error(complexStructure);
   }
 
+  logError() {
+      try {
+          var test = '';
+          test = null;
+          test.padEnd(1);
+      } catch (err) {
+        this.logger.error('Error is', err);
+        this.logger.error(err);
+      }
+  }
+
 }

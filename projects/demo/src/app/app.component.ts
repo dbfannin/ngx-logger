@@ -63,6 +63,7 @@ export class AppComponent {
   serverLogging(enabled: boolean) {
     const updatedConfig = this.logger.getConfigSnapshot();
     updatedConfig.serverLoggingUrl = enabled ? '/dummyURL' : null;
+    updatedConfig.serverLogLevel = enabled ? NgxLoggerLevel.TRACE : NgxLoggerLevel.OFF;
     this.logger.updateConfig(updatedConfig);
   }
 }
