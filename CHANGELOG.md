@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NGXLoggerHttpService is renamed to INGXLoggerServerService
 - If server logger fails it now throws an exception instead of logging an error
 - LoggerUtils is deleted
+- For server side logging : If an error is sent (in message or in additional) then we return the error.stack only. It was done only for message now it is also done for additional (TODO bmtheo to check if it was only done in message before)
 
 ### Deprecated features
 - CustomNGXLoggerService is now deprecated because the Logger is now fully customisable

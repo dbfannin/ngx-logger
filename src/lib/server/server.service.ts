@@ -13,14 +13,32 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     protected readonly httpBackend: HttpBackend,
   ) { }
 
-  // TODO bmtheo : Should we keep this ?
-  protected prepareAdditionalParameters(additional: any[]) {
+  /**
+   * Transforms an error object into a readable string (taking only the stack)
+   * This is needed because JSON.stringify would return "{}"
+   * @param err the error object
+   * @returns The stack of the error
+   */
+  protected secureErrorObject(err: Error): string {
+      return err?.stack;
+  }
+
+  /**
+   * Transforms the additional parameters to avoid any json error when sending the data to the server
+   * Basically it just replaces unstringifiable object to a string mentioning an error
+   * @param additional The additional data to be sent
+   * @returns The additional data secured
+   */
+  protected secureAdditionalParameters(additional: any[]): any[] {
     if (additional === null || additional === undefined) {
       return null;
     }
 
     return additional.map((next, idx) => {
       try {
+        if (next instanceof Error) {
+            return this.secureErrorObject(next);
+        }
         // We just want to make sure the JSON can be parsed, we do not want to actually change the type
         if (typeof next === 'object') {
           JSON.stringify(next);
@@ -33,14 +51,21 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     });
   }
 
-  // TODO bmtheo : Should we keep this ?
-  protected prepareMessage(message) {
+  /**
+   * Transforms the message so that it can be sent to the server
+   * @param message the message to be sent
+   * @returns the message secured
+   */
+  protected secureMessage(message: any): string {
     try {
-      if (typeof message !== 'string' && !(message instanceof Error)) {
+      if (message instanceof Error) {
+          return this.secureErrorObject(message);
+      }
+
+      if (typeof message !== 'string') {
         message = JSON.stringify(message, null, 2);
       }
     } catch (e) {
-      // additional = [message, ...additional];
       message = 'The provided "message" value could not be parsed with JSON.stringify().';
     }
 
@@ -69,21 +94,19 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
   }
 
   public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
-    // TODO bmtheo : should we keep this ? yes to avoid "TypeError: Converting circular structure to JSON" see in demo with "complex structure"
-    // const additional = this.prepareAdditionalParameters(metadata.additional);
+    // Copying metadata locally because we don't want to change the object for the caller
+    const localMetadata = { ...metadata };
 
-    // TODO bmtheo : should we keep this ? yes to avoid "TypeError: Converting circular structure to JSON" see in demo with "complex structure"
-    // const message = this.prepareMessage(metadata.message);
+    localMetadata.additional = this.secureAdditionalParameters(localMetadata.additional);
 
-    // TODO bmtheo : should we keep this ?
-    // const message = metadata.message instanceof Error ? metadata.message.stack : metadata.message;
+    localMetadata.message = this.secureMessage(metadata.message);
 
     const headers = config.customHttpHeaders || new HttpHeaders();
     if (!headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
 
-    this.logOnServer<INGXLoggerMetadata>(config.serverLoggingUrl, metadata, {
+    this.logOnServer<INGXLoggerMetadata>(config.serverLoggingUrl, localMetadata, {
       headers,
       params: config.customHttpParams || new HttpParams(),
       responseType: config.httpResponseType || 'json',
