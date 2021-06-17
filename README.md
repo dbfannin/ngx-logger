@@ -35,7 +35,7 @@ export class AppModule {
 
 ## Usage
 
-To use the Logger, you will need import it locally, then call one of the logging functions
+To use the Logger, you will need to import it locally, then call one of the logging functions
 
 ```typescript
 import { Component } from "@angular/core";
@@ -49,7 +49,7 @@ import { NGXLogger } from "ngx-logger";
 export class YourComponent {
   constructor(private logger: NGXLogger) {
     this.logger.error("Your log message goes here");
-    this.logger.error("Multiple", "Argument", "support");
+    this.logger.warn("Multiple", "Argument", "support");
   }
 }
 ```
@@ -64,7 +64,7 @@ For more information about configuration see the [doc](docs/config.md)
 
 ## Customise logger behavior
 
-Since version 5.X NGXLogger is fully customisable
+Since version 5 NGXLogger is fully customisable
 
 See how in the [doc](docs/customising.md)
 
@@ -109,4 +109,5 @@ All services have mocked classes that can be used for testing located [here](tes
 ## Contribute
 
 All are welcome to contribute to NGX Logger.
-See the [guide](docs/contributing.md) to know how
+
+See the [doc](docs/contributing.md) to know how
