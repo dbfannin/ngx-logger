@@ -42,7 +42,7 @@ In that case you can use updateConfig : `logger.updateConfig({level: NgxLoggerLe
 
 If you want to update only one field you can do as follow
 
-```
+```typescript
 // Get the current config
 var config = logger.getConfigSnapshot();
 // Updating only one field

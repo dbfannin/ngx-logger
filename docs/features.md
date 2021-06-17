@@ -6,6 +6,7 @@ Here are listed some features of the logger
 
 To log on your server you need to set `serverLogLevel` and `serverLoggingUrl` accordingly
 When you call the logger, the content will be sent to your server
+
 The type of the payload is `INGXLoggerMetadata` see details [here](../src/lib/metadata/imetadata.ts)
 
 ```typescript
@@ -16,10 +17,10 @@ LoggerModule.forRoot({
 })
 ```
 
-- Support of responseType for HTTP Requests. A new config option _httpResponseType_ now allows you to set your server's response type.
+- Support of responseType for HTTP Requests. A config option `httpResponseType` allows you to set your server's response type.
 
 - Custom HTTP Params
-  - If you need to pass in custom HTTP Params to your backend server, you can now use `setCustomParams()`.
+  - If you need to pass in custom HTTP Params to your backend server, you can use `customHttpParams`.
 
 ```typescript
 LoggerModule.forRoot({
@@ -29,7 +30,7 @@ LoggerModule.forRoot({
 ```
 
 - Custom HTTP Headers
-  - If you use an auth token, or need to pass in a custom header, now you can!
+  - If you use an auth token, or need to pass in a custom header, you can use `customHttpHeaders`
 
 ```typescript
 LoggerModule.forRoot({
@@ -50,7 +51,7 @@ LoggerModule.forRoot({
 ## Other features
 
 - Support for Custom Color Schemes in the config
-  - uses the LoggerColorScheme type, it is an array of 7 colors, each color matches to a log level. see LogLevelEnum
+  - uses the LoggerColorScheme type, it is an array of 7 colors, each color matches to a log level. see `NgxLoggerLevel`
 
 ```typescript
 LoggerModule.forRoot({
@@ -59,9 +60,9 @@ LoggerModule.forRoot({
 })
 ```
 
-- Support for custom parsing of source maps. In order to use it, you must set **enableSourceMaps: true** in your logger config
+- Support for custom parsing of source maps. In order to use it, you must set `enableSourceMaps: true` in your logger config
 
-  - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting **"sourceMap": {"scripts": true}** (or for older version of angularCli **"sourceMap": true**) in your angular.json
+  - Note: In order for the enableSourceMaps flag to work, your app must generate the source maps during the build process. If your using AngularCli you can generate Source Maps by setting `"sourceMap": {"scripts": true}` (or for older version of angularCli `"sourceMap": true`) in your angular.json
 
 - Custom Log Monitoring is available.
   - Only one monitor can be registered at a time; registering a new monitor overwrites the previous monitor.
