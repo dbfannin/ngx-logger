@@ -22,7 +22,7 @@ import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
     CommonModule
   ],
   providers: [
-    DatePipe // DatePipe is required by mapper-service.ts
+    DatePipe // DatePipe is required by metadata-service.ts
   ]
 })
 export class LoggerModule {
@@ -127,15 +127,12 @@ export class LoggerModule {
       ]
     };
   }
+
   static forChild(): ModuleWithProviders<LoggerModule> {
-    // todo bmtheo
+    // todo : this forChild is useless for now because nothing is different from forRoot.
+    // This should be implemented so that user can change the providers in the forChild
     return {
       ngModule: LoggerModule,
-      providers: [
-        NGXLogger,
-        CustomNGXLoggerService,
-        // NGXMapperService
-      ]
     };
   }
 }

@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { INGXLoggerConfig } from '../config/iconfig';
