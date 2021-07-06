@@ -5,8 +5,8 @@ import { NGXLogger } from "src/public_api";
   templateUrl: './forchild.component.html',
 })
 export class ForchildComponent {
+
   constructor(private logger: NGXLogger) {
-    
   }
 
   log(): void {

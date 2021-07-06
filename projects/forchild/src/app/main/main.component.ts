@@ -5,8 +5,8 @@ import { NGXLogger } from "src/public_api";
   templateUrl: './main.component.html',
 })
 export class MainComponent {
+
   constructor(private logger: NGXLogger) {
-    
   }
 
   log(): void {

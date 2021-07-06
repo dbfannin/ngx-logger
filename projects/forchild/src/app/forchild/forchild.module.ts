@@ -5,21 +5,21 @@ import { LoggerModule } from 'src/public_api';
 import { ForchildComponent } from './forchild.component';
 
 const forchildRoutes = [
-    {
-        path: '',
-        component: ForchildComponent,
-    }
+  {
+    path: '',
+    component: ForchildComponent,
+  }
 ];
 
 @NgModule({
-    declarations: [
-        ForchildComponent,
-    ],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(forchildRoutes),
-        LoggerModule.forChild(),
-    ],
+  declarations: [
+    ForchildComponent,
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(forchildRoutes),
+    LoggerModule.forChild(),
+  ],
 })
 export class ForchildModule {
 }
