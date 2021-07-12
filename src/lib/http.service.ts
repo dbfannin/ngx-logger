@@ -6,7 +6,9 @@ import { NGXLogInterface } from './types/ngx-log.interface';
 
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NGXLoggerHttpService {
   constructor(private readonly httpBackend: HttpBackend) { }
 

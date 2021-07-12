@@ -6,7 +6,9 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, retry, shareReplay, switchMap } from 'rxjs/operators';
 import { LogPosition } from './types/log-position';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NGXMapperService {
 
   // cache for source maps, key is source map location, ie. 'http://localhost:4200/main.js.map'
@@ -30,7 +32,7 @@ export class NGXMapperService {
     } catch (e) {
 
       try {
-        // Here are different examples of stacktrace 
+        // Here are different examples of stacktrace
 
         // Firefox (last line is the user code, the 4 first are ours):
         // getStackLine@http://localhost:4200/main.js:358:23

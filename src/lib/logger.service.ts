@@ -24,7 +24,9 @@ export const Levels = [
 ];
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NGXLogger {
   private readonly _isIE: boolean;
   private readonly _logFunc: Function;

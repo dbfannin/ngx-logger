@@ -24,22 +24,7 @@ export class LoggerModule {
     return {
       ngModule: LoggerModule,
       providers: [
-        {provide: LoggerConfig, useValue: config || {}},
-        NGXLogger,
-        NGXLoggerHttpService,
-        CustomNGXLoggerService,
-        NGXMapperService
-      ]
-    };
-  }
-  static forChild(): ModuleWithProviders<LoggerModule> {
-    return {
-      ngModule: LoggerModule,
-      providers: [
-        NGXLogger,
-        NGXLoggerHttpService,
-        CustomNGXLoggerService,
-        NGXMapperService
+        {provide: LoggerConfig, useValue: config || {}}
       ]
     };
   }

@@ -11,7 +11,9 @@ import {NGXMapperService} from './mapper.service';
 /**
  * CustomNGXLoggerService is designed to allow users to get a new instance of a logger
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CustomNGXLoggerService {
 
   constructor(private readonly mapperService: NGXMapperService,
