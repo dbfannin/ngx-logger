@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,7 +10,6 @@
     "test": "ng test --project=ngx-logger --watch=false",
     "test-watch": "ng test --project=ngx-logger --watch=true",
     "lint": "ng lint",
-    "e2e": "ng e2e",
     "demo": "ng build && ng serve demo -o"
   },
   "repository": {
