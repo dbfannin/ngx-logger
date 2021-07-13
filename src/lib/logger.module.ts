@@ -19,4 +19,9 @@ export class LoggerModule {
       ]
     };
   }
+  static forChild(): ModuleWithProviders<LoggerModule> {
+    return {
+      ngModule: LoggerModule
+    };
+  }
 }
