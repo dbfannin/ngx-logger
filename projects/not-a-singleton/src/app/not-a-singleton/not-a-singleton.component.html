@@ -1,0 +1,15 @@
+
+<p>
+  Not a singleton route, on that route the logger is provided with its own .forRoot call
+  This means it provides a specific instance of NGXLogger thus any config changes here or registering monitor won't affect the others logger
+  You can register a monitor, then log to make sure the monitor is active
+  After that you can go back on main route and see that this monitor is not working and it kept the app monitor
+  This is because LoggerModule is not used in singleton mode
+</p>
+
+<div>
+  <button (click)="registerLocalMonitor()">Register local monitor</button>
+</div>
+<div>
+  <button (click)="log()">Log</button>
+</div>
