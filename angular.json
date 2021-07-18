@@ -387,6 +387,84 @@
           }
         }
       }
+    },
+    "singleton-v1": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/singleton-v1",
+      "sourceRoot": "projects/singleton-v1/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/singleton-v1",
+            "index": "projects/singleton-v1/src/index.html",
+            "main": "projects/singleton-v1/src/main.ts",
+            "polyfills": "projects/singleton-v1/src/polyfills.ts",
+            "tsConfig": "projects/singleton-v1/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/singleton-v1/src/favicon.ico",
+              "projects/singleton-v1/src/assets"
+            ],
+            "styles": [
+              "projects/singleton-v1/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/singleton-v1/src/environments/environment.ts",
+                  "with": "projects/singleton-v1/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "singleton-v1:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "singleton-v1:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "singleton-v1:build"
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-logger",
