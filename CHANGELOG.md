@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.1] - 2021-XX-XX
+
 ### Added
 - NGXLogger is now fully customisable, see more in docs
 
