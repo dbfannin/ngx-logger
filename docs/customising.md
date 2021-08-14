@@ -40,7 +40,7 @@ Code your writer :
 @Injectable()
 export class WriterCustomisedService extends NGXLoggerWriterService {
 
-  /** Write the content sent to the log function to the console */
+  /** Write the content sent to the log function to the sessionStorage */
   public writeMessage(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
       sessionStorage.setItem('logger', metadata.message);
   }
