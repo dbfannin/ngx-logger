@@ -5,6 +5,7 @@ Here are listed some features of the logger
 ## Server side logging
 
 To log on your server you need to set `serverLogLevel` and `serverLoggingUrl` accordingly
+
 When you call the logger, the content will be sent to your server
 
 The type of the payload is `INGXLoggerMetadata` see details [here](../src/lib/metadata/imetadata.ts)
