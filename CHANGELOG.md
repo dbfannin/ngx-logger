@@ -22,14 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Breaking Changes
 - LoggerConfig is renamed to INGXLoggerConfig
-- ConfigEngine is shared through all logger instances. It was not before. TODO bmtheo to check (what happens when using forchild ?)
 - NGXLogInterface is changed to INGXLoggerMetadata
 - LoggerColorScheme is renamed to NGXLoggerColorScheme
 - NGXMapperService is renamed to INGXLoggerMapperService
 - NGXLoggerHttpService is renamed to INGXLoggerServerService
 - If server logger fails it now throws an exception instead of logging an error
 - LoggerUtils is deleted
-- For server side logging : If an error is sent (in message or in additional) then we return the error.stack only. It was done only for message now it is also done for additional (TODO bmtheo to check if it was only done in message before)
+- For server side logging : If an error is sent (in message or in additional) then we return the error.stack only. It was done only for message now it is also done for additional.
+- NgxLoggerService is not a singleton anymore and respects Angular DI rules (before it was providedIn: 'root')
 
 ### Deprecated features
 - CustomNGXLoggerService is now deprecated because the Logger is now fully customisable
