@@ -96,6 +96,8 @@ If you inject any of the NGX Logger services into your application, you will nee
 To provide them in your Testing Module:
 
 ```typescript
+import { LoggerTestingModule } from 'ngx-logger/testing';
+
 TestBed.configureTestingModule({
   imports: [
     LoggerTestingModule
