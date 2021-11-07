@@ -34,9 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated features
 - CustomNGXLoggerService is now deprecated because the Logger is now fully customisable
 - NGXLoggerMonitor is now deprecated, you should use INGXLoggerMonitor instead
-- setCustomHttpHeaders in config now
-- setCustomParams in config now
-- setWithCredentialsOptionValue in config now
+- setCustomHttpHeaders is now deprecated, the property is now part of the config
+- setCustomParams is now deprecated, the property is now part of the config
+- setWithCredentialsOptionValue is now deprecated, the property is now part of the config
 
 ## [4.2.2] - 2021-05-23
 
