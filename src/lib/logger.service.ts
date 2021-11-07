@@ -23,8 +23,8 @@ export class NGXLogger {
     @Inject(TOKEN_LOGGER_WRITER_SERVICE) private writerService: INGXLoggerWriterService,
     @Inject(TOKEN_LOGGER_SERVER_SERVICE) private serverService: INGXLoggerServerService,
   ) {
-    // todo bmtheo : BREAKING CHANGE now there is only one config engine, is this good ? (is this even a breaking change ?)
-    // each instance of the logger should have their own config engine
+    // The config engine is provided with an inject token which means the user has all control on the scope of that instance
+    // By default each loggerService instance has its own configEngine (see example in "not-a-singleton" projects)
     this.configEngine = configEngine;
   }
 
