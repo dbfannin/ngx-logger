@@ -15,6 +15,7 @@
 
     </mat-card-content>
     <mat-card-actions align="end">
+      <button mat-raised-button type="button" (click)="logError()">Log Error</button>
       <button mat-raised-button type="button" (click)="logComplex()">Log Complex Structure</button>
       <button mat-raised-button type="submit" color="primary" [disabled]="!loggerForm.valid">Log Message</button>
     </mat-card-actions>

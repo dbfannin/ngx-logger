@@ -163,6 +163,386 @@
           }
         }
       }
+    },
+    "forchild": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "projects/forchild",
+      "sourceRoot": "projects/forchild/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/forchild",
+            "index": "projects/forchild/src/index.html",
+            "main": "projects/forchild/src/main.ts",
+            "polyfills": "projects/forchild/src/polyfills.ts",
+            "tsConfig": "projects/forchild/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/forchild/src/favicon.ico",
+              "projects/forchild/src/assets"
+            ],
+            "styles": [
+              "projects/forchild/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/forchild/src/environments/environment.ts",
+                  "with": "projects/forchild/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "forchild:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "forchild:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "forchild:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/forchild/tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "customise": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:interceptor": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        }
+      },
+      "root": "projects/customise",
+      "sourceRoot": "projects/customise/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/customise",
+            "index": "projects/customise/src/index.html",
+            "main": "projects/customise/src/main.ts",
+            "polyfills": "projects/customise/src/polyfills.ts",
+            "tsConfig": "projects/customise/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/customise/src/favicon.ico",
+              "projects/customise/src/assets"
+            ],
+            "styles": [
+              "projects/customise/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/customise/src/environments/environment.ts",
+                  "with": "projects/customise/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "customise:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "customise:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "customise:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/customise/tsconfig.app.json",
+              "projects/customise/tsconfig.spec.json",
+              "projects/customise/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "singleton-v1": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/singleton-v1",
+      "sourceRoot": "projects/singleton-v1/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/singleton-v1",
+            "index": "projects/singleton-v1/src/index.html",
+            "main": "projects/singleton-v1/src/main.ts",
+            "polyfills": "projects/singleton-v1/src/polyfills.ts",
+            "tsConfig": "projects/singleton-v1/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/singleton-v1/src/favicon.ico",
+              "projects/singleton-v1/src/assets"
+            ],
+            "styles": [
+              "projects/singleton-v1/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/singleton-v1/src/environments/environment.ts",
+                  "with": "projects/singleton-v1/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "singleton-v1:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "singleton-v1:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "singleton-v1:build"
+          }
+        }
+      }
+    },
+    "not-a-singleton": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/not-a-singleton",
+      "sourceRoot": "projects/not-a-singleton/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/not-a-singleton",
+            "index": "projects/not-a-singleton/src/index.html",
+            "main": "projects/not-a-singleton/src/main.ts",
+            "polyfills": "projects/not-a-singleton/src/polyfills.ts",
+            "tsConfig": "projects/not-a-singleton/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/not-a-singleton/src/favicon.ico",
+              "projects/not-a-singleton/src/assets"
+            ],
+            "styles": [
+              "projects/not-a-singleton/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/not-a-singleton/src/environments/environment.ts",
+                  "with": "projects/not-a-singleton/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "not-a-singleton:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "not-a-singleton:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "not-a-singleton:build"
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-logger",

@@ -1,30 +1,38 @@
-import {HttpHeaders, HttpParams} from '@angular/common/http';
-import {LoggerConfig, NGXLoggerMonitor} from 'ngx-logger';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { INGXLoggerMonitor, INGXLoggerConfig, NgxLoggerLevel } from 'ngx-logger';
+import { Injectable } from "@angular/core";
 
+// todo bmtheo, there should be an interface or something to make sure this mock sticks to the real API
+@Injectable()
 export class NGXLoggerMock {
 
-  constructor() {
+  get level(): NgxLoggerLevel {
+    return NgxLoggerLevel.ERROR;
   }
 
-  trace(message: any, ...additional: any[]) {
+  get serverLogLevel(): NgxLoggerLevel {
+    return NgxLoggerLevel.OFF;
   }
 
-  debug(message: any, ...additional: any[]) {
+  trace(message?: any | (() => any), ...additional: any[]) {
   }
 
-  info(message: any, ...additional: any[]) {
+  debug(message?: any | (() => any), ...additional: any[]) {
   }
 
-  log(message: any, ...additional: any[]) {
+  info(message?: any | (() => any), ...additional: any[]) {
   }
 
-  warn(message: any, ...additional: any[]) {
+  log(message?: any | (() => any), ...additional: any[]) {
   }
 
-  error(message: any, ...additional: any[]) {
+  warn(message?: any | (() => any), ...additional: any[]) {
   }
 
-  fatal(message: any, ...additional: any[]) {
+  error(message?: any | (() => any), ...additional: any[]) {
+  }
+
+  fatal(message?: any | (() => any), ...additional: any[]) {
   }
 
   updateConfig(config: any) {
@@ -37,13 +45,13 @@ export class NGXLoggerMock {
   setCustomParams(params: HttpParams) {
   }
 
-  registerMonitor(monitor: NGXLoggerMonitor) {
+  registerMonitor(monitor: INGXLoggerMonitor) {
   }
 
   setWithCredentialsOptionValue(withCredentials: boolean) {
   }
 
-  getConfigSnapshot(): LoggerConfig {
-    return new LoggerConfig();
+  getConfigSnapshot(): INGXLoggerConfig {
+    return { level: NgxLoggerLevel.ERROR };
   }
 }

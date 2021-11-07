@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.1] - 2021-11-07
+
+### Added
+- NGXLogger is now fully customisable, see more in docs
+
+### Changed
+- Column number is now displayed by default in metadata
+    before "... [my-component.ts:15] ..."
+    after "... [my-component.ts:15:10] ..."
+- null sent in message will still log something
+    before "this.logger.error(null, myVar)" would not log anything, now it does
+    if you want to come back to the old behavior, you can override INGXLoggerRulesService
+
+### Breaking Changes
+- LoggerConfig is renamed to INGXLoggerConfig
+- NGXLogInterface is changed to INGXLoggerMetadata
+- LoggerColorScheme is renamed to NGXLoggerColorScheme
+- NGXMapperService is renamed to INGXLoggerMapperService
+- NGXLoggerHttpService is renamed to INGXLoggerServerService
+- If server logger fails it now throws an exception instead of logging an error
+- LoggerUtils is deleted
+- For server side logging : If an error is sent (in message or in additional) then we return the error.stack only. It was done only for message now it is also done for additional.
+- NgxLoggerService is not a singleton anymore and respects Angular DI rules (before it was providedIn: 'root')
+
+### Deprecated features
+- CustomNGXLoggerService is now deprecated because the Logger is now fully customisable
+- NGXLoggerMonitor is now deprecated, you should use INGXLoggerMonitor instead
+- setCustomHttpHeaders is now deprecated, the property is now part of the config
+- setCustomParams is now deprecated, the property is now part of the config
+- setWithCredentialsOptionValue is now deprecated, the property is now part of the config
 
 ## [4.2.2] - 2021-05-23
 
