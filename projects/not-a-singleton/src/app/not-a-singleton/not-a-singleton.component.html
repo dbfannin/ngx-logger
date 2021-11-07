@@ -10,6 +10,14 @@
 <div>
   <button (click)="registerLocalMonitor()">Register local monitor</button>
 </div>
+
+<div>
+  <p>
+    Changing log level here should not change log level of app logger service
+  </p>
+  <button (click)="changeLogLevel()">Change log level</button>
+  <p>Log level is : {{ logger.level }} </p>
+</div>
 <div>
   <button (click)="log()">Log</button>
 </div>

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { NGXLogger, INGXLoggerMonitor, INGXLoggerConfig, INGXLoggerMetadata } from "src/public_api";
+import { NGXLogger, INGXLoggerMonitor, INGXLoggerConfig, INGXLoggerMetadata, NgxLoggerLevel } from "src/public_api";
 
 export class LocalMonitor implements INGXLoggerMonitor {
   onLog(logObject: INGXLoggerMetadata, config: INGXLoggerConfig): void {
@@ -12,7 +12,7 @@ export class LocalMonitor implements INGXLoggerMonitor {
 })
 export class NotASingletonComponent {
 
-  constructor(private logger: NGXLogger) {
+  constructor(public logger: NGXLogger) {
   }
 
   registerLocalMonitor(): void {
@@ -22,5 +22,11 @@ export class NotASingletonComponent {
 
   log(): void {
     this.logger.debug('Test');
+  }
+
+  changeLogLevel(): void {
+    const config = this.logger.getConfigSnapshot()
+    config.level = config.level === NgxLoggerLevel.TRACE ? NgxLoggerLevel.ERROR : NgxLoggerLevel.TRACE;
+    this.logger.updateConfig(config);
   }
 }

@@ -6,7 +6,7 @@ import { NGXLogger } from "src/public_api";
 })
 export class MainComponent {
 
-  constructor(private logger: NGXLogger) {
+  constructor(public logger: NGXLogger) {
   }
 
   log(): void {

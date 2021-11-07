@@ -1,6 +1,11 @@
-
 <p>
   No monitor is set so we take the monitor that is already set (if any)
 </p>
+
+<div>
+  <p>Log level is : {{ logger.level }} </p>
+  <p>This should not be changed by the updateConfig of the not-a-singleton route</p>
+</div>
+
 
 <button (click)="log()">Log</button>
