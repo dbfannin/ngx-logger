@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: (): any => import('projects/customise/src/app/writer/writer.module').then(m => m.WriterModule),
   },
   {
+    path:'customise-body-server-log',
+    loadChildren: (): any => import('projects/customise/src/app/customise-body-server-log/customise-body-server-log.module').then(m => m.CustomiseBodyServerLogModule),
+  },
+  {
     path: 'main',
     component: MainComponent,
   }
