@@ -1,6 +1,6 @@
 import { HttpBackend, HttpRequest, HttpResponse } from '@angular/common/http';
 import { SourceMap } from '@angular/compiler';
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, retry, shareReplay } from 'rxjs/operators';
 import * as vlq from 'vlq';
@@ -18,7 +18,9 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
   /** cache for specific log position, key is the dist position, ie 'main.js:339:21' */
   protected logPositionCache: Map<string, Observable<INGXLoggerLogPosition>> = new Map();
 
-  constructor(private httpBackend: HttpBackend) {
+  constructor(
+    @Optional() private httpBackend: HttpBackend
+  ) {
   }
 
   /**
@@ -206,26 +208,35 @@ export class NGXLoggerMapperService implements INGXLoggerMapperService {
 
     // otherwise check if the source map is already cached for given source map location
     if (!this.sourceMapCache.has(sourceMapLocation)) {
-      // obtain the source map if not cached
-      this.sourceMapCache.set(
-        sourceMapLocation,
-        this.httpBackend.handle(req).pipe(
-          filter((e) => e instanceof HttpResponse),
-          map<HttpResponse<SourceMap>, SourceMap>(
-            (httpResponse: HttpResponse<SourceMap>) => httpResponse.body
-          ),
-          retry(3),
-          shareReplay(1)
-        )
-      );
+      if (!this.httpBackend) {
+        console.error('NGXLogger : Can\'t get sourcemap because HttpBackend is not provided. You need to import HttpClientModule');
+        this.sourceMapCache.set(sourceMapLocation, of(null));
+      } else {
+        // obtain the source map if not cached
+        this.sourceMapCache.set(
+          sourceMapLocation,
+          this.httpBackend.handle(req).pipe(
+            filter((e) => e instanceof HttpResponse),
+            map<HttpResponse<SourceMap>, SourceMap>(
+              (httpResponse: HttpResponse<SourceMap>) => httpResponse.body
+            ),
+            retry(3),
+            shareReplay(1)
+          )
+        );
+      }
     }
 
     // at this point the source map is cached, use it to get specific log position mapping
     const logPosition$ = this.sourceMapCache.get(sourceMapLocation).pipe(
-      map<SourceMap, INGXLoggerLogPosition>((sourceMap) =>
+      map<SourceMap, INGXLoggerLogPosition>((sourceMap) => {
+        // sourceMap can be null if HttpBackend is not provided for example
+        if (!sourceMap) {
+          return distPosition;
+        }
         // map generated position to source position
-        this.getMapping(sourceMap, distPosition)
-      ),
+        return this.getMapping(sourceMap, distPosition)
+      }),
       catchError(() => of(distPosition)),
       shareReplay(1)
     );

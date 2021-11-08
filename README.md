@@ -18,6 +18,7 @@ Once installed you need to import our main module and it's dependency on HttpCli
 
 ```typescript
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
+// HttpClientModule is only needed if you want to log on server or if you want to inspect sourcemaps
 import { HttpClientModule } from "@angular/common/http";
 ```
 
@@ -28,6 +29,7 @@ The only remaining part is to list the imported module in your application modul
   declarations: [AppComponent, ...],
   imports:
   [
+    // HttpClientModule is only needed if you want to log on server or if you want to inspect sourcemaps
     HttpClientModule,
     LoggerModule.forRoot({
       serverLoggingUrl: '/api/logs',

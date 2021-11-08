@@ -1,6 +1,6 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable, Optional } from '@angular/core';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerConfig } from '../config/iconfig';
@@ -10,7 +10,7 @@ import { INGXLoggerServerService } from './iserver.service';
 export class NGXLoggerServerService implements INGXLoggerServerService {
 
   constructor(
-    protected readonly httpBackend: HttpBackend,
+    @Optional() protected readonly httpBackend: HttpBackend,
   ) { }
 
   /**
@@ -87,6 +87,10 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     // They may log errors using this service causing circular calls
     const req = new HttpRequest<T>('POST', url, logContent, options || {});
 
+    if (!this.httpBackend) {
+      console.error('NGXLogger : Can\'t log on server because HttpBackend is not provided. You need to import HttpClientModule');
+      return of(null);
+    }
     return this.httpBackend.handle(req).pipe(
       filter(e => e instanceof HttpResponse),
       map<HttpResponse<T>, T>((httpResponse: HttpResponse<T>) => httpResponse.body)
