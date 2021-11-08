@@ -32,6 +32,8 @@ All the services can be found in the [logger constructor](../src/lib/logger.serv
  - INGXLoggerWriterService is used to write the log
  - INGXLoggerServerService is used to send the log to a server
 
+All thoses services are also extendable, this allows to be specific on the behavior you customise and keep all the other feature you don't want to change
+
 ### (example) Write the message to the sessionStorage instead of the console
 
 Code your writer :
@@ -63,6 +65,7 @@ And now your logger will write to the sessionStorage instead of the console
 
 Full code [here](../projects/customise/src/app/writer)
 
+
 ### (example) Send the log to the server only if "SERVER" is in the message
 
 Tweak the rule service :
@@ -91,3 +94,48 @@ LoggerModule.forRoot(
 ```
 
 And now everytime you have 'SERVER' in your message, the log will be sent to your server
+
+
+### (example) Adds a property to the server log
+
+This example adds a property "levelName" to the body sent to the API
+NB : This example can be used to change the body however you like
+
+Tweak the server service :
+
+```
+@Injectable()
+export class ServerCustomisedService extends NGXLoggerServerService {
+
+  /**
+   * Customse the data sent to the API
+   * @param metadata the data provided by NGXLogger
+   * @returns the data customised
+   */
+  public customiseRequestBody(metadata: INGXLoggerMetadata): any {
+    let body = { ...metadata };
+    body['levelName'] = NgxLoggerLevel[metadata.level];
+
+    // note, for the example we log the body but in a real case the log is useless
+    console.log('Customised body is', body);
+
+    return body;
+  }
+}
+```
+
+Provide the customised service to the logger
+
+```
+LoggerModule.forRoot(
+  { level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE, serverLoggingUrl: 'dummyURL' },
+  {
+    serverProvider: {
+      provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: ServerCustomisedService
+    }
+  }),
+```
+
+And now another property levelName will be sent to your API
+
+Full code [here](../projects/customise/src/app/customise-body-server-log)
