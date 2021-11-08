@@ -1,6 +1,6 @@
 {
   "name": "ngx-logger",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
