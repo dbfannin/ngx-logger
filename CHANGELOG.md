@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.3] - 2021-11-08
+
+### Added
+- Added a step in the ServerService that allow users to fully customise the body sent to the API (see example in customise [doc](docs/customising.md))
+
+
 ## [5.0.2] - 2021-11-08
 
 ### Changed
