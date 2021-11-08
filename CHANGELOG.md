@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     If HttpClientModule is not imported and you use the ServerSide logger, it will log an error
     If HttpClientModule is not imported and you use the enableSourceMaps, it will log an error
 
+
 ## [5.0.1] - 2021-11-07
 
 ### Added
@@ -44,6 +45,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - setCustomHttpHeaders is now deprecated, the property is now part of the config
 - setCustomParams is now deprecated, the property is now part of the config
 - setWithCredentialsOptionValue is now deprecated, the property is now part of the config
+
+
+## [4.2.3, 4.3.0, 4.3.1, 4.3.2 and 4.3.3] - 2021-07-12 & 2021-07-13
+NB : those changelogs where not added correctly when the version was published, I reread all the commits to update changelog
+
+Note about version numbers :
+4.2.3 was never published (but it was commited)
+4.3.1 publish was bugged and was changed for 4.3.2 right after
+
+### Breaking changes
+- NGXLoggerService is now a singleton (used with providedIn: 'root')
+  For information, this change was reverted in 5.x.x so that the lib respects Angular DI rules and you have control on how you want to provide NGXLogger instances
+
+### Changes
+- (internal) Changed the way some internal services were provided
+- (internal) e2e project was deleted because it was not used
+- Added forChild function to LoggerModule
+
 
 ## [4.2.2] - 2021-05-23
 
