@@ -14,7 +14,7 @@ NGX Logger is a simple logging module for angular (currently supports angular 6+
 npm install --save ngx-logger
 ```
 
-Once installed you need to import our main module and it's dependency on HttpClientModule:
+Once installed you need to import our main module (optionally you will need to import HttpClientModule):
 
 ```typescript
 import { LoggerModule, NgxLoggerLevel } from "ngx-logger";
