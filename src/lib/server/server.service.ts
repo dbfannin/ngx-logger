@@ -20,7 +20,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
    * @returns The stack of the error
    */
   protected secureErrorObject(err: Error): string {
-      return err?.stack;
+    return err?.stack;
   }
 
   /**
@@ -37,7 +37,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     return additional.map((next, idx) => {
       try {
         if (next instanceof Error) {
-            return this.secureErrorObject(next);
+          return this.secureErrorObject(next);
         }
         // We just want to make sure the JSON can be parsed, we do not want to actually change the type
         if (typeof next === 'object') {
@@ -59,7 +59,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
   protected secureMessage(message: any): string {
     try {
       if (message instanceof Error) {
-          return this.secureErrorObject(message);
+        return this.secureErrorObject(message);
       }
 
       if (typeof message !== 'string') {
@@ -97,6 +97,16 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     );
   }
 
+  /**
+   * Customise the data sent to the API
+   * @param metadata the data provided by NGXLogger
+   * @returns the data that will be sent to the API in the body
+   */
+  protected customiseRequestBody(metadata: INGXLoggerMetadata): any {
+    // In our API the body is not customised
+    return metadata;
+  }
+
   public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
     // Copying metadata locally because we don't want to change the object for the caller
     const localMetadata = { ...metadata };
@@ -105,12 +115,15 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
 
     localMetadata.message = this.secureMessage(metadata.message);
 
+    // Allow users to customise the data sent to the API
+    const requestBody = this.customiseRequestBody(metadata);
+
     const headers = config.customHttpHeaders || new HttpHeaders();
     if (!headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
 
-    this.logOnServer<INGXLoggerMetadata>(config.serverLoggingUrl, localMetadata, {
+    this.logOnServer<any>(config.serverLoggingUrl, requestBody, {
       headers,
       params: config.customHttpParams || new HttpParams(),
       responseType: config.httpResponseType || 'json',
