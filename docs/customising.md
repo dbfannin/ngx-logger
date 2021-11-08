@@ -99,6 +99,7 @@ And now everytime you have 'SERVER' in your message, the log will be sent to you
 ### (example) Adds a property to the server log
 
 This example adds a property "levelName" to the body sent to the API
+
 NB : This example can be used to change the body however you like
 
 Tweak the server service :
