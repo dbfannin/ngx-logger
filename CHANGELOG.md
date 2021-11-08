@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
-## [5.0.2] - 2021-XX-XX
+## [5.0.2] - 2021-11-08
 
 ### Changed
 - HttpClientModule is not needed by default anymore
