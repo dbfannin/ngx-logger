@@ -1,4 +1,4 @@
-import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse, HttpClient } from '@angular/common/http';
 import { Injectable, Optional } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, filter, map } from 'rxjs/operators';
@@ -10,7 +10,8 @@ import { INGXLoggerServerService } from './iserver.service';
 export class NGXLoggerServerService implements INGXLoggerServerService {
 
   constructor(
-    @Optional() protected readonly httpBackend: HttpBackend,
+    @Optional() protected readonly httpBackend: HttpBackend,  // For when Authorization or other interceptors are not required
+    @Optional() protected readonly httpClient: HttpClient     // For when Authorization or other interceptors *are* required
   ) { }
 
   /**
@@ -83,18 +84,31 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
       withCredentials?: boolean;
     },
   ): Observable<T> {
-    // HttpBackend skips all HttpInterceptors
     // They may log errors using this service causing circular calls
     const req = new HttpRequest<T>('POST', url, logContent, options || {});
 
-    if (!this.httpBackend) {
-      console.error('NGXLogger : Can\'t log on server because HttpBackend is not provided. You need to import HttpClientModule');
-      return of(null);
+    if (options.withCredentials) {
+      // HttpClient invokes all HttpInterceptors (such as ones that add Authorization headers)
+      if (!this.httpClient) {
+        console.error('NGXLogger : Can\'t log on server because HttpClient is not provided. You need to import HttpClientModule');
+        return of(null);
+      }
+      return this.httpClient.request(req).pipe(
+        filter(e => e instanceof HttpResponse),
+        map<HttpResponse<T>, T>((httpResponse: HttpResponse<T>) => httpResponse.body)
+      );
     }
-    return this.httpBackend.handle(req).pipe(
-      filter(e => e instanceof HttpResponse),
-      map<HttpResponse<T>, T>((httpResponse: HttpResponse<T>) => httpResponse.body)
-    );
+    else {
+      // HttpBackend skips all HttpInterceptors
+      if (!this.httpBackend) {
+        console.error('NGXLogger : Can\'t log on server because HttpBackend is not provided. You need to import HttpClientModule');
+        return of(null);
+      }
+      return this.httpBackend.handle(req).pipe(
+        filter(e => e instanceof HttpResponse),
+        map<HttpResponse<T>, T>((httpResponse: HttpResponse<T>) => httpResponse.body)
+      );
+    }
   }
 
   /**
