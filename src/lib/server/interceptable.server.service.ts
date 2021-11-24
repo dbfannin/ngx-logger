@@ -22,8 +22,7 @@ export class NGXLoggerInterceptableServerService extends NGXLoggerServerService 
       params?: HttpParams;
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
-    },
-    withIntercept?: boolean
+    }
   ): Observable<T> {
     // They may log errors using this service causing circular calls
     const req = new HttpRequest<T>('POST', url, logContent, options || {});
