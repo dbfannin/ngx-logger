@@ -18,6 +18,7 @@ export * from './rules/rules.service';
 
 export * from './server/iserver.service';
 export * from './server/server.service';
+export * from './server/interceptable.server.service';
 
 export * from './writer/iwriter.service';
 export * from './writer/writer.service';
