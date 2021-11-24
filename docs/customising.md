@@ -146,7 +146,7 @@ Full code [here](../projects/customise/src/app/customise-body-server-log)
 
 This example uses the NGXLoggerInterceptableServerService which uses HttpClient instead of HttppBackend to allow the server calls to be intercepted.
 
-***WARNING** Do *NOT* log anythign from any interceptors as that will cause an infinate loop!
+***WARNING*** Do *NOT* log anythign from any interceptors as that will cause an infinate loop!
 
 
 Provide the customised service to the logger
