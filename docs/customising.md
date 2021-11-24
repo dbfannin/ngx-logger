@@ -140,3 +140,27 @@ LoggerModule.forRoot(
 And now another property levelName will be sent to your API
 
 Full code [here](../projects/customise/src/app/customise-body-server-log)
+
+
+### (example) Use an authenticated web service that need authorization
+
+This example uses the NGXLoggerInterceptableServerService which uses HttpClient instead of HttppBackend to allow the server calls to be intercepted.
+
+***WARNING** Do *NOT* log anythign from any interceptors as that will cause an infinate loop!
+
+
+Provide the customised service to the logger
+
+```
+import { NGXLoggerInterceptableServerService, TOKEN_LOGGER_SERVER_SERVICE } from "ngx-logger";
+```
+
+```
+LoggerModule.forRoot(
+  { level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE, serverLoggingUrl: 'dummyURL' },
+  {
+    serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: NGXLoggerInterceptableServerService
+    }
+  }),
+```
