@@ -43,4 +43,4 @@ Thumbs.db
 !/.idea/runConfigurations
 
 # Angular cache
-.angular/*
+.angular/cache
