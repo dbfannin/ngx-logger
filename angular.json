@@ -63,7 +63,6 @@
           "skipTests": true
         },
         "@schematics/angular:module": {
-          "skipTests": true
         },
         "@schematics/angular:pipe": {
           "skipTests": true
@@ -76,7 +75,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
             "main": "projects/demo/src/main.ts",
@@ -89,7 +87,13 @@
             "styles": [
               "projects/demo/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -107,14 +111,13 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -184,7 +187,6 @@
           "skipTests": true
         },
         "@schematics/angular:module": {
-          "skipTests": true
         },
         "@schematics/angular:pipe": {
           "skipTests": true
@@ -205,7 +207,6 @@
             "main": "projects/forchild/src/main.ts",
             "polyfills": "projects/forchild/src/polyfills.ts",
             "tsConfig": "projects/forchild/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/forchild/src/favicon.ico",
               "projects/forchild/src/assets"
@@ -213,7 +214,13 @@
             "styles": [
               "projects/forchild/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -243,7 +250,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -295,7 +303,6 @@
           "skipTests": true
         },
         "@schematics/angular:module": {
-          "skipTests": true
         },
         "@schematics/angular:pipe": {
           "skipTests": true
@@ -316,7 +323,6 @@
             "main": "projects/customise/src/main.ts",
             "polyfills": "projects/customise/src/polyfills.ts",
             "tsConfig": "projects/customise/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/customise/src/favicon.ico",
               "projects/customise/src/assets"
@@ -324,7 +330,13 @@
             "styles": [
               "projects/customise/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -354,7 +366,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -407,7 +420,6 @@
             "main": "projects/singleton-v1/src/main.ts",
             "polyfills": "projects/singleton-v1/src/polyfills.ts",
             "tsConfig": "projects/singleton-v1/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/singleton-v1/src/favicon.ico",
               "projects/singleton-v1/src/assets"
@@ -415,7 +427,13 @@
             "styles": [
               "projects/singleton-v1/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -445,7 +463,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -485,7 +504,6 @@
             "main": "projects/not-a-singleton/src/main.ts",
             "polyfills": "projects/not-a-singleton/src/polyfills.ts",
             "tsConfig": "projects/not-a-singleton/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/not-a-singleton/src/favicon.ico",
               "projects/not-a-singleton/src/assets"
@@ -493,7 +511,13 @@
             "styles": [
               "projects/not-a-singleton/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -523,7 +547,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

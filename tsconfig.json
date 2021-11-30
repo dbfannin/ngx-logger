@@ -7,7 +7,6 @@
     "declaration": false,
     "moduleResolution": "node",
     "downlevelIteration": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2015",
     "module": "es2020",
