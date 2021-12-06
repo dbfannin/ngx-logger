@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.4] - 2021-12-06
+
+### Changed
+- Lib is now built with Angular v13
+- Lib is now built in ivy compatible mode (fixes #277)
+
+
 ## [5.0.3] - 2021-11-08
 
 ### Added
