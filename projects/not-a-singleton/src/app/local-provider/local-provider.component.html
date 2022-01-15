@@ -1,0 +1,14 @@
+<p>
+  Local provider route : Here the NGXLogger is provided in providers array of the component
+</p>
+
+<div>
+  <p>
+    Changing log level here should not change log level of other NGXLogger instances
+  </p>
+  <button (click)="changeLogLevel()">Change log level</button>
+  <p>Log level is : {{ logger.level }} </p>
+</div>
+
+
+<button (click)="log()">Log</button>

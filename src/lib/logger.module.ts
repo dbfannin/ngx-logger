@@ -4,8 +4,6 @@ import { ClassProvider, ConstructorProvider, ExistingProvider, FactoryProvider, 
 import { NGXLogger } from './logger.service';
 import { CustomNGXLoggerService } from './custom-logger.service';
 import { INGXLoggerConfig, TOKEN_LOGGER_CONFIG } from './config/iconfig';
-import { NGXLoggerConfigEngine } from './config/config-engine';
-import { TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
 import { NGXLoggerMapperService } from './mapper/mapper.service';
 import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
 import { NGXLoggerMetadataService } from './metadata/metadata.service';
@@ -16,6 +14,8 @@ import { NGXLoggerWriterService } from './writer/writer.service';
 import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
 import { NGXLoggerServerService } from './server/server.service';
 import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
+import { NGXLoggerConfigEngineFactory } from './config/config-engine-factory';
+import { TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } from './config/iconfig-engine-factory';
 
 @NgModule({
   imports: [
@@ -30,7 +30,7 @@ export class LoggerModule {
     config: INGXLoggerConfig | null | undefined,
     customProvider?: {
       configProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
-      configEngineProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
+      configEngineFactoryProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
       metadataProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
       ruleProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
       mapperProvider?: ValueProvider | ClassProvider | ConstructorProvider | ExistingProvider | FactoryProvider,
@@ -53,12 +53,12 @@ export class LoggerModule {
     }
 
     // default configEngine provider
-    if (!customProvider.configEngineProvider) {
-      customProvider.configEngineProvider = { provide: TOKEN_LOGGER_CONFIG_ENGINE, useClass: NGXLoggerConfigEngine };
+    if (!customProvider.configEngineFactoryProvider) {
+      customProvider.configEngineFactoryProvider = { provide: TOKEN_LOGGER_CONFIG_ENGINE_FACTORY, useClass: NGXLoggerConfigEngineFactory };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
-      if (customProvider.configEngineProvider.provide !== TOKEN_LOGGER_CONFIG_ENGINE) {
-        throw new Error(`Wrong injection token for configEngineProvider, it should be '${TOKEN_LOGGER_CONFIG_ENGINE}' and you used '${customProvider.configEngineProvider.provide}'`);
+      // if the user provided its own configEngineFactory, we just make sure the injection token is correct
+      if (customProvider.configEngineFactoryProvider.provide !== TOKEN_LOGGER_CONFIG_ENGINE_FACTORY) {
+        throw new Error(`Wrong injection token for configEngineFactoryProvider, it should be '${TOKEN_LOGGER_CONFIG_ENGINE_FACTORY}' and you used '${customProvider.configEngineFactoryProvider.provide}'`);
       }
     }
 
@@ -66,7 +66,7 @@ export class LoggerModule {
     if (!customProvider.metadataProvider) {
       customProvider.metadataProvider = { provide: TOKEN_LOGGER_METADATA_SERVICE, useClass: NGXLoggerMetadataService };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
+      // if the user provided its own metadataService, we just make sure the injection token is correct
       if (customProvider.metadataProvider.provide !== TOKEN_LOGGER_METADATA_SERVICE) {
         throw new Error(`Wrong injection token for metadataProvider, it should be '${TOKEN_LOGGER_METADATA_SERVICE}' and you used '${customProvider.metadataProvider.provide}'`);
       }
@@ -76,7 +76,7 @@ export class LoggerModule {
     if (!customProvider.ruleProvider) {
       customProvider.ruleProvider = { provide: TOKEN_LOGGER_RULES_SERVICE, useClass: NGXLoggerRulesService };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
+      // if the user provided its own ruleService, we just make sure the injection token is correct
       if (customProvider.ruleProvider.provide !== TOKEN_LOGGER_RULES_SERVICE) {
         throw new Error(`Wrong injection token for ruleProvider, it should be '${TOKEN_LOGGER_RULES_SERVICE}' and you used '${customProvider.ruleProvider.provide}'`);
       }
@@ -86,7 +86,7 @@ export class LoggerModule {
     if (!customProvider.mapperProvider) {
       customProvider.mapperProvider = { provide: TOKEN_LOGGER_MAPPER_SERVICE, useClass: NGXLoggerMapperService };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
+      // if the user provided its own mapperService, we just make sure the injection token is correct
       if (customProvider.mapperProvider.provide !== TOKEN_LOGGER_MAPPER_SERVICE) {
         throw new Error(`Wrong injection token for mapperProvider, it should be '${TOKEN_LOGGER_MAPPER_SERVICE}' and you used '${customProvider.mapperProvider.provide}'`);
       }
@@ -96,7 +96,7 @@ export class LoggerModule {
     if (!customProvider.writerProvider) {
       customProvider.writerProvider = { provide: TOKEN_LOGGER_WRITER_SERVICE, useClass: NGXLoggerWriterService };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
+      // if the user provided its own writerService, we just make sure the injection token is correct
       if (customProvider.writerProvider.provide !== TOKEN_LOGGER_WRITER_SERVICE) {
         throw new Error(`Wrong injection token for writerProvider, it should be '${TOKEN_LOGGER_WRITER_SERVICE}' and you used '${customProvider.writerProvider.provide}'`);
       }
@@ -106,7 +106,7 @@ export class LoggerModule {
     if (!customProvider.serverProvider) {
       customProvider.serverProvider = { provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: NGXLoggerServerService };
     } else {
-      // if the user provided its own config, we just make sure the injection token is correct
+      // if the user provided its own serverService, we just make sure the injection token is correct
       if (customProvider.serverProvider.provide !== TOKEN_LOGGER_SERVER_SERVICE) {
         throw new Error(`Wrong injection token for serverProvider, it should be '${TOKEN_LOGGER_SERVER_SERVICE}' and you used '${customProvider.writerProvider.provide}'`);
       }
@@ -117,7 +117,7 @@ export class LoggerModule {
       providers: [
         NGXLogger,
         customProvider.configProvider,
-        customProvider.configEngineProvider,
+        customProvider.configEngineFactoryProvider,
         customProvider.metadataProvider,
         customProvider.ruleProvider,
         customProvider.mapperProvider,
