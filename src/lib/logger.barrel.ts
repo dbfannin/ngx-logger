@@ -1,6 +1,8 @@
 export * from './config/iconfig';
 export * from './config/iconfig-engine';
 export * from './config/config-engine';
+export * from './config/iconfig-engine-factory';
+export * from './config/config-engine-factory';
 
 export * from './mapper/ilog-position';
 export * from './mapper/imapper.service';
@@ -27,5 +29,16 @@ export * from './types/logger-level.enum';
 
 export * from './logger.service';
 export * from './custom-logger.service';
+
+export * from './testing/config-engine.mock';
+export * from './testing/custom-logger.service.mock';
+export * from './testing/logger-testing.module';
+export * from './testing/logger.service.mock';
+export * from './testing/mapper.service.mock';
+export * from './testing/metadata.service.mock';
+export * from './testing/rules.service.mock';
+export * from './testing/server.service.mock';
+export * from './testing/writer.service.mock';
+export * from './testing/config-engine-factory.mock';
 
 export * from './logger.module';
