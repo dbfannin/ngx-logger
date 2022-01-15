@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { INGXLoggerConfig, INGXLoggerLogPosition, INGXLoggerMapperService, INGXLoggerMetadata } from 'ngx-logger';
 import { Observable, of } from 'rxjs';
+import { INGXLoggerConfig } from 'src/lib/config/iconfig';
+import { INGXLoggerLogPosition } from 'src/lib/mapper/ilog-position';
+import { INGXLoggerMapperService } from 'src/lib/mapper/imapper.service';
+import { INGXLoggerMetadata } from 'src/lib/metadata/imetadata';
 
 @Injectable()
 export class NGXLoggerMapperServiceMock implements INGXLoggerMapperService {

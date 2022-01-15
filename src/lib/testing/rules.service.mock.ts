@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { INGXLoggerConfig, INGXLoggerRulesService, NgxLoggerLevel } from 'ngx-logger';
+import { INGXLoggerConfig } from 'src/lib/config/iconfig';
+import { INGXLoggerRulesService } from 'src/lib/rules/irules.service';
+import { NgxLoggerLevel } from 'src/lib/types/logger-level.enum';
 
 @Injectable()
 export class NGXLoggerRulesServiceMock implements INGXLoggerRulesService {
