@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.6] - 2022-01-15
+
+### Changed
+- REVERT : testing project is now under main project (this was causing compilation error)
+
 ## [5.0.5] - 2022-01-15
 
 ### Changed

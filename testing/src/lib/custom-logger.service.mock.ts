@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { NGXLoggerMock } from './logger.service.mock';
+import { NGXLoggerMock } from "./logger.service.mock";
 
 /**
  * CustomNGXLoggerServiceMock is a mock for CustomNGXLoggerService
