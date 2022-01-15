@@ -1,10 +1,4 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { NGXLoggerConfigEngineFactoryMock } from 'src/lib/testing/config-engine-factory.mock';
-import { NGXLoggerMapperServiceMock } from 'src/lib/testing/mapper.service.mock';
-import { NGXLoggerMetadataServiceMock } from 'src/lib/testing/metadata.service.mock';
-import { NGXLoggerRulesServiceMock } from 'src/lib/testing/rules.service.mock';
-import { NGXLoggerServerServiceMock } from 'src/lib/testing/server.service.mock';
-import { NGXLoggerWriterServiceMock } from 'src/lib/testing/writer.service.mock';
 import { TOKEN_LOGGER_CONFIG } from './config/iconfig';
 import { TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } from './config/iconfig-engine-factory';
 import { NGXLogger } from './logger.service';
@@ -12,6 +6,12 @@ import { TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper.service';
 import { TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
 import { TOKEN_LOGGER_RULES_SERVICE } from './rules/irules.service';
 import { TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
+import { NGXLoggerConfigEngineFactoryMock } from 'testing/src/lib/config-engine-factory.mock';
+import { NGXLoggerMapperServiceMock } from 'testing/src/lib/mapper.service.mock';
+import { NGXLoggerMetadataServiceMock } from 'testing/src/lib/metadata.service.mock';
+import { NGXLoggerRulesServiceMock } from 'testing/src/lib/rules.service.mock';
+import { NGXLoggerServerServiceMock } from 'testing/src/lib/server.service.mock';
+import { NGXLoggerWriterServiceMock } from 'testing/src/lib/writer.service.mock';
 import { NgxLoggerLevel } from './types/logger-level.enum';
 import { TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
 

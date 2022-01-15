@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { INGXLoggerConfig } from 'src/lib/config/iconfig';
-import { INGXLoggerMetadata } from 'src/lib/metadata/imetadata';
-import { INGXLoggerWriterService } from 'src/lib/writer/iwriter.service';
+import { INGXLoggerConfig, INGXLoggerMetadata, INGXLoggerWriterService } from 'ngx-logger';
+
 
 @Injectable()
 export class NGXLoggerWriterServiceMock implements INGXLoggerWriterService {

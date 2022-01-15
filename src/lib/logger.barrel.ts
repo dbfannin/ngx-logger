@@ -30,15 +30,4 @@ export * from './types/logger-level.enum';
 export * from './logger.service';
 export * from './custom-logger.service';
 
-export * from './testing/config-engine.mock';
-export * from './testing/custom-logger.service.mock';
-export * from './testing/logger-testing.module';
-export * from './testing/logger.service.mock';
-export * from './testing/mapper.service.mock';
-export * from './testing/metadata.service.mock';
-export * from './testing/rules.service.mock';
-export * from './testing/server.service.mock';
-export * from './testing/writer.service.mock';
-export * from './testing/config-engine-factory.mock';
-
 export * from './logger.module';
