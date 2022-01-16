@@ -42,5 +42,5 @@ Thumbs.db
 # shared run configurations for the project
 !/.idea/runConfigurations
 
-# Angular files
+# Angular cache
 .angular/cache

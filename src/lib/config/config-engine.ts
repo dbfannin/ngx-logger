@@ -1,14 +1,16 @@
 import { NgxLoggerLevel } from './../types/logger-level.enum';
 import { INGXLoggerConfigEngine } from './iconfig-engine';
-import { Inject, Injectable } from '@angular/core';
-import { INGXLoggerConfig, TOKEN_LOGGER_CONFIG } from './iconfig';
+import { INGXLoggerConfig } from './iconfig';
 
-@Injectable()
 export class NGXLoggerConfigEngine implements INGXLoggerConfigEngine {
 
+  private config: INGXLoggerConfig;
+
   constructor(
-    @Inject(TOKEN_LOGGER_CONFIG) protected config: INGXLoggerConfig,
-  ) { }
+    config: INGXLoggerConfig,
+  ) {
+    this.config = this._clone(config);
+  }
 
   /** Get a readonly access to the level configured for the NGXLogger */
   get level(): NgxLoggerLevel {

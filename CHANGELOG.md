@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.6] - 2022-01-15
+
+### Changed
+- REVERT : testing project is now under main project (this was causing compilation error)
+
+## [5.0.5] - 2022-01-15
+
+### Changed
+- testing project is now under main project (this was causing compilation error)
+
+### Breaking changes
+- ConfigEngine is not provided in DI anymore, this was causing a bug where all NGXLogger instances share the same config (only the forRoot call would make a NGXLogger instance independant) fixes #282
+  - Now ConfigEngine is instantiated by the INGXLoggerConfigEngineFactory, the call is made in NGXLogger constructor
+  - The INGXLoggerConfigEngineFactory is provided in DI if any user wants to tweak this behavior
+
+
+## [5.0.4] - 2021-12-06
+
+### Changed
+- Lib is now built with Angular v13
+- Lib is now built in ivy compatible mode (fixes #277)
+
+
 ## [5.0.3] - 2021-11-08
 
 ### Added

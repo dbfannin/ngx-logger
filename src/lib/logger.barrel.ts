@@ -1,6 +1,8 @@
 export * from './config/iconfig';
 export * from './config/iconfig-engine';
 export * from './config/config-engine';
+export * from './config/iconfig-engine-factory';
+export * from './config/config-engine-factory';
 
 export * from './mapper/ilog-position';
 export * from './mapper/imapper.service';

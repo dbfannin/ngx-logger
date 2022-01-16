@@ -1,5 +1,5 @@
-import { INGXLoggerConfig, NgxLoggerLevel, INGXLoggerConfigEngine } from 'ngx-logger';
 import { Injectable } from '@angular/core';
+import { INGXLoggerConfig, INGXLoggerConfigEngine, NgxLoggerLevel } from 'ngx-logger';
 
 @Injectable()
 export class NGXLoggerConfigEngineMock implements INGXLoggerConfigEngine {

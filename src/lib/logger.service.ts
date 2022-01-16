@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { NgxLoggerLevel } from './types/logger-level.enum';
-import { INGXLoggerConfigEngine, TOKEN_LOGGER_CONFIG_ENGINE } from './config/iconfig-engine';
-import { INGXLoggerConfig } from './config/iconfig';
+import { INGXLoggerConfigEngine } from './config/iconfig-engine';
+import { INGXLoggerConfig, TOKEN_LOGGER_CONFIG } from './config/iconfig';
 import { INGXLoggerMetadataService, TOKEN_LOGGER_METADATA_SERVICE } from './metadata/imetadata.service';
 import { INGXLoggerRulesService, TOKEN_LOGGER_RULES_SERVICE } from './rules/irules.service';
 import { INGXLoggerMapperService, TOKEN_LOGGER_MAPPER_SERVICE } from './mapper/imapper.service';
@@ -10,24 +10,25 @@ import { INGXLoggerMonitor } from './monitor/ilogger-monitor';
 import { INGXLoggerWriterService, TOKEN_LOGGER_WRITER_SERVICE } from './writer/iwriter.service';
 import { INGXLoggerServerService, TOKEN_LOGGER_SERVER_SERVICE } from './server/iserver.service';
 import { take } from 'rxjs/operators';
+import { INGXLoggerConfigEngineFactory, TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } from './config/iconfig-engine-factory';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NGXLogger {
   private _loggerMonitor: INGXLoggerMonitor;
+  private configEngine: INGXLoggerConfigEngine;
 
   constructor(
-    @Inject(TOKEN_LOGGER_CONFIG_ENGINE) private configEngine: INGXLoggerConfigEngine,
+    @Inject(TOKEN_LOGGER_CONFIG) config: INGXLoggerConfig,
+    @Inject(TOKEN_LOGGER_CONFIG_ENGINE_FACTORY) configEngineFactory: INGXLoggerConfigEngineFactory,
     @Inject(TOKEN_LOGGER_METADATA_SERVICE) private metadataService: INGXLoggerMetadataService,
     @Inject(TOKEN_LOGGER_RULES_SERVICE) private ruleService: INGXLoggerRulesService,
     @Inject(TOKEN_LOGGER_MAPPER_SERVICE) private mapperService: INGXLoggerMapperService,
     @Inject(TOKEN_LOGGER_WRITER_SERVICE) private writerService: INGXLoggerWriterService,
     @Inject(TOKEN_LOGGER_SERVER_SERVICE) private serverService: INGXLoggerServerService,
   ) {
-    // The config engine is provided with an inject token which means the user has all control on the scope of that instance
-    // By default each loggerService instance has its own configEngine (see example in "not-a-singleton" projects)
-    this.configEngine = configEngine;
+    this.configEngine = configEngineFactory.provideConfigEngine(config);
   }
 
   /** Get a readonly access to the level configured for the NGXLogger */

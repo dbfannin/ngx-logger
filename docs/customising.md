@@ -25,7 +25,7 @@ So you can code your own service and then provide it to the logger to tweak the 
 ### List of services
 
 All the services can be found in the [logger constructor](../src/lib/logger.service.ts) :
- - INGXLoggerConfigEngine is used to store the INGXLoggerConfig
+ - INGXLoggerConfigEngineFactory is used to provide the INGXLoggerConfigEngine that stores the INGXLoggerConfig
  - INGXLoggerMetadataService is used to create the INGXLoggerMetadata that store all the data (and metadata) that will be logged
  - INGXLoggerRulesService is used to know what logger should be called (writer, server and monitor)
  - INGXLoggerMapperService is used to map the logger call to its source position

@@ -7,3 +7,4 @@ export * from './lib/metadata.service.mock';
 export * from './lib/rules.service.mock';
 export * from './lib/server.service.mock';
 export * from './lib/writer.service.mock';
+export * from './lib/config-engine-factory.mock';
