@@ -113,10 +113,10 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
 
     localMetadata.additional = this.secureAdditionalParameters(localMetadata.additional);
 
-    localMetadata.message = this.secureMessage(metadata.message);
+    localMetadata.message = this.secureMessage(localMetadata.message);
 
     // Allow users to customise the data sent to the API
-    const requestBody = this.customiseRequestBody(metadata);
+    const requestBody = this.customiseRequestBody(localMetadata);
 
     const headers = config.customHttpHeaders || new HttpHeaders();
     if (!headers.has('Content-Type')) {

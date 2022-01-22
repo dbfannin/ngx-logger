@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.7] - 2022-01-22
+
+### Fixed
+- Now correctly secures `message` and `additional` from payload when sending log to server (fixes #286)
+
 ## [5.0.6] - 2022-01-15
 
 ### Changed
