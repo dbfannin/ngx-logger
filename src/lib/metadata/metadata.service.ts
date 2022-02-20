@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { NgxLoggerLevel } from '../types/logger-level.enum';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerMetadata } from './imetadata';
@@ -9,8 +9,23 @@ import { INGXLoggerMetadataService } from './imetadata.service';
 export class NGXLoggerMetadataService implements INGXLoggerMetadataService {
 
   constructor(
-    protected readonly datePipe: DatePipe,
+    @Optional() protected readonly datePipe: DatePipe,
   ) { }
+
+  protected computeTimestamp(config: INGXLoggerConfig): string {
+    const defaultTimestamp = () => new Date().toISOString();
+
+    if (config.timestampFormat) {
+      if (!this.datePipe) {
+        console.error('NGXLogger : Can\'t use timeStampFormat because DatePipe is not provided. You need to provide DatePipe');
+        return defaultTimestamp();
+      } else {
+        return this.datePipe.transform(new Date(), config.timestampFormat);
+      }
+    }
+
+    return defaultTimestamp();
+  }
 
   public getMetadata(
     level: NgxLoggerLevel,
@@ -31,12 +46,7 @@ export class NGXLoggerMetadataService implements INGXLoggerMetadataService {
       metadata.message = message;
     }
 
-    if (config.timestampFormat) {
-      metadata.timestamp = this.datePipe.transform(new Date(), config.timestampFormat);
-    } else {
-      metadata.timestamp = new Date().toISOString();
-    }
-
+    metadata.timestamp = this.computeTimestamp(config);
 
     return metadata;
   }

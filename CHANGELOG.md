@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+## [5.0.8] - 2022-02-20
+
+### Changed
+- Makes the DatePipe dependency Optional
+
+### Breaking Changes
+- If you use `timestampFormat`, you now need to manually provide `DatePipe` from @angular/common
+  - If not provided, this will just display an error when logging, build will not break, your application will still run and logger will still produce an output
+
 ## [5.0.7] - 2022-01-22
 
 ### Fixed
