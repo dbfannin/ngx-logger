@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ClassProvider, ConstructorProvider, ExistingProvider, FactoryProvider, ModuleWithProviders, NgModule, ValueProvider } from '@angular/core';
 
 import { NGXLogger } from './logger.service';
@@ -21,9 +21,6 @@ import { TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } from './config/iconfig-engine-fact
   imports: [
     CommonModule
   ],
-  providers: [
-    DatePipe // DatePipe is required by metadata-service.ts
-  ]
 })
 export class LoggerModule {
   static forRoot(
