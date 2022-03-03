@@ -87,7 +87,7 @@ Provide the customised service to the logger
 LoggerModule.forRoot(
   { level: NgxLoggerLevel.DEBUG },
   {
-    writerProvider: {
+    ruleProvider: {
       provide: TOKEN_LOGGER_RULES_SERVICE, useClass: RulesCustomisedService
     }
   }),
