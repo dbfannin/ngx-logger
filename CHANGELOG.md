@@ -10,10 +10,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added the function alterHttpRequest to allow users to tweak the HttpRequest just before it is sent to the API
 
+
+## [5.0.8] - 2022-02-20
+
+### Changed
+- Makes the DatePipe dependency Optional
+
+### Breaking Changes
+- If you use `timestampFormat`, you now need to manually provide `DatePipe` from @angular/common
+  - If not provided, this will just display an error when logging, build will not break, your application will still run and logger will still produce an output
+
+
+## [5.0.7] - 2022-01-22
+
+### Fixed
+- Now correctly secures `message` and `additional` from payload when sending log to server (fixes #286)
+
+
 ## [5.0.6] - 2022-01-15
 
 ### Changed
 - REVERT : testing project is now under main project (this was causing compilation error)
+
 
 ## [5.0.5] - 2022-01-15
 
