@@ -140,3 +140,43 @@ LoggerModule.forRoot(
 And now another property levelName will be sent to your API
 
 Full code [here](../projects/customise/src/app/customise-body-server-log)
+
+
+### (example) Adds an authorization header to the request
+
+This example adds a header "authorization" to the request sent to the API
+
+Tweak the server service :
+
+```
+@Injectable()
+export class AuthTokenServerService extends NGXLoggerServerService {
+
+  protected override alterHttpRequest(httpRequest: HttpRequest<any>): HttpRequest<any> {
+    // Alter httpRequest by adding auth token to header 
+    httpRequest = httpRequest.clone({
+      setHeaders: {
+        ['Authorization']: 'Bearer MyToken',
+      },
+    });
+    return httpRequest;
+  }
+}
+```
+
+Provide the auth token service to the logger
+
+```
+LoggerModule.forRoot(
+  { level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE, serverLoggingUrl: 'dummyURL' },
+  {
+    serverProvider: {
+      provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: AuthTokenServerService
+    }
+  }),
+```
+
+And now another your authorization header will be used when logging to your API
+
+Full code [here](../projects/customise/src/app/auth-token)
+
