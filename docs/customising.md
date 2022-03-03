@@ -142,25 +142,41 @@ And now another property levelName will be sent to your API
 Full code [here](../projects/customise/src/app/customise-body-server-log)
 
 
-### (example) Use an authenticated web service that need authorization
+### (example) Adds an authorization header to the request
 
-This example uses the NGXLoggerInterceptableServerService which uses HttpClient instead of HttppBackend to allow the server calls to be intercepted.
+This example adds a header "authorization" to the request sent to the API
 
-***WARNING*** Do *NOT* log anything from any interceptors as that will cause an infinite loop!
-
-
-Provide the customised service to the logger
+Tweak the server service :
 
 ```
-import { NGXLoggerInterceptableServerService, TOKEN_LOGGER_SERVER_SERVICE } from "ngx-logger";
+@Injectable()
+export class AuthTokenServerService extends NGXLoggerServerService {
+
+  protected override alterHttpRequest(httpRequest: HttpRequest<any>): HttpRequest<any> {
+    // Alter httpRequest by adding auth token to header 
+    httpRequest = httpRequest.clone({
+      setHeaders: {
+        ['Authorization']: 'Bearer MyToken',
+      },
+    });
+    return httpRequest;
+  }
+}
 ```
+
+Provide the auth token service to the logger
 
 ```
 LoggerModule.forRoot(
   { level: NgxLoggerLevel.TRACE, serverLogLevel: NgxLoggerLevel.TRACE, serverLoggingUrl: 'dummyURL' },
   {
     serverProvider: {
-        provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: NGXLoggerInterceptableServerService
+      provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: AuthTokenServerService
     }
   }),
 ```
+
+And now another your authorization header will be used when logging to your API
+
+Full code [here](../projects/customise/src/app/auth-token)
+

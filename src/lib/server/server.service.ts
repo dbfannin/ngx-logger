@@ -1,7 +1,7 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable, Optional } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, filter, map } from 'rxjs/operators';
+import { concat, isObservable, Observable, of, throwError } from 'rxjs';
+import { catchError, concatMap, filter, map } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerServerService } from './iserver.service';
@@ -72,9 +72,25 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     return message;
   }
 
-  protected logOnServer<T>(
+  /**
+   * Edits HttpRequest object before sending request to server
+   * @param httpRequest default request object
+   * @returns altered httprequest
+   */
+  protected alterHttpRequest(httpRequest: HttpRequest<any>): HttpRequest<any> | Observable<HttpRequest<any>> {
+    return httpRequest;
+  }
+
+  /**
+   * Sends request to server
+   * @param url 
+   * @param logContent 
+   * @param options 
+   * @returns 
+   */
+  protected logOnServer(
     url: string,
-    logContent: T,
+    logContent: any,
     options: {
       headers?: HttpHeaders;
       reportProgress?: boolean;
@@ -82,18 +98,38 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
       responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
       withCredentials?: boolean;
     },
-  ): Observable<T> {
-    // HttpBackend skips all HttpInterceptors
-    // They may log errors using this service causing circular calls
-    const req = new HttpRequest<T>('POST', url, logContent, options || {});
+  ): Observable<any> {
 
     if (!this.httpBackend) {
       console.error('NGXLogger : Can\'t log on server because HttpBackend is not provided. You need to import HttpClientModule');
       return of(null);
     }
-    return this.httpBackend.handle(req).pipe(
+
+    // HttpBackend skips all HttpInterceptors
+    // They may log errors using this service causing circular calls
+    let defaultRequest = new HttpRequest<any>('POST', url, logContent, options || {});
+    let finalRequest: Observable<HttpRequest<any>> = of(defaultRequest);
+
+    const alteredRequest = this.alterHttpRequest(defaultRequest);
+
+    if (isObservable(alteredRequest)) {
+      finalRequest = alteredRequest;
+    } else if (alteredRequest) {
+      finalRequest = of(alteredRequest);
+    } else {
+      console.warn('NGXLogger : alterHttpRequest returned an invalid request. Using default one instead');
+    }
+
+    return finalRequest.pipe(
+      concatMap(req => {
+        if (!req) {
+          console.warn('NGXLogger : alterHttpRequest returned an invalid request (observable). Using default one instead');
+          return this.httpBackend.handle(defaultRequest)
+        }
+        return this.httpBackend.handle(req);
+      }),
       filter(e => e instanceof HttpResponse),
-      map<HttpResponse<T>, T>((httpResponse: HttpResponse<T>) => httpResponse.body)
+      map<HttpResponse<any>, any>((httpResponse: HttpResponse<any>) => httpResponse.body)
     );
   }
 
@@ -106,6 +142,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     // In our API the body is not customised
     return metadata;
   }
+
 
   public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
     // Copying metadata locally because we don't want to change the object for the caller
@@ -123,12 +160,16 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
       headers.set('Content-Type', 'application/json');
     }
 
-    this.logOnServer<any>(config.serverLoggingUrl, requestBody, {
-      headers,
-      params: config.customHttpParams || new HttpParams(),
-      responseType: config.httpResponseType || 'json',
-      withCredentials: config.withCredentials || false,
-    }).pipe(catchError(err => {
+    this.logOnServer(
+      config.serverLoggingUrl,
+      requestBody,
+      {
+        headers,
+        params: config.customHttpParams || new HttpParams(),
+        responseType: config.httpResponseType || 'json',
+        withCredentials: config.withCredentials || false,
+      },
+    ).pipe(catchError(err => {
       // Do not use NGXLogger here because this could cause an infinite loop 
       console.error('NGXLogger: Failed to log on server', err);
       return throwError(err);

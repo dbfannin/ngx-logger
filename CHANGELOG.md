@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+### Added
+- Added the function alterHttpRequest to allow users to tweak the HttpRequest just before it is sent to the API
+
 ## [5.0.6] - 2022-01-15
 
 ### Changed
