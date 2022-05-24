@@ -35,6 +35,9 @@ export class NGXLoggerMock {
   fatal(message?: any | (() => any), ...additional: any[]) {
   }
 
+  partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void {
+  }
+
   updateConfig(config: any) {
 
   }
