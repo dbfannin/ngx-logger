@@ -14,7 +14,7 @@ export const TOKEN_LOGGER_CONFIG = 'TOKEN_LOGGER_CONFIG';
 export interface INGXLoggerConfig {
   // Global config
   /** Minimum level to be written */
-  level: NgxLoggerLevel;
+  level?: NgxLoggerLevel;
 
   // metadata-service config
   /** Timestamp format: any format accepted by Angular DatePipe. Defaults to ISOString. If set you need to provide DatePipe from @angular/common */

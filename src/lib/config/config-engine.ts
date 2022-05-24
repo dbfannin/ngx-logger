@@ -10,6 +10,11 @@ export class NGXLoggerConfigEngine implements INGXLoggerConfigEngine {
     config: INGXLoggerConfig,
   ) {
     this.config = this._clone(config);
+
+    // Default log level is ERROR
+    if (!this.config.level) {
+      this.config.level = NgxLoggerLevel.ERROR;
+    }
   }
 
   /** Get a readonly access to the level configured for the NGXLogger */

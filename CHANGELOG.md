@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
 
+## [5.0.11] - 2022-05-24
+### Changed
+- INGXLoggerConfig.level is now optional (ERROR is the default value)
+
+
 ## [5.0.10] - 2022-05-24
 ### Added
 - Added getNewInstance in CustomNGXLoggerService that allows more params for instantiating a new instance of NGXlogger
