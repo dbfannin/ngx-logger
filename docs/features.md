@@ -91,3 +91,17 @@ export class MyService {
   }
 }
 ```
+
+- Adds context to your log calls
+  - Context is specific to the instance of the logger, if you want several contexts, you need several instances
+
+Simple example
+```typescript
+LoggerModule.forRoot({
+...,
+  // Context will be printed to all the log messages
+  context: 'context'
+})
+```
+
+For a more detailed example with several instances, [click here](../projects/demo/src/app/custom-instance/)
