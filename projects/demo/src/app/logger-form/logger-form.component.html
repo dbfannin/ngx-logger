@@ -20,6 +20,7 @@
       <button mat-raised-button type="submit" color="primary" [disabled]="!loggerForm.valid">Log Message</button>
     </mat-card-actions>
     <mat-card-actions align="end">
+      <app-custom-instance></app-custom-instance>
       <button mat-raised-button type="button" (click)="logCustomInstance()">Log with custom instance</button>
     </mat-card-actions>
   </mat-card>
