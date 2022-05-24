@@ -108,7 +108,7 @@ export class NGXLogger {
     this.configEngine.updateConfig(config);
   }
 
-  public partialUpdateConfig(partialConfig: { [K in keyof INGXLoggerConfig] }): void {
+  public partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void {
     this.configEngine.partialUpdateConfig(partialConfig);
   }
 

@@ -10,7 +10,6 @@ export class CustomInstanceService {
   constructor(
     customNgxLoggerService: CustomNGXLoggerService,
   ) {
-    // Be careful, by doing this
     this.logger = customNgxLoggerService.getNewInstance({ partialConfig: { context: 'CustomInstanceService' } });
   }
 

@@ -14,9 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added partialConfig parameter to CustomNGXLoggerService.getNewInstance
 - Added context to INGXLoggerConfig, context is written in {} to the log for every log messages
 
-### Changed
-- INGXLoggerConfig.level is now optional (ERROR is the default value)
-
 
 ## [5.0.10] - 2022-05-24
 ### Added
