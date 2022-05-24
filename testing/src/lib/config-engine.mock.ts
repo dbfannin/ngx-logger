@@ -15,6 +15,9 @@ export class NGXLoggerConfigEngineMock implements INGXLoggerConfigEngine {
   updateConfig(config: INGXLoggerConfig) {
   }
 
+  partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void {
+  }
+
   getConfig(): INGXLoggerConfig {
     return { level: NgxLoggerLevel.ERROR };
   }

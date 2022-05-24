@@ -12,6 +12,11 @@ export interface INGXLoggerConfigEngine {
   /** Update the config */
   updateConfig(config: INGXLoggerConfig): void;
 
+  /** Update the config partially
+   * This is useful if you want to update only one parameter of the config
+   */
+  partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void;
+
   /** Gets the confing */
   getConfig(): INGXLoggerConfig;
 }

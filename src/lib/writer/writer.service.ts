@@ -12,6 +12,14 @@ export class NGXLoggerWriterService implements INGXLoggerWriterService {
   protected readonly isIE: boolean;
   protected readonly logFunc: (metadata: INGXLoggerMetadata, config: INGXLoggerConfig, metaString: string) => void;
 
+  /** List of functions called when preparing meta string */
+  protected prepareMetaStringFuncs: ((metadata: INGXLoggerMetadata, config: INGXLoggerConfig) => string)[] = [
+    this.getTimestampToWrite,
+    this.getLevelToWrite,
+    this.getFileDetailsToWrite,
+    this.getContextToWrite,
+  ];
+
   constructor(
     @Inject(PLATFORM_ID) protected platformId,
   ) {
@@ -21,11 +29,32 @@ export class NGXLoggerWriterService implements INGXLoggerWriterService {
     this.logFunc = this.isIE ? this.logIE.bind(this) : this.logModern.bind(this);
   }
 
+  protected getTimestampToWrite(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
+    return metadata.timestamp;
+  }
+
+  protected getLevelToWrite(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
+    return NgxLoggerLevel[metadata.level];
+  }
+
+  protected getFileDetailsToWrite(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
+    return config.disableFileDetails === true ? '' : `[${metadata.fileName}:${metadata.lineNumber}:${metadata.columnNumber}]`;
+  }
+
+  protected getContextToWrite(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
+    return config.context ? `{${config.context}}` : '';
+  }
+
   /** Generate a "meta" string that is displayed before the content sent to the log function */
   protected prepareMetaString(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): string {
-		const fileDetails = config.disableFileDetails === true ? '' : `[${metadata.fileName}:${metadata.lineNumber}:${metadata.columnNumber}]`;
-
-    return `${metadata.timestamp} ${NgxLoggerLevel[metadata.level]} ${fileDetails}`;
+    let metaString = '';
+    this.prepareMetaStringFuncs.forEach(prepareMetaStringFunc => {
+      const metaItem = prepareMetaStringFunc(metadata, config);
+      if (metaItem) {
+        metaString = metaString + ' ' + metaItem;
+      }
+    })
+    return metaString.trim();
   }
 
   /** Get the color to use when writing to console */

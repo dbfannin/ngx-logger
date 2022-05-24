@@ -108,6 +108,10 @@ export class NGXLogger {
     this.configEngine.updateConfig(config);
   }
 
+  public partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void {
+    this.configEngine.partialUpdateConfig(partialConfig);
+  }
+
   /** Get config of logger */
   public getConfigSnapshot(): INGXLoggerConfig {
     return this.configEngine.getConfig();

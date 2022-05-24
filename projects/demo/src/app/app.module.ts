@@ -17,9 +17,10 @@ import { AppComponent } from './app.component';
 import { LogConfigComponent } from './log-config/log-config.component';
 import { LoggerFormComponent } from './logger-form/logger-form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomInstanceComponent } from './custom-instance/custom-instance.component';
 
 @NgModule({
-  declarations: [AppComponent, LogConfigComponent, LoggerFormComponent],
+  declarations: [AppComponent, LogConfigComponent, LoggerFormComponent, CustomInstanceComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
