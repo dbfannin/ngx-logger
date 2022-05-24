@@ -35,6 +35,8 @@ export interface INGXLoggerConfig {
   colorScheme?: NGXLoggerColorScheme;
   /** If true the console log won't include file details (filename, line number and column number) */
   disableFileDetails?: boolean;
+  /** Adds context to the message that will be written to the log */
+  context?: string;
 
   // server-service config
   /** Minimum level to be sent to server */
