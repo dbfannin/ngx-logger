@@ -66,9 +66,9 @@ export class CustomNGXLoggerService {
       writerService?: INGXLoggerWriterService,
       serverService?: INGXLoggerServerService,
       logMonitor?: INGXLoggerMonitor,
+      partialConfig?: { [K in keyof INGXLoggerConfig] },
     }
   ): NGXLogger {
-
     const logger = new NGXLogger(
       params?.config ?? this.logger.getConfigSnapshot(),
       params?.configEngineFactory ?? this.configEngineFactory,
@@ -78,6 +78,10 @@ export class CustomNGXLoggerService {
       params?.writerService ?? this.writerService,
       params?.serverService ?? this.serverService
     );
+
+    if (params?.partialConfig) {
+      logger.partialUpdateConfig(params.partialConfig);
+    }
 
     if (params?.logMonitor) {
       logger.registerMonitor(params.logMonitor);
