@@ -9,11 +9,8 @@ import { TOKEN_LOGGER_WRITER_SERVICE, INGXLoggerWriterService } from './writer/i
 import { INGXLoggerMonitor } from './monitor/ilogger-monitor';
 import { INGXLoggerConfigEngineFactory, TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } from './config/iconfig-engine-factory';
 
-// Keeping this to avoid any breaking change for now, this class should be removed later
-
 /**
  * CustomNGXLoggerService is designed to allow users to get a new instance of a logger
- * @deprecated The logger is now fully customisable so this class is now useless
  */
 @Injectable({
   providedIn: 'root'
@@ -21,6 +18,7 @@ import { INGXLoggerConfigEngineFactory, TOKEN_LOGGER_CONFIG_ENGINE_FACTORY } fro
 export class CustomNGXLoggerService {
 
   constructor(
+    private logger: NGXLogger,
     @Inject(TOKEN_LOGGER_CONFIG_ENGINE_FACTORY) private configEngineFactory: INGXLoggerConfigEngineFactory,
     @Inject(TOKEN_LOGGER_METADATA_SERVICE) private metadataService: INGXLoggerMetadataService,
     @Inject(TOKEN_LOGGER_RULES_SERVICE) private ruleService: INGXLoggerRulesService,
@@ -32,7 +30,7 @@ export class CustomNGXLoggerService {
 
   /**
    * Create an instance of a logger
-   * @deprecated The logger is now fully customisable so this function is now useless, if you want a specific instance of NGXLogger, either use the new keyword or Angular dependency injection
+   * @deprecated this function does not have all the features, @see getNewInstance for every params available
    * @param config 
    * @param serverService 
    * @param logMonitor 
@@ -45,10 +43,44 @@ export class CustomNGXLoggerService {
     logMonitor?: INGXLoggerMonitor,
     mapperService?: INGXLoggerMapperService,
   ): NGXLogger {
-    const logger = new NGXLogger(config, this.configEngineFactory, this.metadataService, this.ruleService, mapperService || this.mapperService, this.writerService, serverService || this.serverService);
+    return this.getNewInstance({
+      config,
+      serverService,
+      logMonitor,
+      mapperService
+    });
+  }
 
-    if (logMonitor) {
-      logger.registerMonitor(logMonitor);
+  /**
+   * Get a new instance of NGXLogger
+   * @param params list of optional params to use when creating an instance of NGXLogger
+   * @returns the new instance of NGXLogger
+   */
+  getNewInstance(
+    params?: {
+      config?: INGXLoggerConfig,
+      configEngineFactory?: INGXLoggerConfigEngineFactory,
+      metadataService?: INGXLoggerMetadataService,
+      ruleService?: INGXLoggerRulesService,
+      mapperService?: INGXLoggerMapperService,
+      writerService?: INGXLoggerWriterService,
+      serverService?: INGXLoggerServerService,
+      logMonitor?: INGXLoggerMonitor,
+    }
+  ): NGXLogger {
+
+    const logger = new NGXLogger(
+      params?.config ?? this.logger.getConfigSnapshot(),
+      params?.configEngineFactory ?? this.configEngineFactory,
+      params?.metadataService ?? this.metadataService,
+      params?.ruleService ?? this.ruleService,
+      params?.mapperService ?? this.mapperService,
+      params?.writerService ?? this.writerService,
+      params?.serverService ?? this.serverService
+    );
+
+    if (params?.logMonitor) {
+      logger.registerMonitor(params.logMonitor);
     }
 
     return logger;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NGXLogger, NgxLoggerLevel } from '../../../../../src/public_api';
+import { BusinessService } from '../business-service/business.service';
 
 import { LogEvent } from '../models/log-event.model';
 
@@ -38,7 +39,8 @@ export class LoggerFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private logger: NGXLogger
+    private logger: NGXLogger,
+    private businessService: BusinessService,
   ) {
   }
 
@@ -59,14 +61,18 @@ export class LoggerFormComponent implements OnInit {
   }
 
   logError() {
-      try {
-          var test = '';
-          test = null;
-          test.padEnd(1);
-      } catch (err) {
-        this.logger.error('Error is', err);
-        this.logger.error(err);
-      }
+    try {
+      var test = '';
+      test = null;
+      test.padEnd(1);
+    } catch (err) {
+      this.logger.error('Error is', err);
+      this.logger.error(err);
+    }
+  }
+
+  logCustomInstance(): void {
+    this.businessService.doBusiness();
   }
 
 }
