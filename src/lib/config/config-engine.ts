@@ -31,6 +31,20 @@ export class NGXLoggerConfigEngine implements INGXLoggerConfigEngine {
     this.config = this._clone(config);
   }
 
+  /** Update the config partially
+   * This is useful if you want to update only one parameter of the config
+   */
+  partialUpdateConfig(partialConfig: { [K in keyof INGXLoggerConfig] }): void {
+    // avoid any error if the config is incorrect
+    if (!partialConfig) {
+      return;
+    }
+
+    Object.keys(partialConfig).forEach(configParamKey => {
+      this.config[configParamKey] = partialConfig[configParamKey];
+    });
+  }
+
   getConfig(): INGXLoggerConfig {
     return this._clone(this.config);
   }
