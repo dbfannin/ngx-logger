@@ -29,7 +29,7 @@ export class NGXLoggerConfigEngine implements INGXLoggerConfigEngine {
   /** Update the config partially
    * This is useful if you want to update only one parameter of the config
    */
-  partialUpdateConfig(partialConfig: { [K in keyof INGXLoggerConfig] }): void {
+  partialUpdateConfig(partialConfig: Partial<INGXLoggerConfig>): void {
     // avoid any error if the config is incorrect
     if (!partialConfig) {
       return;
