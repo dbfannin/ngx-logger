@@ -51,4 +51,6 @@ export interface INGXLoggerConfig {
   customHttpHeaders?: HttpHeaders,
   /** Response type that will be used when sending log to server (defaults to json) */
   httpResponseType?: "arraybuffer" | "blob" | "text" | "json";
+  /** If true, logger calls to server will be performed outside NgZone */
+  serverCallsOutsideNgZone?: boolean;
 }

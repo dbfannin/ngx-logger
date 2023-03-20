@@ -1,6 +1,6 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable, Optional } from '@angular/core';
-import { concat, isObservable, Observable, of, throwError } from 'rxjs';
+import { Injectable, NgZone, Optional } from '@angular/core';
+import { isObservable, Observable, of, throwError } from 'rxjs';
 import { catchError, concatMap, filter, map } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerConfig } from '../config/iconfig';
@@ -11,6 +11,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
 
   constructor(
     @Optional() protected readonly httpBackend: HttpBackend,
+    @Optional() protected readonly ngZone: NgZone,
   ) { }
 
   /**
@@ -160,19 +161,31 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
       headers.set('Content-Type', 'application/json');
     }
 
-    this.logOnServer(
-      config.serverLoggingUrl,
-      requestBody,
-      {
-        headers,
-        params: config.customHttpParams || new HttpParams(),
-        responseType: config.httpResponseType || 'json',
-        withCredentials: config.withCredentials || false,
-      },
-    ).pipe(catchError(err => {
-      // Do not use NGXLogger here because this could cause an infinite loop 
-      console.error('NGXLogger: Failed to log on server', err);
-      return throwError(err);
-    })).subscribe();
+    const logOnServerAction = () => {
+      this.logOnServer(
+        config.serverLoggingUrl,
+        requestBody,
+        {
+          headers,
+          params: config.customHttpParams || new HttpParams(),
+          responseType: config.httpResponseType || 'json',
+          withCredentials: config.withCredentials || false,
+        },
+      ).pipe(catchError(err => {
+        // Do not use NGXLogger here because this could cause an infinite loop 
+        console.error('NGXLogger: Failed to log on server', err);
+        return throwError(err);
+      })).subscribe();
+    };
+
+    if (config.serverCallsOutsideNgZone === true) {
+      if (!this.ngZone) {
+        console.error('NGXLogger: NgZone is not provided and serverCallsOutsideNgZone is set to true');
+        return;
+      }
+      this.ngZone.runOutsideAngular(logOnServerAction);
+    } else {
+      logOnServerAction();
+    }
   }
 }
