@@ -219,7 +219,7 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
   public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
     // If there is no batch mode in the config, we send the log call straight to the server as usual
     if ((!config.serverCallsBatchSize || config.serverCallsBatchSize <= 0) &&
-      (!config.serverCallsDebounce || config.serverCallsDebounce <= 0)) {
+      (!config.serverCallsTimer || config.serverCallsTimer <= 0)) {
       this.sendToServerAction(metadata, config);
       return;
     }
@@ -227,11 +227,13 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
     const addLogToQueueAction = () => {
       this.serverCallsQueue.push({ ...metadata });
 
+      // Flush queue when size is reached
       if (!!config.serverCallsBatchSize && this.serverCallsQueue.length > config.serverCallsBatchSize) {
         this.flushQueue(config);
       }
-      if (config.serverCallsDebounce > 0 && !this.addToQueueTimer) {
-        this.addToQueueTimer = timer(config.serverCallsDebounce).subscribe(_ => {
+      // Call timer only if it is in the config and timer is not already running
+      if (config.serverCallsTimer > 0 && !this.addToQueueTimer) {
+        this.addToQueueTimer = timer(config.serverCallsTimer).subscribe(_ => {
           this.flushQueue(config);
         });
       }
