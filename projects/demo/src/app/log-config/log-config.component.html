@@ -30,10 +30,18 @@
       <button mat-stroked-button (click)="handleButtonClick(NgxLoggerLevel.OFF)">Off (Nothing will be logged)</button>
     </div>
 
+    <div *ngIf="serverLogging.checked" class="batch-config">
+      <mat-form-field>
+        <input #batchSize matInput placeholder="Batch size" type="number" (change)="batchSizeChange(batchSize.value)">
+      </mat-form-field>
+      <mat-form-field>
+        <input #batchTimer matInput placeholder="Batch timer in miliseconds" type="number" (change)="batchTimerChange(batchTimer.value)">
+      </mat-form-field>
+    </div>
     <hr/>
 
     <mat-slide-toggle (change)="disableFileDetailsChange($event)" color="primary" matTooltip="The file name and line won't be logged">Disable file details</mat-slide-toggle>
-    <mat-slide-toggle class="server-logging" (change)="serverLoggingChange($event)" color="primary" matTooltip="The logger will send logs on a dummy url" >Server logging</mat-slide-toggle>
+    <mat-slide-toggle #serverLogging class="server-logging" (change)="serverLoggingChange($event)" color="primary" matTooltip="The logger will send logs on a dummy url" >Server logging</mat-slide-toggle>
 
   </mat-card-content>
 </mat-card>

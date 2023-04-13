@@ -7,4 +7,7 @@ export class NGXLoggerServerServiceMock implements INGXLoggerServerService {
 
   public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
   }
+
+  public flushQueue(config: INGXLoggerConfig): void {
+  }
 }

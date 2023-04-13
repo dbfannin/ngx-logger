@@ -13,4 +13,10 @@ export interface INGXLoggerServerService {
    * @param config 
    */
   sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void;
+
+  /**
+   * Flush the queue of the logger
+   * @param config 
+   */
+  flushQueue(config: INGXLoggerConfig): void;
 }
