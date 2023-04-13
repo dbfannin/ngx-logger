@@ -1,12 +1,9 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable, NgZone, Optional } from '@angular/core';
-import { isObservable, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, filter, map } from 'rxjs/operators';
-import { Injectable, OnDestroy, Optional } from '@angular/core';
-import { BehaviorSubject, isObservable, Observable, of, Subscription, throwError, timer } from 'rxjs';
+import { Injectable, NgZone, OnDestroy, Optional } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription, isObservable, of, throwError, timer } from 'rxjs';
 import { catchError, concatMap, filter, map, take } from 'rxjs/operators';
-import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerConfig } from '../config/iconfig';
+import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerServerService } from './iserver.service';
 
 @Injectable()
