@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
+
 ## [5.0.11] - 2022-05-24
 ### Added
 - Added INGXLogger.partialUpdateConfig that updates only some fields of the config
