@@ -59,4 +59,6 @@ export interface INGXLoggerConfig {
    * This means your server will receive an array of INGXLoggerMetadata instead of just one object
    */
   serverCallsTimer?: number;
+  /** If true, logger calls to server will be performed outside NgZone */
+  serverCallsOutsideNgZone?: boolean;
 }
