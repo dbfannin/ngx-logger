@@ -117,6 +117,13 @@ export class NGXLogger {
     return this.configEngine.getConfig();
   }
 
+  /**
+   * Flush the serveur queue
+   */
+  public flushServerQueue(): void {
+    this.serverService.flushQueue(this.getConfigSnapshot());
+  }
+
   private _log(level: NgxLoggerLevel, message?: any | (() => any), additional: any[] = []): void {
     const config = this.configEngine.getConfig();
 

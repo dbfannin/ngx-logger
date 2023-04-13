@@ -51,4 +51,12 @@ export interface INGXLoggerConfig {
   customHttpHeaders?: HttpHeaders,
   /** Response type that will be used when sending log to server (defaults to json) */
   httpResponseType?: "arraybuffer" | "blob" | "text" | "json";
+  /** Number of logs needed before it is sent to the server
+   * This means your server will receive an array of INGXLoggerMetadata instead of just one object
+   */
+  serverCallsBatchSize?: number;
+  /** Maximum time (in miliseconds) waited before performing a log call to the server if the number of logs was not reached
+   * This means your server will receive an array of INGXLoggerMetadata instead of just one object
+   */
+  serverCallsTimer?: number;
 }

@@ -1,17 +1,31 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable, Optional } from '@angular/core';
-import { concat, isObservable, Observable, of, throwError } from 'rxjs';
-import { catchError, concatMap, filter, map } from 'rxjs/operators';
+import { Injectable, OnDestroy, Optional } from '@angular/core';
+import { BehaviorSubject, isObservable, Observable, of, Subscription, throwError, timer } from 'rxjs';
+import { catchError, concatMap, filter, map, take } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
 import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerServerService } from './iserver.service';
 
 @Injectable()
-export class NGXLoggerServerService implements INGXLoggerServerService {
+export class NGXLoggerServerService implements INGXLoggerServerService, OnDestroy {
+  protected serverCallsQueue: INGXLoggerMetadata[] = [];
+  protected flushingQueue: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  protected addToQueueTimer: Subscription;
 
   constructor(
     @Optional() protected readonly httpBackend: HttpBackend,
   ) { }
+
+  ngOnDestroy(): void {
+    if (this.flushingQueue) {
+      this.flushingQueue.complete();
+      this.flushingQueue = null;
+    }
+    if (this.addToQueueTimer) {
+      this.addToQueueTimer.unsubscribe();
+      this.addToQueueTimer = null;
+    }
+  }
 
   /**
    * Transforms an error object into a readable string (taking only the stack)
@@ -138,22 +152,54 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
    * @param metadata the data provided by NGXLogger
    * @returns the data that will be sent to the API in the body
    */
-  protected customiseRequestBody(metadata: INGXLoggerMetadata): any {
+  protected customiseRequestBody(metadata: INGXLoggerMetadata | INGXLoggerMetadata[]): any {
     // In our API the body is not customised
     return metadata;
   }
 
+  /**
+   * Flush the queue of the logger
+   * @param config 
+   */
+  public flushQueue(config: INGXLoggerConfig): void {
+    this.flushingQueue.next(true);
 
-  public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
-    // Copying metadata locally because we don't want to change the object for the caller
-    const localMetadata = { ...metadata };
+    // If a timer was set, we cancel it because the queue is flushed
+    if (this.addToQueueTimer) {
+      this.addToQueueTimer.unsubscribe();
+      this.addToQueueTimer = null;
+    }
 
-    localMetadata.additional = this.secureAdditionalParameters(localMetadata.additional);
+    if (!!this.serverCallsQueue && this.serverCallsQueue.length > 0) {
+      this.sendToServerAction(this.serverCallsQueue, config);
+    }
+    this.serverCallsQueue = [];
 
-    localMetadata.message = this.secureMessage(localMetadata.message);
+    this.flushingQueue.next(false);
+  }
+
+  protected sendToServerAction(metadata: INGXLoggerMetadata | INGXLoggerMetadata[], config: INGXLoggerConfig): void {
+    let requestBody: any;
+
+    const secureMetadata = (pMetadata: INGXLoggerMetadata) => {
+      // Copying metadata locally because we don't want to change the object for the caller
+      const securedMetadata: INGXLoggerMetadata = { ...pMetadata };
+      securedMetadata.additional = this.secureAdditionalParameters(securedMetadata.additional);
+      securedMetadata.message = this.secureMessage(securedMetadata.message);
+      return securedMetadata;
+    }
+
+    if (Array.isArray(metadata)) {
+      requestBody = [];
+      metadata.forEach(m => {
+        requestBody.push(secureMetadata(m));
+      })
+    } else {
+      requestBody = secureMetadata(metadata);
+    }
 
     // Allow users to customise the data sent to the API
-    const requestBody = this.customiseRequestBody(localMetadata);
+    requestBody = this.customiseRequestBody(requestBody);
 
     const headers = config.customHttpHeaders || new HttpHeaders();
     if (!headers.has('Content-Type')) {
@@ -174,5 +220,46 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
       console.error('NGXLogger: Failed to log on server', err);
       return throwError(err);
     })).subscribe();
+  }
+
+  /**
+   * Sends the content to be logged to the server according to the config
+   * @param metadata 
+   * @param config 
+   */
+  public sendToServer(metadata: INGXLoggerMetadata, config: INGXLoggerConfig): void {
+    // If there is no batch mode in the config, we send the log call straight to the server as usual
+    if ((!config.serverCallsBatchSize || config.serverCallsBatchSize <= 0) &&
+      (!config.serverCallsTimer || config.serverCallsTimer <= 0)) {
+      this.sendToServerAction(metadata, config);
+      return;
+    }
+
+    const addLogToQueueAction = () => {
+      this.serverCallsQueue.push({ ...metadata });
+
+      // Flush queue when size is reached
+      if (!!config.serverCallsBatchSize && this.serverCallsQueue.length > config.serverCallsBatchSize) {
+        this.flushQueue(config);
+      }
+      // Call timer only if it is in the config and timer is not already running
+      if (config.serverCallsTimer > 0 && !this.addToQueueTimer) {
+        this.addToQueueTimer = timer(config.serverCallsTimer).subscribe(_ => {
+          this.flushQueue(config);
+        });
+      }
+    };
+
+    // If queue is being flushed, we need to wait for it to finish before adding other calls
+    if (this.flushingQueue.value === true) {
+      this.flushingQueue.pipe(
+        filter(fq => fq === false),
+        take(1),
+      ).subscribe(_ => {
+        addLogToQueueAction();
+      });
+    } else {
+      addLogToQueueAction();
+    }
   }
 }

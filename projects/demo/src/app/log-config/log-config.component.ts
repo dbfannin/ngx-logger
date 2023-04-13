@@ -23,6 +23,12 @@ export class LogConfigComponent {
   @Output()
   serverLogging: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Output()
+  batchSize: EventEmitter<number> = new EventEmitter<number>();
+
+  @Output()
+  batchTimer: EventEmitter<number> = new EventEmitter<number>();
+
   /**
    * Get the chip color based on the current logger level configuration
    */
@@ -62,5 +68,13 @@ export class LogConfigComponent {
 
   serverLoggingChange(change: MatSlideToggleChange) {
     this.serverLogging.emit(change.checked);
+  }
+
+  batchSizeChange(batchSize: number) {
+    this.batchSize.emit(batchSize);
+  }
+
+  batchTimerChange(batchTimer: number) {
+    this.batchTimer.emit(batchTimer);
   }
 }
