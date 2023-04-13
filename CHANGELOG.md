@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
 
+## [5.0.12] - 2022-04-13
+### Added
+- Added serverCallsOutsideNgZone to allow users to perform server calls outside of angular zone (fix [#324](https://github.com/dbfannin/ngx-logger/issues/253))
+- Added serverCallsBatchSize, serverCallsTimer and flushQueue to allow users to perform server calls in batch (fix [#279](https://github.com/dbfannin/ngx-logger/issues/279))
+
+### Changed
+- If you override NGXLoggerServerService, it now optionnaly accepts ngZone in constructor (for serverCallsOutsideNgZone feature)
+- If you override NGXLoggerServerService.customiseRequestBody, it now receives `metadata: INGXLoggerMetadata | INGXLoggerMetadata[]` as parameter instead of `metadata: INGXLoggerMetadata`
+
+
 ## [5.0.11] - 2022-05-24
 ### Added
 - Added INGXLogger.partialUpdateConfig that updates only some fields of the config
