@@ -1,5 +1,5 @@
 import { HttpBackend, HttpHeaders, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
-import { Injectable, Optional } from '@angular/core';
+import { Injectable, OnDestroy, Optional } from '@angular/core';
 import { BehaviorSubject, isObservable, Observable, of, Subscription, throwError, timer } from 'rxjs';
 import { catchError, concatMap, filter, map, take } from 'rxjs/operators';
 import { INGXLoggerMetadata } from '../metadata/imetadata';
@@ -7,7 +7,7 @@ import { INGXLoggerConfig } from '../config/iconfig';
 import { INGXLoggerServerService } from './iserver.service';
 
 @Injectable()
-export class NGXLoggerServerService implements INGXLoggerServerService {
+export class NGXLoggerServerService implements INGXLoggerServerService, OnDestroy {
   protected serverCallsQueue: INGXLoggerMetadata[] = [];
   protected flushingQueue: BehaviorSubject<boolean> = new BehaviorSubject(false);
   protected addToQueueTimer: Subscription;
@@ -15,6 +15,17 @@ export class NGXLoggerServerService implements INGXLoggerServerService {
   constructor(
     @Optional() protected readonly httpBackend: HttpBackend,
   ) { }
+
+  ngOnDestroy(): void {
+    if (this.flushingQueue) {
+      this.flushingQueue.complete();
+      this.flushingQueue = null;
+    }
+    if (this.addToQueueTimer) {
+      this.addToQueueTimer.unsubscribe();
+      this.addToQueueTimer = null;
+    }
+  }
 
   /**
    * Transforms an error object into a readable string (taking only the stack)
