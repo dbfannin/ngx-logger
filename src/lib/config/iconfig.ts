@@ -55,7 +55,7 @@ export interface INGXLoggerConfig {
    * This means your server will receive an array of INGXLoggerMetadata instead of just one object
    */
   serverCallsBatchSize?: number;
-  /** Maximum time waited before performing a log call to the server if the number of logs was not reached
+  /** Maximum time (in miliseconds) waited before performing a log call to the server if the number of logs was not reached
    * This means your server will receive an array of INGXLoggerMetadata instead of just one object
    */
   serverCallsTimer?: number;
