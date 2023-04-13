@@ -14,3 +14,9 @@ button {
 .server-logging {
     margin-left: 16px;
 }
+
+.batch-config {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}

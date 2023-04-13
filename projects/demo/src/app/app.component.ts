@@ -66,4 +66,16 @@ export class AppComponent {
     updatedConfig.serverLogLevel = enabled ? NgxLoggerLevel.TRACE : NgxLoggerLevel.OFF;
     this.logger.updateConfig(updatedConfig);
   }
+
+  batchSize(batchSize: number) {
+    const updatedConfig = this.logger.getConfigSnapshot();
+    updatedConfig.serverCallsBatchSize = batchSize;
+    this.logger.updateConfig(updatedConfig);
+  }
+
+  batchTimer(batchTimer: number) {
+    const updatedConfig = this.logger.getConfigSnapshot();
+    updatedConfig.serverCallsTimer = batchTimer;
+    this.logger.updateConfig(updatedConfig);
+  }
 }
