@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] - Merged features waiting to be published in upcoming version
 
 
-## [5.0.12] - 2022-04-13
+## [5.0.12] - 2023-04-13
 ### Added
 - Added serverCallsOutsideNgZone to allow users to perform server calls outside of angular zone (fix [#324](https://github.com/dbfannin/ngx-logger/issues/253))
 - Added serverCallsBatchSize, serverCallsTimer and flushQueue to allow users to perform server calls in batch (fix [#279](https://github.com/dbfannin/ngx-logger/issues/279))
